@@ -1,0 +1,32 @@
+{
+  "name": "eBizBase",
+  "dockerComposeFile": "compose.yml",
+  "workspaceFolder": "/ebizbase",
+  "service": "workspace",
+  "remoteUser": "root",
+  "postStartCommand": "chown -R root:root . && chmod +x -R .husky/* && docker compose up -d --wait",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "firsttris.vscode-jest-runner",
+        "stylelint.vscode-stylelint",
+        "eamodio.gitlens",
+        "stringham.move-ts",
+        "christian-kohler.npm-intellisense",
+        "pmneo.tsimporter",
+        "christian-kohler.path-intellisense",
+        "bradlc.vscode-tailwindcss",
+        "angular.ng-template",
+        "editorconfig.editorconfig",
+        "github.vscode-github-actions",
+        "vincaslt.highlight-matching-tag",
+        "esbenp.prettier-vscode",
+        "redhat.vscode-xml",
+        "redhat.vscode-yaml",
+        "zxh404.vscode-proto3",
+        "GitHub.copilot",
+        "shd101wyy.markdown-preview-enhanced"
+      ]
+    }
+  }
+}

@@ -1,0 +1,2 @@
+echo "Running pre-push hook..."
+npx nx run-many -t lint test build container e2e

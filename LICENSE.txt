@@ -1,0 +1,19 @@
+COPYRIGHT © eBizBase. ALL RIGHTS RESERVED.
+
+Article 1: Ownership
+This software and all accompanying documentation are the property of eBizBase. No one is permitted to copy, modify, distribute, or use this software without explicit written permission from eBizBase.
+
+Article 2: Usage Restrictions
+Users are not allowed to:
+
+Copy or distribute this software to anyone.
+Modify or create derivative works from this software.
+Use this software for any commercial purpose without permission.
+Article 3: Confidentiality
+Users must keep all source code and related information confidential and may not disclose it to any third party without permission.
+
+Article 4: Copyright
+This software is protected by national and international copyright laws. Any violations will be prosecuted under the law.
+
+Article 5: Liability
+eBizBase is not liable for any damage or loss arising from the use of this software. The software is provided "as is" without any warranties.

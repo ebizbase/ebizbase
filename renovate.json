@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base"],
+  "baseBranches": ["dev"],
+  "timezone": "Asia/Ho_Chi_Minh",
+  "automerge": true,
+  "major": {"automerge": false},
+  "rangeStrategy": "replace",
+  "pinDigests": true,
+  "prHourlyLimit": 3,
+  "dependencyDashboard": true,
+  "semanticCommits": "enabled",
+  "semanticCommitScope": "deps",
+  "semanticCommitType": "chore",
+  "commitBody": "See associated pull request for more information.",
+  "schedule": ["before 5am every weekday", "every monday"],
+  "lockFileMaintenance": {    "enabled": true  },
+  "packageRules": [
+    {
+      "matchPackageNames": ["*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "all non-major dependencies"
+    },
+    {
+      "packagePatterns": ["eslint*", "commitlint*", "prettier*", "husky", "lint-staged",  "@typescript-eslint/"],
+      "labels": ["code-quality-tools"]
+    },
+    {
+      "packagePatterns": ["@nx/*", "@angular/*", "@nestjs/*"],
+      "labels": ["core-stacks"]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+name: 'Setup node'
+description: 'Setup node, pnpm'
+inputs:
+  dependencies:
+    description: 'Install dependencies'
+    required: false
+    default: false
+  docker-buildx:
+    description: 'Install docker buildx'
+    required: false
+    default: false
+runs:
+  using: 'composite'
+  steps:
+    - name: Get node and pnpm versions from package.json
+      id: get-versions
+      shell: bash
+      run: |
+        NODE_VERSION=$(jq -r '.engines.node' package.json)
+        PNPM_VERSION=$(jq -r '.engines.pnpm' package.json)
+        echo "NODE_VERSION=${NODE_VERSION}" >> $GITHUB_ENV
+        echo "PNPM_VERSION=${PNPM_VERSION}" >> $GITHUB_ENV
+        echo "Node version: $NODE_VERSION"
+        echo "Pnpm version: $PNPM_VERSION"
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v3
+      with:
+        version: ${{ env.PNPM_VERSION }}
+
+    - name: Get pnpm store path
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    - name: Cache pnpm store
+      uses: actions/cache@v4
+      with:
+        path: |
+          ${{ env.STORE_PATH }}
+          node_modules
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: ${{ runner.os }}-pnpm-store-
+
+    - name: Install npm dependencies
+      if: ${{ inputs.dependencies == 'true' }}
+      shell: bash
+      run: pnpm install --frozen-lockfile
+
+
+    - name: Install docker buildx
+      if: ${{ inputs.docker-buildx == 'true' }}
+      uses: docker/setup-buildx-action@v3
+      with:
+        driver-opts: |
+          image=moby/buildkit:master

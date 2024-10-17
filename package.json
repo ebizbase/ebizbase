@@ -1,0 +1,71 @@
+{
+  "name": "@ebizbase/source",
+  "version": "0.0.1-next.3",
+  "description": "ERP platform drives businesses towards online operations",
+  "license": "Proprietary",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnitvn/ebizbase.git"
+  },
+  "engines": {
+    "node": "^20.12.2",
+    "pnpm": "^9.12.1"
+  },
+  "scripts": {
+    "prepare": "is-ci | husky"
+  },
+  "private": true,
+  "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "@octokit/rest": "^21.0.2",
+    "husky": "^9.1.6",
+    "is-ci": "^3.0.1",
+    "lint-staged": "^15.2.10",
+    "nx": "20.0.0",
+    "prettier": "^2.6.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,less,scss,html,json,graphql,md,yaml,yml,vue}": [
+      "npx prettier --write"
+    ]
+  },
+  "renovate": {
+    "extends": [
+      "config:base"
+    ],
+    "automerge": false,
+    "baseBranches": [
+      "dev"
+    ],
+    "commitMessagePrefix": "chore: ",
+    "semanticCommits": "enabled",
+    "packageRules": [
+      {
+        "packagePatterns": [
+          "eslint*",
+          "commitlint*"
+        ],
+        "schedule": [
+          "every weekend"
+        ]
+      },
+      {
+        "packagePatterns": [
+          "@nx/*",
+          "@angular/*",
+          "@nestjs/*"
+        ],
+        "schedule": [
+          "every 2 weeks"
+        ]
+      }
+    ],
+    "lockFileMaintenance": {
+      "enabled": true,
+      "schedule": [
+        "every weekend"
+      ]
+    }
+  }
+}

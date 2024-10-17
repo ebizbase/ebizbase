@@ -1,0 +1,61 @@
+# Continuous delivery & deployment workflow
+name: cd
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+jobs:
+  release:
+    if: github.event.pull_request.head.ref=='release' ||  github.event.pull_request.head.ref=='prerelease'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/setup-node
+      - uses: ./.github/actions/setup-git-bot-user
+      - name: Create a release
+        env:
+          GH_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+        run: |
+          pnpm install -g conventional-changelog-cli
+          version=$(jq -r '.version' package.json)
+          gh release create "v${version}" --title "v${version}" --notes "$(npx conventional-changelog-cli -u)"
+
+  publish:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - uses: ./.github/actions/setup-node
+        with:
+          dependencies: true
+          docker-buildx: true
+      - name: Build Docker Image & Publish
+        run: npx nx run-many -t container -c production
+
+  deploy:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set deployment status to "in_progress"
+        env:
+          GH_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+        run: gh api repos/${{ github.repository }}/deployments -f state=in_progress
+
+      - name: Deploy to server
+        shell: bash
+        run: echo "Deploying to server not yet config" && exit 1
+
+      - name: Set deployment status to "success"
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+        run: gh api repos/${{ github.repository }}/deployments -f state=success
+
+      - name: Set deployment status to "failure"
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+        run: gh api repos/${{ github.repository }}/deployments -f state=failure

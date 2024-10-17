@@ -1,0 +1,78 @@
+# Release workflow
+name: release
+on:
+  workflow_dispatch:
+    inputs:
+      prerelease:
+        description: 'Is this a prerelease?'
+        type: boolean
+        required: false
+        default: true
+jobs:
+
+  prepare-pull-request:
+    concurrency:
+      group: prepare-prerelease
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node
+      - uses: ./.github/actions/setup-git-bot-user
+      - uses: de-vri-es/setup-git-credentials@v2
+        with:
+          credentials: ${{secrets.GH_BOT_TOKEN}}
+      - name: Prepare for next release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+        run: |         
+          git fetch --prune
+
+          if [ "${{ inputs.prerelease }}" == "true" ]; then
+            BRANCH="prerelease"
+          else
+            BRANCH="release"
+          fi
+
+          # Close current release pull requests and delete release branch
+          PRS=$(gh pr list --state open --base main --head $BRANCH --json number -q '.[].number')
+          if [ $? -ne 0 ]; then
+            echo "Error: Failed to list pull requests for branch $BRANCH"
+            exit 1
+          fi
+
+          for PR in $PRS; do
+            gh pr close $PR -d -c "This pull request for this release no longer needed. Please refer to the latest pull request."
+            if [ $? -ne 0 ]; then
+              echo "Error: Failed to close pull request #$PR"
+              exit 1
+            fi
+          done
+
+          if git show-ref --verify --quiet refs/heads/$BRANCH; then
+            git push origin --delete $BRANCH
+            if [ $? -ne 0 ]; then
+              echo "Error: Failed to delete branch $BRANCH"
+              exit 1
+            fi
+          fi
+
+          npm install -g standard-version conventional-changelog-cli
+
+          if [ "$BRANCH" == "release" ]; then
+            npx standard-version --skip.tag --no-verify
+          else
+            npx standard-version --skip.tag --no-verify --prerelease next
+          fi
+
+          git checkout -b $BRANCH
+          git push origin $BRANCH --no-verify -f
+
+          version=$(jq -r '.version' package.json)
+          title="chore(release): release v$version"
+          body="# I'm preparing for the next release! \n\n"
+          body+="$(npx conventional-changelog-cli -u)\n\n"
+          body+="This pull request is automatically created by the CI/CD pipeline. Please refer to the latest pull request for the latest changes."
+          echo -e "$body" > pull-request.md
+          gh pr create --draft --title "$title" --body-file pull-request.md --base main --head $BRANCH

@@ -1,0 +1,9 @@
+name: 'Setup git bot user'
+description: 'Setup git bot user for CI/CD'
+runs:
+  using: 'composite'
+  steps:
+    - shell: bash
+      run: |
+        git config --global user.name "Juno eBiz"
+        git config --global user.email "ebizbasevn@gmail.com"

@@ -1,0 +1,34 @@
+# Lock closed issues older than 30 days without any comments
+name: Auto lock stale issues
+on:
+  schedule:
+    - cron: '4 0 * * *'
+
+jobs:
+  lock-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Lock closed issues older than 30 days
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+        run: |
+          issues=$(gh issue list --state closed --json number,updatedAt --jq '.[] | select((now - (.updatedAt | fromdateiso8601)) > 2592000) | .number')
+          for issue in $issues; do
+            last_comment_date=$(gh issue view $issue --json comments --jq '.comments | max_by(.updatedAt) | .updatedAt')
+            if [ -z "$last_comment_date" ]; then
+              echo "No comments found for issue #${issue}"
+              continue
+            fi
+            last_comment_timestamp=$(date -d "$last_comment_date" +%s)
+            current_timestamp=$(date +%s)
+            difference=$(( (current_timestamp - last_comment_timestamp) / 86400 ))
+            if [ $difference -gt 30 ]; then
+              echo "Locking issue #${issue}"
+              gh issue lock $issue --comment "This issue has been closed for more than 30 days without any comments. If this issue is still occurring, please open a new issue with more recent context."
+            else
+              echo "Issue #${issue} has recent comments within the last 30 days."
+            fi
+          done

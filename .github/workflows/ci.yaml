@@ -1,0 +1,22 @@
+# Continuous integration workflow
+name: ci
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+jobs:
+
+  integration:
+    if: github.event.pull_request.head.ref!='release' &&  github.event.pull_request.head.ref!='prerelease'
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node
+        with:
+          dependencies: true
+      - uses: ./.github/actions/nx
+        with:
+          target: lint* test* build* container*
+

@@ -1,0 +1,27 @@
+name: 'Run nx command'
+description: 'Run Nx commands based on affected branch or run-many'
+inputs:
+  base-branch:
+    description: 'Base branch to compare against'
+    required: false
+  target:
+    description: 'Nx target to run'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+
+    - name: Run nx command ""${{ inputs.target }}""
+      shell: bash
+      run: |
+        if [ "${{ inputs.base-branch }}" == "true" ]; then
+          git fetch origin ${{ inputs.base-branch }}
+          npx nx affected --base=origin/${{ inputs.base-branch }} -t ${{ inputs.target }}
+        else
+          npx nx run-many -t ${{ inputs.target }}
+        fi
+
+        if [ $? -ne 0 ]; then
+          echo "Nx command failed"
+          exit 1
+        fi
