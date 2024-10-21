@@ -1,0 +1,56 @@
+{
+  "name": "ebizbase",
+  "image": "ebizbase/devbox",
+  "runArgs": [
+    "--init",
+    "--privileged",
+    "--name=ebizbase-ebizbase",
+    "--dns=127.0.0.1",
+    "--dns=203.162.4.191",
+    "--dns=203.113.131.1"
+  ],
+  "mounts": [
+    "source=ebizbase-dind,target=/var/lib/docker,type=volume",
+    "source=ebizbase-pnpm-store,target=/workspace/ebizbase/.pnpm-store,type=volume"
+  ],
+  "overrideCommand": false,
+  "postStartCommand": "pnpm install",
+  "appPort": 80,
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "files.exclude": {
+          "**/.git": true,
+          "**/.svn": true,
+          "**/.hg": true,
+          "**/.DS_Store": true,
+          "**/Thumbs.db": true,
+          ".pnpm-store": true,
+          ".nx": true,
+          ".angular": true
+        }
+      },
+      "extensions": [
+        "firsttris.vscode-jest-runner",
+        "stylelint.vscode-stylelint",
+        "eamodio.gitlens",
+        "stringham.move-ts",
+        "christian-kohler.npm-intellisense",
+        "pmneo.tsimporter",
+        "christian-kohler.path-intellisense",
+        "bradlc.vscode-tailwindcss",
+        "angular.ng-template",
+        "editorconfig.editorconfig",
+        "github.vscode-github-actions",
+        "vincaslt.highlight-matching-tag",
+        "esbenp.prettier-vscode",
+        "redhat.vscode-xml",
+        "redhat.vscode-yaml",
+        "zxh404.vscode-proto3",
+        "GitHub.copilot",
+        "shd101wyy.markdown-preview-enhanced"
+      ]
+    }
+  }
+}

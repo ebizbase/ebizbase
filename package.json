@@ -1,0 +1,26 @@
+{
+  "name": "@ebizbase/source",
+  "version": "0.0.0",
+  "description": "ERP platform drives businesses towards online operations",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnitvn/ebizbase.git"
+  },
+  "scripts": {
+    "prepare": "is-ci | husky"
+  },
+  "private": true,
+  "devDependencies": {
+    "husky": "^9.1.6",
+    "is-ci": "^3.0.1",
+    "lint-staged": "^15.2.10",
+    "nx": "20.0.0",
+    "prettier": "^2.6.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,less,scss,html,json,graphql,md,yaml,yml,vue}": [
+      "npx prettier --write"
+    ]
+  }
+}

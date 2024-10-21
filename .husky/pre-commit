@@ -1,0 +1,7 @@
+echo "Running pre-commit hook..."
+
+echo "Running check targets with affected projects..."
+npx nx affected -t lint* --fix --outputStyle static
+
+echo "Formating all change files..."
+npx lint-staged --relative
