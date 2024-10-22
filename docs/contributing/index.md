@@ -290,6 +290,6 @@ The content of the commit message body should contain:
 [github-pulls]: https://github.com/ebizbase/ebizbase/pulls
 [fork-repo]: https://docs.github.com/en/github/getting-started-with-github/fork-a-repo
 [ebizbase-repo]: https://github.com/ebizbase/ebizbase/fork
-[fixup-commits]: ./docs/contributing/using-fixup-commits.md
+[fixup-commits]: ./using-fixup-commits.md
 [git-rebase]: https://git-scm.com/docs/git-rebase#_interactive_mode
-[formatting-source-code]: docs/contributing/building-and-testing.md#formatting-your-source-code
+[formatting-source-code]: ./building-and-testing.md#formatting-your-source-code
