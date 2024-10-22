@@ -23,6 +23,7 @@
       "@ebizbase/common-types": ["components/libraries/common-types/src/index.ts"],
       "@ebizbase/nest-elite-logger": ["components/libraries/nest-elite-logger/src/index.ts"],
       "@ebizbase/nest-grpc-logger": ["components/libraries/nest-grpc-logger/src/index.ts"],
+      "@ebizbase/nest-grpc-testing": ["components/libraries/nest-grpc-testing/src/index.ts"],
       "@ebizbase/nest-http-logger": ["components/libraries/nest-http-logger/src/index.ts"],
       "@ebizbase/nest-translator": ["components/libraries/nest-translator/src/index.ts"],
       "@ebizbase/nx": ["components/tools/nx/src/index.ts"]

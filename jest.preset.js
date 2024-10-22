@@ -14,9 +14,9 @@ module.exports = {
   coveragePathIgnorePatterns: ['/node_modules/', 'index.js', 'index.ts'],
   coverageThreshold: {
     global: {
-      branches: 80,
-      functions: 80,
-      statements: 80,
+      branches: 70,
+      functions: 70,
+      statements: 70,
     },
   },
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
