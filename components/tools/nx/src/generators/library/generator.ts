@@ -14,8 +14,8 @@ export async function libraryGenerator(tree: Tree, options: LibraryGeneratorSche
     unitTestRunner: 'jest',
     skipFormat: true,
   });
-
   generateFiles(tree, path.join(__dirname, 'files'), projectRoot, options);
+  tree.delete(`${projectRoot}/package.json`);
   await formatFiles(tree);
 }
 
