@@ -11,7 +11,7 @@ import {
 // Custom validator to check if each URL is a valid Redis URL
 @ValidatorConstraint({ name: 'isValidRedisUrl', async: false })
 class IsValidRedisUrlConstraint implements ValidatorConstraintInterface {
-  validate(url: string, args: ValidationArguments) {
+  validate(url: string) {
     if (!url || url == '') {
       return false;
     }

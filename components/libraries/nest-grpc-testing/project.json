@@ -5,16 +5,6 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/components/libraries/nest-grpc-testing",
-        "main": "components/libraries/nest-grpc-testing/src/index.ts",
-        "tsConfig": "components/libraries/nest-grpc-testing/tsconfig.lib.json",
-        "assets": ["components/libraries/nest-grpc-testing/*.md"]
-      }
-    },
     "lint": {
       "executor": "@nx/eslint:lint"
     },

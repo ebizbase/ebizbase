@@ -5,16 +5,6 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/components/libraries/common-translator-marker",
-        "main": "components/libraries/common-translator-marker/src/index.ts",
-        "tsConfig": "components/libraries/common-translator-marker/tsconfig.lib.json",
-        "assets": ["components/libraries/common-translator-marker/*.md"]
-      }
-    },
     "lint": {
       "executor": "@nx/eslint:lint"
     },

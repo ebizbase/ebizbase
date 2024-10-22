@@ -5,16 +5,6 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/components/libraries/nest-translator",
-        "main": "components/libraries/nest-translator/src/index.ts",
-        "tsConfig": "components/libraries/nest-translator/tsconfig.lib.json",
-        "assets": ["components/libraries/nest-translator/*.md"]
-      }
-    },
     "lint": {
       "executor": "@nx/eslint:lint"
     },
