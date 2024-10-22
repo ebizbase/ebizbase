@@ -24,6 +24,7 @@ module.exports = {
   },
   SCOPES: {
     ...projectScopes,
+    'dev-infra': 'for changes realted to the development infrastructure like tools and scripts',
     deps: 'used for changes to the dependencies of the project',
     '': 'empty/none scope useful for `test` and `refactor` changes that are done across all packages (e.g. `test: add missing unit tests`) and for docs changes that are not related to a specific package (e.g. `docs: fix typo in tutorial`)',
   },

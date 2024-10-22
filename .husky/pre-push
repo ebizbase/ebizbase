@@ -1,2 +1,5 @@
 echo "Running pre-push hook..."
-npx nx run-many -t lint test build container e2e
+npx nx affected --base=origin/main --outputStyle static -t lint --fix
+npx nx affected --base=origin/main --outputStyle static -t build
+npx nx affected --base=origin/main --outputStyle static -t test --coverage
+npx nx run-many -t e2e

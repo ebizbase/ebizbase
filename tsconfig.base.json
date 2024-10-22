@@ -1,34 +1,24 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
     "allowJs": false,
-    "allowSyntheticDefaultImports": true,
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": true,
-    "emitDecoratorMetadata": false,
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
     "esModuleInterop": true,
-    "experimentalDecorators": false,
-    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "importHelpers": true,
-    "incremental": true,
-    "isolatedModules": true,
-    "lib": ["es2022"],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "noEmitOnError": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "pretty": true,
-    "removeComments": false,
-    "resolveJsonModule": false,
-    "skipDefaultLibCheck": false,
+    "target": "ES2020",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
-    "sourceMap": false,
-    "strict": true,
-    "target": "es2022",
-    "verbatimModuleSyntax": false
-  }
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@ebizbase/nx": ["components/tools/nx/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
 }
