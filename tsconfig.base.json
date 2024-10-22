@@ -17,13 +17,15 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ebizbase/common-translator-marker": [
+        "components/libraries/common-translator-marker/src/index.ts"
+      ],
       "@ebizbase/common-types": ["components/libraries/common-types/src/index.ts"],
       "@ebizbase/nest-elite-logger": ["components/libraries/nest-elite-logger/src/index.ts"],
       "@ebizbase/nest-grpc-logger": ["components/libraries/nest-grpc-logger/src/index.ts"],
       "@ebizbase/nest-http-logger": ["components/libraries/nest-http-logger/src/index.ts"],
       "@ebizbase/nest-translator": ["components/libraries/nest-translator/src/index.ts"],
-      "@ebizbase/nx": ["components/tools/nx/src/index.ts"],
-      "@ebizbase/translator-marker": ["components/libraries/translator-marker/src/index.ts"]
+      "@ebizbase/nx": ["components/tools/nx/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
