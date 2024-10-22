@@ -17,6 +17,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ebizbase/common-types": ["components/libraries/common-types/src/index.ts"],
       "@ebizbase/nx": ["components/tools/nx/src/index.ts"]
     }
   },
