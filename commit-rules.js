@@ -2,7 +2,7 @@ const { getProjects } = require('nx/src/generators/utils/project-configuration.j
 const { FsTree } = require('nx/src/generators/tree.js');
 
 const projects = getProjects(new FsTree(__dirname, false));
-const projectScopes = Object.keys(projects).reduce((acc, name) => {
+const projectScopes = Array.from(projects.keys()).reduce((acc, name) => {
   acc[name] = `for changes of  project ${name} within the directory ${projects.get(name).root}`;
   return acc;
 }, {});
