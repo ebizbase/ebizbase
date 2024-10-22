@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import pino from 'pino';
 import { PinoInstance } from './pino-instance';
 import { LoggerFn, LogLevel } from './types';
@@ -18,7 +17,9 @@ export class EliteLogger {
    * @param msg The log message.
    * @param args Additional parameters.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   trace(msg: string, ...args: any[]): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   trace(obj: unknown, msg?: string, ...args: any[]): void;
   trace(...args: Parameters<LoggerFn>) {
     this.call('trace', ...args);
@@ -29,7 +30,9 @@ export class EliteLogger {
    * @param msg The log message.
    * @param args Additional parameters.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   debug(msg: string, ...args: any[]): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   debug(obj: unknown, msg?: string, ...args: any[]): void;
   debug(...args: Parameters<LoggerFn>) {
     this.call('debug', ...args);
@@ -40,7 +43,9 @@ export class EliteLogger {
    * @param msg The log message.
    * @param args Additional parameters.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   info(msg: string, ...args: any[]): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   info(obj: unknown, msg?: string, ...args: any[]): void;
   info(...args: Parameters<LoggerFn>) {
     this.call('info', ...args);
@@ -51,7 +56,9 @@ export class EliteLogger {
    * @param msg The log message.
    * @param args Additional parameters.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   warn(msg: string, ...args: any[]): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   warn(obj: unknown, msg?: string, ...args: any[]): void;
   warn(...args: Parameters<LoggerFn>) {
     this.call('warn', ...args);
@@ -62,7 +69,9 @@ export class EliteLogger {
    * @param msg The log message.
    * @param args Additional parameters.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error(msg: string, ...args: any[]): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error(obj: unknown, msg?: string, ...args: any[]): void;
   error(...args: Parameters<LoggerFn>) {
     this.call('error', ...args);
@@ -73,7 +82,9 @@ export class EliteLogger {
    * @param msg The log message.
    * @param args Additional parameters.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fatal(msg: string, ...args: any[]): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fatal(obj: unknown, msg?: string, ...args: any[]): void;
   fatal(...args: Parameters<LoggerFn>) {
     this.call('fatal', ...args);
@@ -97,11 +108,14 @@ export class EliteLogger {
       const firstArg = args[0];
       if (firstArg instanceof Error) {
         args = [
-          Object.assign({ ['context']: this.context }, { ['err']: firstArg }),
+          Object.assign({ ['context']: this.context }, { ['err']: firstArg }) as object,
           ...args.slice(1),
-        ];
+        ] as [object, string?, ...unknown[]];
       } else {
-        args = [Object.assign({ ['context']: this.context }, firstArg), ...args.slice(1)];
+        args = [
+          Object.assign({ ['context']: this.context }, firstArg) as object,
+          ...args.slice(1),
+        ] as [object, string?, ...unknown[]];
       }
     } else {
       args = [{ ['context']: this.context }, ...args] as Parameters<LoggerFn>;

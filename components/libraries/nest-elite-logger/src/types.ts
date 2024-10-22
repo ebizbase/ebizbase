@@ -13,5 +13,7 @@ export enum LogFormat {
 }
 
 export type LoggerFn =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   | ((msg: string, ...args: any[]) => void)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   | ((obj: object, msg?: string, ...args: any[]) => void);

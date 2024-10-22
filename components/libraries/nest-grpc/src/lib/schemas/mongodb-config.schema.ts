@@ -17,6 +17,7 @@ export class MongoDBConfigSchema extends ConfigSchema {
     message: ({ value }) =>
       `MONGODB_URL must not contain options. use MONGODB_OPTIONS instead. (Current: ${value})`,
   })
+  // eslint-disable-next-line no-useless-escape
   @Matches(/^mongodb(\+srv)?:\/\/(\S+(:\S+)?@)?[^\/]+(:\d+)?$/, {
     message: ({ value }) =>
       `MONGODB_URL must not contain a database name. use MONGODB_DATABASE instead. (Current: ${value})`,
@@ -30,6 +31,7 @@ export class MongoDBConfigSchema extends ConfigSchema {
   @Matches(/^(?!\/)/, {
     message: 'MONGODB_DATABASE must not start with a slash.',
   })
+  // eslint-disable-next-line no-useless-escape
   @Matches(/^[^\s\/]+$/, {
     message: 'MONGODB_DATABASE must be a valid MongoDB database name.',
   })
@@ -60,7 +62,7 @@ export class MongoDBConfigSchema extends ConfigSchema {
             connection.set(
               'debug',
               async (collection: string, method: string, ...args: unknown[]) => {
-                const safeStringify = (obj: any) =>
+                const safeStringify = (obj: unknown) =>
                   JSON.stringify(obj, (key, value) => (key == 'session' ? '[Session]' : value));
                 const argsString = args
                   .map((arg) => (typeof arg === 'object' ? safeStringify(arg) : arg))

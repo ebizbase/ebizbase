@@ -4,7 +4,7 @@ echo "Checking tsconfig.base.json paths..."
 node components/scripts/lint-tsconfig-paths.js --fix
 
 echo "Running check targets with affected projects..."
-npx nx affected -t lint* --fix --outputStyle static
+npx nx affected --base=origin/main --outputStyle static -t lint* --fix
 
 echo "Formating all change files..."
 npx lint-staged --relative

@@ -1,4 +1,3 @@
-import { Optional } from '@ebizbase/common-types';
 import pino from 'pino';
 import { PinoPretty as pretty } from 'pino-pretty';
 import { LogFormat, LoggerFn, LogLevel } from './types';
