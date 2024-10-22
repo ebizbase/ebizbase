@@ -1,3 +1,6 @@
+start_time=$(date +%s)
+
+# Your existing commands
 echo "Running pre-commit hook..."
 
 echo "Checking tsconfig.base.json paths..."
@@ -11,3 +14,7 @@ npx nx affected --base=origin/main --outputStyle static -t test --coverage
 echo "Formating all change files..."
 npx lint-staged --relative
 
+end_time=$(date +%s)
+elapsed_time=$((end_time - start_time))
+
+echo "Pre-commit hook completed in ${elapsed_time}s"

@@ -1,2 +1,6 @@
+start_time=$(date +%s)
 echo "Running pre-push hook..."
+
 npx nx run-many -t e2e
+
+echo "Pre-push hook completed in ${elapsed_time}s"
