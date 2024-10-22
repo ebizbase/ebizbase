@@ -18,7 +18,8 @@
     "baseUrl": ".",
     "paths": {
       "@ebizbase/common-types": ["components/libraries/common-types/src/index.ts"],
-      "@ebizbase/nx": ["components/tools/nx/src/index.ts"]
+      "@ebizbase/nx": ["components/tools/nx/src/index.ts"],
+      "@ebizbase/translator-marker": ["components/libraries/translator-marker/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
