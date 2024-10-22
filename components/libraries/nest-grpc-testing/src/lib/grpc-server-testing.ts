@@ -1,6 +1,7 @@
 import { DynamicModule, INestApplication, INestMicroservice, ModuleMetadata } from '@nestjs/common';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
 import { Test } from '@nestjs/testing';
+import { existsSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { getPortPromise } from 'portfinder';
 

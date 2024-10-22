@@ -1,0 +1,29 @@
+{
+  "name": "nest-grpc-exceptions",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "components/libraries/nest-grpc-exceptions/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/components/libraries/nest-grpc-exceptions",
+        "main": "components/libraries/nest-grpc-exceptions/src/index.ts",
+        "tsConfig": "components/libraries/nest-grpc-exceptions/tsconfig.lib.json",
+        "assets": ["components/libraries/nest-grpc-exceptions/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "components/libraries/nest-grpc-exceptions/jest.config.ts"
+      }
+    }
+  }
+}
