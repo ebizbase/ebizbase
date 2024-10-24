@@ -5,12 +5,21 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "build-proto": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/src/protobuf"],
+      "options": {
+        "cwd": "components/libraries/protobuf",
+        "command": "tsproto --path=./ --target=localize.proto --output=/workspaces/ebizbase/components/services/microservices/localize-service/src/protobuf"
+      }
+    },
     "lint": {
       "executor": "@nx/eslint:lint"
     },
     "build": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
+      "dependsOn": ["build-proto"],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
@@ -20,7 +29,13 @@
         "outputPath": "dist/components/services/microservices/localize-service",
         "main": "components/services/microservices/localize-service/src/main.ts",
         "tsConfig": "components/services/microservices/localize-service/tsconfig.app.json",
-        "assets": [],
+        "assets": [
+          {
+            "input": "components/libraries/protobuf",
+            "glob": "*.proto",
+            "output": "/protos"
+          }
+        ],
         "webpackConfig": "components/services/microservices/localize-service/webpack.config.js"
       },
       "configurations": {

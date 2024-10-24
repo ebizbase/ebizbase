@@ -4,7 +4,7 @@ syntax = "proto3";
 package localize;
 
 import "google/protobuf/empty.proto";
-import "../../protobuf-common/protos/common.proto";
+import "common.proto";
 
 enum LanguageStatus {
   INACTIVE = 0;

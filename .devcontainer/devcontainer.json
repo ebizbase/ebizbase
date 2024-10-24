@@ -5,7 +5,7 @@
     "--init",
     "--privileged",
     "--name=ebizbase-ebizbase",
-    "--dns=127.0.0.1",
+    "--dns=172.16.1.2",
     "--dns=8.8.8.8",
     "--dns=1.1.1.1"
   ],
@@ -14,7 +14,7 @@
     "source=ebizbase-pnpm-store,target=/workspace/ebizbase/.pnpm-store,type=volume"
   ],
   "overrideCommand": false,
-  "postCreateCommand": "pnpm install && npx nx pull infrastructure",
+  "postCreateCommand": "pnpm install && npx nx start infrastructure",
   "appPort": 80,
   "remoteUser": "root",
   "customizations": {

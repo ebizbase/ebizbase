@@ -1,19 +1,22 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
-import { Logger } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { GrpcServiceBootstrapModule, MongoDBConfigSchema } from '@ebizbase/nest-grpc';
+import { EliteLoggerService } from '@ebizbase/nest-elite-logger';
+import { join } from 'path';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
-  await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+  const time = Date.now();
+  const logger = new EliteLoggerService();
+  logger.log('Starting localize microservice', 'Bootstrap');
+  const { port } = await GrpcServiceBootstrapModule.create(AppModule, [MongoDBConfigSchema], {
+    defaultPort: 3000,
+    logger: logger,
+    package: ['localize'],
+    protoPath: [
+      join(__dirname, './protos/common.proto'),
+      join(__dirname, './protos/localize.proto'),
+    ],
+  });
+  logger.log(`Localize service started in ${Date.now() - time}ms on port ${port}`, 'Bootstrap');
 }
 
 bootstrap();

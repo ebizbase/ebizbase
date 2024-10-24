@@ -3,6 +3,7 @@ const baseConfig = require('../../../../eslint.config.js');
 module.exports = [
   ...baseConfig,
   {
+    ignores: ['src/protobuf/*'],
     files: ['**/*.json'],
     rules: {
       '@nx/dependency-checks': [
