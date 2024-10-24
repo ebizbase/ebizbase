@@ -6,15 +6,15 @@
     "--privileged",
     "--name=ebizbase-ebizbase",
     "--dns=127.0.0.1",
-    "--dns=203.162.4.191",
-    "--dns=203.113.131.1"
+    "--dns=8.8.8.8",
+    "--dns=1.1.1.1"
   ],
   "mounts": [
     "source=ebizbase-dind,target=/var/lib/docker,type=volume",
     "source=ebizbase-pnpm-store,target=/workspace/ebizbase/.pnpm-store,type=volume"
   ],
   "overrideCommand": false,
-  "postStartCommand": "pnpm install",
+  "postCreateCommand": "pnpm install && npx nx pull infrastructure",
   "appPort": 80,
   "remoteUser": "root",
   "customizations": {
