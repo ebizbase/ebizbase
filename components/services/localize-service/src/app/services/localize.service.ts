@@ -6,7 +6,6 @@ import { Language } from '../schemas/language';
 import { GrpcNotFoundException, GrpcUnavailableException } from '@ebizbase/nest-grpc-exceptions';
 import { Metadata } from '@grpc/grpc-js';
 import { common, localize } from '../../protobuf';
-import { throwError } from 'rxjs';
 import { Translation } from '../schemas/translation.schema';
 
 const LANGUAGES = [
@@ -278,7 +277,7 @@ export class LanguageService implements OnModuleInit {
     // Xử lý geoFilter
     if (filter.geoFilter) {
       const { field, operator, value } = filter.geoFilter;
-
+      console.log('field', field);
       switch (operator) {
         case common.GeoOperator.GEO_OPERATOR_NEAR:
           if (value) {
