@@ -63,6 +63,7 @@
     "@nestjs/platform-express": "^10.4.5",
     "@nestjs/testing": "^10.4.5",
     "@nx/devkit": "20.0.0",
+    "@testcontainers/mongodb": "^10.13.2",
     "axios": "^1.6.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",

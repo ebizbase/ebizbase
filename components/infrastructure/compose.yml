@@ -100,7 +100,7 @@ services:
     command: mongod --configsvr --port 27017 --replSet configReplSet --quiet --bind_ip_all
     environment:
       - REPL_NAME=configReplSet
-      - NODE_HOST=mongo-config
+      - NODE_HOST=172.16.1.11
     networks:
       local_bridge:
         ipv4_address: 172.16.1.11
@@ -126,7 +126,7 @@ services:
     command: mongod --shardsvr --port 27017 --replSet shardReplSet --quiet --bind_ip_all
     environment:
       - REPL_NAME=shardReplSet
-      - NODE_HOST=mongo-shard
+      - NODE_HOST=172.16.1.12
     networks:
       local_bridge:
         ipv4_address: 172.16.1.12
@@ -149,21 +149,17 @@ services:
       dockerfile: Dockerfile
       args:
         MONGO_VERSION: 4.4
-    command: mongos --port 27017 --configdb configReplSet/mongo-config:27017 --quiet --bind_ip_all
+    command: mongos --port 27017 --configdb configReplSet/172.16.1.11:27017 --quiet --bind_ip_all
     depends_on:
       mongo-config:
         condition: service_healthy
       mongo-shard:
         condition: service_healthy
     environment:
-      - SHARD_LIST=shardReplSet/mongo-shard:27017
+      - SHARD_LIST=shardReplSet/172.16.1.12:27017
     networks:
       local_bridge:
         ipv4_address: 172.16.1.5
-    extra_hosts:
-      - 'mongo-router:172.16.1.5'
-      - 'mongo-config:172.16.1.11'
-      - 'mongo-shard:172.16.1.12'
     healthcheck:
       test: ['CMD', 'mongo', '--eval', "db.adminCommand('ping')"]
       interval: 10s
@@ -183,17 +179,13 @@ services:
       - ME_CONFIG_OPTIONS_FULLWIDTH_LAYOUT=true
       - ME_CONFIG_BASICAUTH_ENABLED=false
       - ME_CONFIG_BASICAUTH=false
-      - ME_CONFIG_MONGODB_URL=mongodb://172.16.1.5
+      - ME_CONFIG_MONGODB_URL=mongodb://172.16.1.5?directConnection=true&maxPoolSize=1
     depends_on:
       mongo-router:
         condition: service_healthy
     networks:
       local_bridge:
         ipv4_address: 172.16.1.6
-    extra_hosts:
-      - 'mongo-router:172.16.1.5'
-      - 'mongo-config:172.16.1.11'
-      - 'mongo-shard:172.16.1.12'
     deploy:
       resources:
         limits:

@@ -125,21 +125,17 @@ message OffsetPagination {
   int32 page_size = 2;
 }
 
-// Định nghĩa cho Sort
-enum SortDirection {
-  SORT_DIRECTION_ASC = 0;
-  SORT_DIRECTION_DESC = 1;
-}
 
 message Sort {
   string field = 1;
-  SortDirection direction = 2;
+  bool direction = 2; // true: ASC, false: DESC
 }
 
 message Listing {
   Pagination paging = 1;
+  Sort sort = 2;
   oneof filter {
-    Filter single_filter = 2;
-    CompositeFilter composite_filter = 3;
+    Filter single_filter = 3;
+    CompositeFilter composite_filter = 4;
   }
 }

@@ -6,13 +6,13 @@ export class Translation {
   service: string;
 
   @Prop({ required: true })
-  language: string;
+  languageCode: string;
 
   @Prop({ required: true })
   key: string;
 
-  @Prop({ default: false })
-  humandVerify: boolean;
+  @Prop({ required: true })
+  value: string;
 
   @Prop({})
   createdAt: Date;

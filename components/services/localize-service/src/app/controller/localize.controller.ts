@@ -1,21 +1,34 @@
 import { Metadata } from '@grpc/grpc-js';
 import { from, map, Observable } from 'rxjs';
-import { google, localize } from '../../protobuf';
+import { common, google, localize } from '../../protobuf';
 import { GrpcController } from '@ebizbase/nest-grpc';
-import { LanguageService } from '../services/language.service';
+import { LanguageService } from '../services/localize.service';
 
 @GrpcController()
-export class LocalizeController {
-  constructor(private languageService: LanguageService) {}
+export class LocalizeController implements localize.LocalizeService {
+  constructor(private languageService: LanguageService) { }
 
-  getActiveLanguages(
-    data: google.protobuf.Empty,
-    metadata?: Metadata
-  ): Observable<localize.ActiveLanguagesResponse> {
-    return from(this.languageService.getActiveLanguages(metadata)).pipe(
-      map((languages) => {
-        return { activeLanguages: languages };
-      })
-    );
+  listLanguages(data: common.Listing, metadata?: Metadata): Observable<localize.Languages> {
+    return from(this.languageService.getLanguages(data, metadata)).pipe(
+      map((languages) => ({ languages }))
+    )
   }
+
+  changeDefaultLanguage({ id }: localize.ChangeDefaultLanguageRequest, metadata?: Metadata): Observable<google.protobuf.Empty> {
+    return from(this.languageService.changeDefaultLanguage(id, metadata))
+      .pipe(map(() => ({})))
+  }
+
+  listTranslations(data: common.Listing, metadata?: Metadata): Observable<localize.Translations> {
+    return from(this.languageService.listTranslations(data, metadata))
+      .pipe(map((translations) => ({ translations })))
+  }
+
+  updateTranslation(data: localize.UpdateTranslactionRequest, metadata?: Metadata): Observable<localize.Translations> {
+    return from(this.languageService.updateTranslation(data, metadata))
+      .pipe(map(() => ({})))
+  }
+
+
+
 }

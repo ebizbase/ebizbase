@@ -20,17 +20,12 @@ message Language {
   string id = 1;
   string code = 2;
   string name = 3;
-  bool isDefault = 4;
-  bool is_active = 5;
+  bool is_default = 4;
 }
 message Languages {
   repeated Language languages = 1;
 }
 
-message UpdateLanguageStatusRequest {
-  repeated string ids = 1;
-  bool is_active = 2;
-}
 
 message ChangeDefaultLanguageRequest {
   string id = 1;
@@ -38,15 +33,12 @@ message ChangeDefaultLanguageRequest {
 
 service LocalizeService {
   // languages
-  rpc GetActiveLanguages(google.protobuf.Empty) returns (ActiveLanguagesResponse);
-  rpc ListLanguages(common.Listing) returns (Languages);
-  rpc UpdateLanguages(UpdateLanguageStatusRequest) returns (Languages);
+  rpc ListLanguages(google.protobuf.Empty) returns (Languages);
   rpc ChangeDefaultLanguage(ChangeDefaultLanguageRequest) returns (google.protobuf.Empty);
 
   // translations
   rpc ListTranslations(common.Listing) returns (Translations);
-  rpc AddTranslations(Translations) returns (Translations);
-  rpc UpdateTranslation(Translations) returns (Translations);
+  rpc UpdateTranslation(UpdateTranslactionRequest) returns (google.protobuf.Empty);
 }
 
 
@@ -59,5 +51,10 @@ message Translation {
 }
 
 message Translations {
-  repeated Translation translation = 1;
+  repeated Translation translations = 1;
+}
+
+message UpdateTranslactionRequest {
+  string id = 1;
+  string value = 2;
 }

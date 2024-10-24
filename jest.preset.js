@@ -8,7 +8,6 @@ const { compilerOptions } = require('./tsconfig.base.json');
 module.exports = {
   ...nxPreset,
   verbose: true,
-  collectCoverage: true,
   collectCoverageFrom: ['src/**/*.ts'],
   coverageReporters: ['text'],
   coveragePathIgnorePatterns: ['/node_modules/', 'index.js', 'index.ts'],

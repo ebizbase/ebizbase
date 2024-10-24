@@ -9,9 +9,6 @@ export class Language {
   name: string;
 
   @Prop({ default: false })
-  isActive: boolean;
-
-  @Prop({ default: false })
   isDefault: boolean;
 
   @Prop({})
