@@ -3,18 +3,8 @@ import * as path from 'path';
 import { LibraryGeneratorSchema } from './schema';
 
 export async function libraryGenerator(tree: Tree, options: LibraryGeneratorSchema) {
-  const projectRoot = `components/libraries/${options.name}`;
-
-  // await jsLibraryGenerator(tree, {
-  //   name: options.name,
-  //   directory: projectRoot,
-  //   linter: 'eslint',
-  //   bundler: 'tsc',
-  //   unitTestRunner: 'jest',
-  //   skipFormat: true,
-  // });
+  const projectRoot = `libs/${options.name}`;
   generateFiles(tree, path.join(__dirname, 'files'), projectRoot, options);
-  tree.delete(`${projectRoot}/package.json`);
   await formatFiles(tree);
 }
 

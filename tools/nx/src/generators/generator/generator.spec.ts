@@ -1,55 +1,54 @@
-import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
-import { libraryGenerator } from './generator';
-import { GeneratorGeneratorSchema } from './schema';
+import { Tree, formatFiles, generateFiles, logger } from '@nx/devkit';
 import * as path from 'path';
-import * as devkit from '@nx/devkit';
-import { Tree } from '@nx/devkit';
-import { libraryGenerator as jsLibraryGenerator } from '@nx/js';
+import { existsSync } from 'fs';
+import { generatorGenerator } from './generator';
+import { GeneratorGeneratorSchema } from './schema';
 
-jest.mock('@nx/js', () => ({
-  libraryGenerator: jest.fn(),
+jest.mock('@nx/devkit', () => ({
+  formatFiles: jest.fn(),
+  generateFiles: jest.fn(),
+  logger: {
+    error: jest.fn(),
+  },
 }));
 
-describe('libraryGenerator', () => {
+jest.mock('fs', () => ({
+  existsSync: jest.fn(),
+}));
+
+describe('generatorGenerator', () => {
   let tree: Tree;
-  const options: GeneratorGeneratorSchema = { name: 'test-lib' };
+  const options: GeneratorGeneratorSchema = { name: 'test-generator' };
 
   beforeEach(() => {
-    tree = createTreeWithEmptyWorkspace();
+    tree = {
+      root: '/root',
+    } as Tree;
     jest.clearAllMocks();
   });
 
-  it('should call jsLibraryGenerator with correct options', async () => {
-    await libraryGenerator(tree, options);
+  it('should log an error if the generator already exists', async () => {
+    (existsSync as jest.Mock).mockReturnValue(true);
 
-    expect(jsLibraryGenerator).toHaveBeenCalledWith(tree, {
-      name: options.name,
-      directory: `components/libraries/${options.name}`,
-      linter: 'eslint',
-      bundler: 'tsc',
-      unitTestRunner: 'jest',
-      skipFormat: true,
-    });
+    await generatorGenerator(tree, options);
+
+    expect(logger.error).toHaveBeenCalledWith('Generator test-generator already exists');
+    expect(generateFiles).not.toHaveBeenCalled();
+    expect(formatFiles).not.toHaveBeenCalled();
   });
 
-  it('should generate files in the correct directory', async () => {
-    const generateFilesSpy = jest.spyOn(devkit, 'generateFiles');
+  it('should generate files and format them if the generator does not exist', async () => {
+    (existsSync as jest.Mock).mockReturnValue(false);
 
-    await libraryGenerator(tree, options);
+    await generatorGenerator(tree, options);
 
-    expect(generateFilesSpy).toHaveBeenCalledWith(
+    expect(generateFiles).toHaveBeenCalledWith(
       tree,
       path.join(__dirname, 'files'),
-      `components/libraries/${options.name}`,
+      path.join(__dirname, '..', 'test-generator').replace(tree.root, ''),
       options
     );
-  });
-
-  it('should format files', async () => {
-    const formatFilesSpy = jest.spyOn(devkit, 'formatFiles');
-
-    await libraryGenerator(tree, options);
-
-    expect(formatFilesSpy).toHaveBeenCalledWith(tree);
+    expect(formatFiles).toHaveBeenCalledWith(tree);
+    expect(logger.error).not.toHaveBeenCalled();
   });
 });

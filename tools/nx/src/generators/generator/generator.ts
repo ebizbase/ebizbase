@@ -7,6 +7,7 @@ export async function generatorGenerator(tree: Tree, options: GeneratorGenerator
   const generatorRoot = path.join(__dirname, '..', options.name);
   if (existsSync(generatorRoot)) {
     logger.error(`Generator ${options.name} already exists`);
+    return;
   }
   generateFiles(tree, path.join(__dirname, 'files'), generatorRoot.replace(tree.root, ''), options);
   await formatFiles(tree);

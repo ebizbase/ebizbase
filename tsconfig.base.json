@@ -17,17 +17,15 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ebizbase/common-translator-marker": [
-        "components/libraries/common-translator-marker/src/index.ts"
-      ],
-      "@ebizbase/common-types": ["components/libraries/common-types/src/index.ts"],
-      "@ebizbase/nest-elite-logger": ["components/libraries/nest-elite-logger/src/index.ts"],
-      "@ebizbase/nest-grpc": ["components/libraries/nest-grpc/src/index.ts"],
-      "@ebizbase/nest-grpc-exceptions": ["components/libraries/nest-grpc-exceptions/src/index.ts"],
-      "@ebizbase/nest-grpc-logger": ["components/libraries/nest-grpc-logger/src/index.ts"],
-      "@ebizbase/nest-grpc-testing": ["components/libraries/nest-grpc-testing/src/index.ts"],
-      "@ebizbase/nest-http-logger": ["components/libraries/nest-http-logger/src/index.ts"],
-      "@ebizbase/nest-translator": ["components/libraries/nest-translator/src/index.ts"],
+      "@ebizbase/common-translator-marker": ["libs/common-translator-marker/src/index.ts"],
+      "@ebizbase/common-types": ["libs/common-types/src/index.ts"],
+      "@ebizbase/nest-elite-logger": ["libs/nest-elite-logger/src/index.ts"],
+      "@ebizbase/nest-grpc": ["libs/nest-grpc/src/index.ts"],
+      "@ebizbase/nest-grpc-exceptions": ["libs/nest-grpc-exceptions/src/index.ts"],
+      "@ebizbase/nest-grpc-logger": ["libs/nest-grpc-logger/src/index.ts"],
+      "@ebizbase/nest-grpc-testing": ["libs/nest-grpc-testing/src/index.ts"],
+      "@ebizbase/nest-http-logger": ["libs/nest-http-logger/src/index.ts"],
+      "@ebizbase/nest-translator": ["libs/nest-translator/src/index.ts"],
       "@ebizbase/nx": ["tools/nx/src/index.ts"]
     }
   },

@@ -1,0 +1,79 @@
+{
+  "name": "localize-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "microservices/localize-service/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build-proto": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/src/protobuf"],
+      "options": {
+        "cwd": "protobuf",
+        "command": "tsproto --path=./ --target=localize.proto -c=false --output=/workspaces/ebizbase/microservices/localize-service/src/protobuf"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "dependsOn": ["build-proto"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "sourceMap": true,
+        "extractLicenses": false,
+        "outputPath": "dist/microservices/localize-service",
+        "main": "microservices/localize-service/src/main.ts",
+        "tsConfig": "microservices/localize-service/tsconfig.app.json",
+        "assets": [
+          {
+            "input": "protobuf",
+            "glob": "*.proto",
+            "output": "/protos"
+          }
+        ],
+        "webpackConfig": "microservices/localize-service/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "optimization": false,
+          "generatePackageJson": false
+        },
+        "production": {
+          "optimization": true,
+          "generatePackageJson": true
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "localize-service:build",
+        "runBuildTargetDependencies": false,
+        "inspect": false,
+        "runtimeArgs": ["--no-deprecation", "--max-old-space-size=32"]
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "localize-service:build:development"
+        },
+        "production": {
+          "buildTarget": "localize-service:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "microservices/localize-service/jest.config.ts"
+      }
+    }
+  }
+}

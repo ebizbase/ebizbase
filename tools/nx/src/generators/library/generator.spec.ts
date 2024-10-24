@@ -1,13 +1,13 @@
-import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
+import { Tree } from '@nx/devkit';
 import { libraryGenerator } from './generator';
 import { LibraryGeneratorSchema } from './schema';
 import * as path from 'path';
-import * as devkit from '@nx/devkit';
-import { Tree } from '@nx/devkit';
-import { libraryGenerator as jsLibraryGenerator } from '@nx/js';
+const generateFiles = require('@nx/devkit').generateFiles;
+const formatFiles = require('@nx/devkit').formatFiles;
 
-jest.mock('@nx/js', () => ({
-  libraryGenerator: jest.fn(),
+jest.mock('@nx/devkit', () => ({
+  formatFiles: jest.fn(),
+  generateFiles: jest.fn(),
 }));
 
 describe('libraryGenerator', () => {
@@ -15,41 +15,29 @@ describe('libraryGenerator', () => {
   const options: LibraryGeneratorSchema = { name: 'test-lib' };
 
   beforeEach(() => {
-    tree = createTreeWithEmptyWorkspace();
-    jest.clearAllMocks();
-  });
-
-  it('should call jsLibraryGenerator with correct options', async () => {
-    await libraryGenerator(tree, options);
-
-    expect(jsLibraryGenerator).toHaveBeenCalledWith(tree, {
-      name: options.name,
-      directory: `components/libraries/${options.name}`,
-      linter: 'eslint',
-      bundler: 'tsc',
-      unitTestRunner: 'jest',
-      skipFormat: true,
-    });
+    tree = {
+      // Mock the Tree object methods as needed
+      read: jest.fn(),
+      write: jest.fn(),
+      delete: jest.fn(),
+      exists: jest.fn(),
+      rename: jest.fn(),
+      isFile: jest.fn(),
+      children: jest.fn(),
+      listChanges: jest.fn(),
+    } as unknown as Tree;
   });
 
   it('should generate files in the correct directory', async () => {
-    const generateFilesSpy = jest.spyOn(devkit, 'generateFiles');
 
     await libraryGenerator(tree, options);
 
-    expect(generateFilesSpy).toHaveBeenCalledWith(
+    expect(generateFiles).toHaveBeenCalledWith(
       tree,
       path.join(__dirname, 'files'),
-      `components/libraries/${options.name}`,
+      `libs/${options.name}`,
       options
     );
-  });
-
-  it('should format files', async () => {
-    const formatFilesSpy = jest.spyOn(devkit, 'formatFiles');
-
-    await libraryGenerator(tree, options);
-
-    expect(formatFilesSpy).toHaveBeenCalledWith(tree);
+    expect(formatFiles).toHaveBeenCalledWith(tree);
   });
 });

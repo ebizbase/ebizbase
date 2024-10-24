@@ -1,0 +1,37 @@
+{
+  "name": "infrastructure",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "infrastructure",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "pull": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "infrastructure",
+        "command": "docker compose pull"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "infrastructure",
+        "command": "docker compose up -d --wait"
+      }
+    },
+    "stop": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "infrastructure",
+        "command": "docker compose down"
+      }
+    },
+    "restart": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "infrastructure",
+        "command": "docker compose restart"
+      }
+    }
+  }
+}
