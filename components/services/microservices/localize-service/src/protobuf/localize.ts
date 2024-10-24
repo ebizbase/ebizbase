@@ -53,6 +53,31 @@ export namespace localize {
             metadata?: Metadata,
             ...rest: any[]
         ): Observable<google.protobuf.Empty>;
+        listTranslations(
+            data: common.Listing,
+            metadata?: Metadata,
+            ...rest: any[]
+        ): Observable<Translations>;
+        addTranslations(
+            data: Translations,
+            metadata?: Metadata,
+            ...rest: any[]
+        ): Observable<Translations>;
+        updateTranslation(
+            data: Translations,
+            metadata?: Metadata,
+            ...rest: any[]
+        ): Observable<Translations>;
+    }
+    export interface Translation {
+        id?: string;
+        service?: string;
+        languageCode?: string;
+        key?: string;
+        value?: string;
+    }
+    export interface Translations {
+        translation?: localize.Translation[];
     }
 }
 export namespace common {
@@ -139,24 +164,20 @@ export namespace common {
         comparisonFilter?: common.ComparisonFilter;
     }
     export interface CompositeFilter {
-        // true: AND, false: OR
         operator?: boolean;
         filters?: common.Filter[];
     }
-    // Định nghĩa cho pagination
     export interface Pagination {
         cursor?: common.CursorPagination;
         offset?: common.OffsetPagination;
     }
     export interface CursorPagination {
-        // Sử dụng string cho ID
         lastId?: string;
     }
     export interface OffsetPagination {
         page?: number;
         pageSize?: number;
     }
-    // Định nghĩa cho Sort
     export enum SortDirection {
         SORT_DIRECTION_ASC = 0,
         SORT_DIRECTION_DESC = 1,

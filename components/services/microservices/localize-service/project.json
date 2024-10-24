@@ -10,7 +10,7 @@
       "outputs": ["{projectRoot}/src/protobuf"],
       "options": {
         "cwd": "components/libraries/protobuf",
-        "command": "tsproto --path=./ --target=localize.proto --output=/workspaces/ebizbase/components/services/microservices/localize-service/src/protobuf"
+        "command": "tsproto --path=./ --target=localize.proto -c=false --output=/workspaces/ebizbase/components/services/microservices/localize-service/src/protobuf"
       }
     },
     "lint": {
