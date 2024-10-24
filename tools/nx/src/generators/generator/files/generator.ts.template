@@ -1,0 +1,25 @@
+import {
+  addProjectConfiguration,
+  formatFiles,
+  generateFiles,
+  Tree,
+} from '@nx/devkit';
+import * as path from 'path';
+import { <%= name %>GeneratorSchema } from './schema';
+
+export async function <%= name %>Generator (tree: Tree, options: <%= name %>GeneratorSchema) {
+  const projectRoot = `libs/${options.name}`;
+  addProjectConfiguration(
+    tree,
+    options.name,
+    {
+      root: projectRoot,
+      projectType: 'library',
+      sourceRoot: `${projectRoot}/src`,
+      targets: {}
+    }
+  );
+  await formatFiles(tree);
+}
+
+export default <%= name %>Generator;

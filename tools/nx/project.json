@@ -1,7 +1,7 @@
 {
   "name": "nx",
-  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "components/tools/nx/src",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/nx/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -12,7 +12,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "components/tools/nx/jest.config.ts"
+        "jestConfig": "tools/nx/jest.config.ts"
       }
     }
   }
