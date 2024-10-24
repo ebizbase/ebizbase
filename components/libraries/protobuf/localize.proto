@@ -37,10 +37,27 @@ message ChangeDefaultLanguageRequest {
 }
 
 service LocalizeService {
+  // languages
   rpc GetActiveLanguages(google.protobuf.Empty) returns (ActiveLanguagesResponse);
   rpc ListLanguages(common.Listing) returns (Languages);
   rpc UpdateLanguages(UpdateLanguageStatusRequest) returns (Languages);
   rpc ChangeDefaultLanguage(ChangeDefaultLanguageRequest) returns (google.protobuf.Empty);
+
+  // translations
+  rpc ListTranslations(common.Listing) returns (Translations);
+  rpc AddTranslations(Translations) returns (Translations);
+  rpc UpdateTranslation(Translations) returns (Translations);
 }
 
 
+message Translation {
+  string id = 1;
+  string service = 2;
+  string languageCode = 3;
+  string key = 4;
+  string value = 5;
+}
+
+message Translations {
+  repeated Translation translation = 1;
+}
