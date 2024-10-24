@@ -1,4 +1,3 @@
-import { Connection } from 'mongoose';
 import { EliteLogger } from '@ebizbase/nest-elite-logger';
 import { DynamicModule, ForwardReference, Type } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -57,22 +56,9 @@ export class MongoDBConfigSchema extends ConfigSchema {
     this.logger.trace(`Initializing MongooseModule import statement ${uri}`);
     return [
       MongooseModule.forRoot(uri, {
-        connectionFactory: (connection: Connection) => {
-          if (process.env.LOG_QUERY === 'true') {
-            connection.set(
-              'debug',
-              async (collection: string, method: string, ...args: unknown[]) => {
-                const safeStringify = (obj: unknown) =>
-                  JSON.stringify(obj, (key, value) => (key == 'session' ? '[Session]' : value));
-                const argsString = args
-                  .map((arg) => (typeof arg === 'object' ? safeStringify(arg) : arg))
-                  .join(', ');
-                this.logger.info(`${collection}.${method}(${argsString})`);
-              }
-            );
-          }
-          return connection;
-        },
+        connectTimeoutMS: 5000,
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 10000,
       }),
     ];
   }

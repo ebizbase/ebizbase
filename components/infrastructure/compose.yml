@@ -150,6 +150,11 @@ services:
       args:
         MONGO_VERSION: 4.4
     command: mongos --port 27017 --configdb configReplSet/mongo-config:27017 --quiet --bind_ip_all
+    depends_on:
+      mongo-config:
+        condition: service_healthy
+      mongo-shard:
+        condition: service_healthy
     environment:
       - SHARD_LIST=shardReplSet/mongo-shard:27017
     networks:
@@ -179,9 +184,16 @@ services:
       - ME_CONFIG_BASICAUTH_ENABLED=false
       - ME_CONFIG_BASICAUTH=false
       - ME_CONFIG_MONGODB_URL=mongodb://172.16.1.5
+    depends_on:
+      mongo-router:
+        condition: service_healthy
     networks:
       local_bridge:
         ipv4_address: 172.16.1.6
+    extra_hosts:
+      - 'mongo-router:172.16.1.5'
+      - 'mongo-config:172.16.1.11'
+      - 'mongo-shard:172.16.1.12'
     deploy:
       resources:
         limits:
@@ -221,6 +233,9 @@ services:
     networks:
       local_bridge:
         ipv4_address: 172.16.1.8
+    depends_on:
+      redis:
+        condition: service_healthy
     deploy:
       resources:
         limits:

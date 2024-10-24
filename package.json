@@ -47,6 +47,7 @@
     "portfinder": "^1.0.32",
     "prettier": "^2.6.2",
     "rxjs": "^7.8.1",
+    "testcontainers": "^10.13.2",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",

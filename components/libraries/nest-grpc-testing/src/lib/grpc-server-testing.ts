@@ -130,7 +130,7 @@ export class GrpcServerTesting {
           package: packageName,
           protoPath: isAbsolute(protoFile)
             ? protoFile
-            : join(__dirname, '../../../service-protobuf/proto', protoFile),
+            : join(__dirname, '../../../protobuf', protoFile),
         },
       };
       this.microservice = this.application.connectMicroservice(options, { inheritAppConfig: true });

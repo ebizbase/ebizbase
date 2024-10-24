@@ -6,42 +6,33 @@ import { Observable } from 'rxjs';
 import { Metadata } from '@grpc/grpc-js';
 
 export namespace localize {
-    export enum LanguageStatus {
-        INACTIVE = 0,
-        ACTIVE = 1,
-        PENDING_ACTIVE = 2,
+    export interface ActiveLanguage {
+        id?: string;
+        code?: string;
+        name?: string;
+        isDefault?: boolean;
     }
     export interface ActiveLanguagesResponse {
-        activeLanguages?: ActiveLanguagesResponse.ActiveLanguage[];
+        activeLanguages?: localize.ActiveLanguage[];
     }
-    export namespace ActiveLanguagesResponse {
-        export interface ActiveLanguage {
-            id?: string;
-            code?: string;
-            name?: string;
-            isDefault?: boolean;
-        }
+    export interface Language {
+        id?: string;
+        code?: string;
+        name?: string;
+        isDefault?: boolean;
+        isActive?: boolean;
     }
     export interface Languages {
-        languages?: Languages.Language[];
-    }
-    export namespace Languages {
-        export interface Language {
-            id?: string;
-            code?: string;
-            name?: string;
-            isDefault?: boolean;
-            status?: localize.LanguageStatus;
-        }
+        languages?: localize.Language[];
     }
     export interface UpdateLanguageStatusRequest {
         ids?: string[];
-        status?: localize.LanguageStatus;
+        isActive?: boolean;
     }
     export interface ChangeDefaultLanguageRequest {
         id?: string;
     }
-    export interface Localize {
+    export interface LocalizeService {
         getActiveLanguages(
             data: google.protobuf.Empty,
             metadata?: Metadata,
