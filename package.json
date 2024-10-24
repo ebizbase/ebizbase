@@ -60,6 +60,7 @@
     "mongoose": "^8.7.2",
     "mongose": "0.0.2-security",
     "ms": "^2.1.3",
+    "nestjs-proto-gen-ts": "^1.0.21",
     "pino": "^9.5.0",
     "reflect-metadata": "^0.2.2",
     "uuid": "^10.0.0"

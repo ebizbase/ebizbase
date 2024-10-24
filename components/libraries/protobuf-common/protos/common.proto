@@ -1,0 +1,145 @@
+syntax = "proto3";
+
+package common;
+
+import "google/protobuf/any.proto";
+
+enum ArrayElementOperator {
+  ARRAY_ELEMENT_OPERATOR_COUNT = 0;
+  ARRAY_ELEMENT_OPERATOR_MATCH = 1;
+  ARRAY_ELEMENT_OPERATOR_NOT_MATCH = 2;
+  ARRAY_ELEMENT_OPERATOR_REGEX = 3;
+}
+
+enum ArrayOperator {
+  ARRAY_OPERATOR_IN = 0;
+  ARRAY_OPERATOR_NIN = 1;
+}
+
+enum ComparisonOperator {
+  COMPARISON_OPERATOR_EQ = 0;
+  COMPARISON_OPERATOR_NEQ = 1;
+  COMPARISON_OPERATOR_GT = 2;
+  COMPARISON_OPERATOR_GTE = 3;
+  COMPARISON_OPERATOR_LT = 4;
+  COMPARISON_OPERATOR_LTE = 5;
+}
+
+enum ExistenceOperator {
+  EXISTENCE_OPERATOR_EXISTS = 0;
+}
+
+enum GeoOperator {
+  GEO_OPERATOR_NEAR = 0;
+}
+
+enum PatternOperator {
+  PATTERN_OPERATOR_LIKE = 0;
+  PATTERN_OPERATOR_REGEX = 1;
+}
+
+enum RangeOperator {
+  RANGE_OPERATOR_BETWEEN = 0;
+}
+
+message ArrayElementFilter {
+  string field = 1;
+  ArrayElementOperator operator = 2;
+  repeated google.protobuf.Any value = 3;
+}
+
+message ArrayFilter {
+  string field = 1;
+  ArrayOperator operator = 2;
+  repeated string value = 3;
+}
+
+message ExistenceFilter {
+  string field = 1;
+  ExistenceOperator operator = 2;
+}
+
+message GeoFilter {
+  message GeoLocation {
+    double lat = 1;
+    double lng = 2;
+    int32 radius = 3;
+  }
+  string field = 1;
+  GeoOperator operator = 2;
+  GeoLocation value = 3;
+}
+
+message PatternFilter {
+  string field = 1;
+  PatternOperator operator = 2;
+  string value = 3;
+}
+
+message RangeFilter {
+  string field = 1;
+  RangeOperator operator = 2;
+  repeated double value = 3;
+}
+
+message ComparisonFilter {
+  string field = 1;
+  ComparisonOperator operator = 2;
+  oneof value {
+    string string_value = 3;
+    double number_value = 4;
+  }
+}
+
+message Filter {
+  oneof filter {
+    ArrayElementFilter array_element_filter = 1;
+    ArrayFilter array_filter = 2;
+    ExistenceFilter existence_filter = 3;
+    GeoFilter geo_filter = 4;
+    PatternFilter pattern_filter = 5;
+    RangeFilter range_filter = 6;
+    ComparisonFilter comparison_filter = 7;
+  }
+}
+
+message CompositeFilter {
+  bool operator = 1; // true: AND, false: OR
+  repeated Filter filters = 2;
+}
+
+// Định nghĩa cho pagination
+message Pagination {
+  oneof pagination_strategy {
+    CursorPagination cursor = 1;
+    OffsetPagination offset = 2;
+  }
+}
+
+message CursorPagination {
+  string last_id = 1; // Sử dụng string cho ID
+}
+
+message OffsetPagination {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+// Định nghĩa cho Sort
+enum SortDirection {
+  SORT_DIRECTION_ASC = 0;
+  SORT_DIRECTION_DESC = 1;
+}
+
+message Sort {
+  string field = 1;
+  SortDirection direction = 2;
+}
+
+message Listing {
+  Pagination paging = 1;
+  oneof filter {
+    Filter single_filter = 2;
+    CompositeFilter composite_filter = 3;
+  }
+}

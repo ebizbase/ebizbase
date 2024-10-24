@@ -1,0 +1,16 @@
+{
+  "name": "protobuf-localize",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "components/libraries/protobuf-localize/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "components/libraries/protobuf-localize",
+        "command": "npx tsproto --path protos --output src"
+      }
+    }
+  }
+}

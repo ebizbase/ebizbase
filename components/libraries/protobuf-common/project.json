@@ -1,0 +1,8 @@
+{
+  "name": "protobuf",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "components/libraries/protobuf/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}

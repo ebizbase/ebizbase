@@ -1,0 +1,52 @@
+
+syntax = "proto3";
+
+package localize;
+
+import "google/protobuf/empty.proto";
+import "../../protobuf-common/protos/common.proto";
+
+enum LanguageStatus {
+  INACTIVE = 0;
+  ACTIVE = 1;
+  PENDING_ACTIVE = 2;
+}
+
+message ActiveLanguagesResponse {
+  message ActiveLanguage {
+    string id = 1;
+    string code = 2;
+    string name = 3;
+    bool isDefault = 4;
+  }
+  repeated ActiveLanguage active_languages = 1;
+}
+
+message Languages {
+  message Language {
+    string id = 1;
+    string code = 2;
+    string name = 3;
+    bool isDefault = 4;
+    LanguageStatus status = 5;
+  }
+  repeated Language languages = 1;
+}
+
+message UpdateLanguageStatusRequest {
+  repeated string ids = 1;
+  LanguageStatus status = 2;
+}
+
+message ChangeDefaultLanguageRequest {
+  string id = 1;
+}
+
+service Localize {
+  rpc GetActiveLanguages(google.protobuf.Empty) returns (ActiveLanguagesResponse);
+  rpc ListLanguages(common.Listing) returns (Languages);
+  rpc UpdateLanguages(UpdateLanguageStatusRequest) returns (Languages);
+  rpc ChangeDefaultLanguage(ChangeDefaultLanguageRequest) returns (google.protobuf.Empty);
+}
+
+
