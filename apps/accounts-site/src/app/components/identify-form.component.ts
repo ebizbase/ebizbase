@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -12,14 +11,18 @@ import { RouterModule } from '@angular/router';
 import { LoaderButtonComponent } from '@ebizbase/angular-common-ui';
 import { Dict } from '@ebizbase/common-types';
 import { TuiButton, TuiIcon, TuiTextfield } from '@taiga-ui/core';
-import { IamService } from '../../services/iam.service';
 
-export interface OtpVerifyFormSubmitEvent {
+export interface IdentifyFormSubmmittedEvent {
+  email: string;
   otp: string;
 }
 
+export interface IdentifyGetOTPEvent {
+  email: string;
+}
+
 @Component({
-  selector: 'app-otp-verify-form',
+  selector: 'app-identify-form',
   standalone: true,
   imports: [
     CommonModule,
@@ -31,7 +34,6 @@ export interface OtpVerifyFormSubmitEvent {
     RouterModule,
     LoaderButtonComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       input::-webkit-outer-spin-button,
@@ -46,45 +48,53 @@ export interface OtpVerifyFormSubmitEvent {
   ],
   template: `
     <form class="flex flex-col gap-2" [formGroup]="form">
-      <tui-textfield iconStart="@tui.mail">
-        <label tuiLabel for="email">Email</label>
-        <input tuiTextfield type="email" />
-      </tui-textfield>
-
-      <tui-textfield iconStart="@tui.key">
-        <label tuiLabel for="email">OTP</label>
-        <input
-          tuiTextfield
-          type="number"
-          formControlName="otp"
-          [invalid]="isControlInvalid('otp')"
-        />
-        <button tuiButton appearance="flat" size="s" (click)="onGetOtp()">
-          <ng-container *ngIf="isResendOtpAvaiable; else getOtpCountDown">
-            <span *ngIf="getOtpFirstTime"> Get OTP </span>
-            <span *ngIf="!getOtpFirstTime"> Resend OTP </span>
-          </ng-container>
-          <ng-template #getOtpCountDown>
-            {{ this.getOtpCountDown }}
-            <tui-icon [icon]="clockIcon" />
-          </ng-template>
-        </button>
-      </tui-textfield>
-
+      <div>
+        <div>
+          <tui-textfield iconStart="@tui.mail">
+            <label tuiLabel for="email">Email</label>
+            <input
+              tuiTextfield
+              formControlName="email"
+              [invalid]="isControlInvalid('email')"
+              autocomplete="email"
+              type="email"
+            />
+          </tui-textfield>
+        </div>
+        <div>
+          <tui-textfield iconStart="@tui.key">
+            <label tuiLabel for="email">OTP</label>
+            <input
+              tuiTextfield
+              type="number"
+              formControlName="otp"
+              [invalid]="isControlInvalid('otp')"
+            />
+            <button tuiButton appearance="flat" size="xs" (click)="onGetOtp()">
+              <ng-container *ngIf="isResendOtpAvaiable; else getOtpCountDown">
+                <span *ngIf="getOtpFirstTime"> Get OTP </span>
+                <span *ngIf="!getOtpFirstTime"> Resend OTP </span>
+              </ng-container>
+              <ng-template #getOtpCountDown>
+                {{ this.getOtpCountDown }}
+                <tui-icon [icon]="clockIcon" />
+              </ng-template>
+            </button>
+          </tui-textfield>
+        </div>
+      </div>
       <div class="flex gap-2 justify-end mt-8 ">
         <cmui-loader-button (click)="onSubmitEvent()" [isLoading]="isLoading">
-          Next
+          {{ labels.submitButton }}
         </cmui-loader-button>
       </div>
     </form>
   `,
 })
-export class OtpVerifyFormComponent {
-  @Input() email: string;
+export class IdentifyFormComponent {
   @Input() isLoading = false;
-  @Output() formSubmit = new EventEmitter<OtpVerifyFormSubmitEvent>();
-
-  constructor(private iamService: IamService) {}
+  @Output() getOtp = new EventEmitter<IdentifyGetOTPEvent>();
+  @Output() formSubmit = new EventEmitter<IdentifyFormSubmmittedEvent>();
 
   getOtpFirstTime = true;
   getOtpCountDown = 0;
@@ -102,14 +112,24 @@ export class OtpVerifyFormComponent {
     '@tui.clock-9',
   ];
 
+  readonly labels = {
+    submitButton: 'Next',
+  };
+
   readonly errorMessages: Dict<Dict<string>> = {
-    otp: {
-      required: 'Please enter OTP code!',
-      minLength: 'The OTP code is invalid!',
+    email: {
+      required: 'Please enter your email address!',
+      pattern: 'Please enter a valid email address!',
     },
   };
 
   form = new FormGroup({
+    email: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.pattern(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/),
+      ],
+    }),
     otp: new FormControl('', {
       validators: [Validators.required, Validators.minLength(6), Validators.maxLength(6)],
     }),
@@ -141,18 +161,14 @@ export class OtpVerifyFormComponent {
   onSubmitEvent() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      this.formSubmit.emit(this.form.value as OtpVerifyFormSubmitEvent);
+      this.formSubmit.emit(this.form.value as IdentifyFormSubmmittedEvent);
     }
   }
 
   onGetOtp() {
     this.getOtpFirstTime = false;
     this.getOtpCountDown = 30;
-    this.iamService.getOtp({ email: this.email }).subscribe({
-      error: (error: HttpErrorResponse) => {
-        console.log(error);
-      },
-    });
     this.countDownGetOtp();
+    this.getOtp.emit({ email: this.form.get('email').value });
   }
 }

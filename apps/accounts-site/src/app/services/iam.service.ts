@@ -2,13 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthenticateService, DomainService } from '@ebizbase/angular-common-service';
 import { IRestfulResponse } from '@ebizbase/common-types';
-import {
-  IGetOtpRequest,
-  IIdentifyRequest,
-  IIdentifyResponse,
-  IVerifyRequest,
-  IVerifyResponse,
-} from '@ebizbase/iam-interfaces';
+import { IGetOtpRequest, IVerifyRequest, IVerifyResponse } from '@ebizbase/iam-interfaces';
 import { map, Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -21,12 +15,7 @@ export class IamService {
     private http: HttpClient
   ) {}
 
-  identify({ email }: IIdentifyRequest): Observable<IRestfulResponse<IIdentifyResponse>> {
-    const url = `${this.domain.IamServiceBaseURL}/authenticate`;
-    return this.http.get(url, { params: { email } }).pipe();
-  }
-
-  getOtp({ email }: IGetOtpRequest): Observable<IRestfulResponse<IIdentifyResponse>> {
+  getOtp({ email }: IGetOtpRequest): Observable<IRestfulResponse> {
     const url = `${this.domain.IamServiceBaseURL}/authenticate`;
     return this.http.patch(url, { email }).pipe();
   }

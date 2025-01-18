@@ -12,8 +12,6 @@ import { JwtService } from '@nestjs/jwt';
 import ms from 'ms';
 import speakeasy from 'speakeasy';
 import { GetOtpInputDTO } from '../dtos/get-otp-input.dto';
-import { IdentifyInputDTO } from '../dtos/identify-input.dto';
-import { IdentifyOutputDTO } from '../dtos/identify-output.dto';
 import { VerifyInputDTO } from '../dtos/verify-input.dto';
 import { VerifyOutputDTO } from '../dtos/verify-output.dto';
 import { InjectSessionModel, SessionModel } from '../schemas/session.schema';
@@ -33,37 +31,13 @@ export class AuthenticateService {
     @InjectUserModel() private userModel: UserModel
   ) {}
 
-  async identify({ email }: IdentifyInputDTO): Promise<IRestfulResponse<IdentifyOutputDTO>> {
-    this.logger.debug({ msg: 'Identify', email });
-    let user = await this.userModel.findOne({ email });
-    if (!user) {
-      user = await this.userModel.create({ email });
-    }
-    return {
-      data: { firstName: user.firstName, lastName: user.lastName },
-    };
-  }
-
   async getOTP({ email }: GetOtpInputDTO): Promise<IRestfulResponse> {
     let user = await this.userModel.findOne({ email });
     if (!user) {
-      throw new BadRequestException({ message: 'Email is invalid' });
-    }
-
-    this.logger.debug({
-      shouldGenerateNewOtp:
-        user.otpCounter === 0 ||
-        user.otpUsed ||
-        Date.now() - user.otpIssuedAt.getTime() > 2 * 60 * 10000,
-      isFirstOtp: user.otpCounter === 0,
-      otpUsed: user.otpUsed,
-      over2MinFromLastIssue: Date.now() - user.otpIssuedAt.getTime() > 2 * 60 * 10000,
-    });
-    if (
-      user.otpCounter === 0 ||
-      user.otpUsed ||
-      Date.now() - user.otpIssuedAt.getTime() > 2 * 60 * 10000
-    ) {
+      user = await this.userModel.create({ email });
+      const otp = speakeasy.hotp({ secret: user.otpSecret, counter: user.otpCounter });
+      await this.sendOtpEmail(user.email, otp);
+    } else if (user.otpUsed || Date.now() - user.otpIssuedAt.getTime() > 60 * 10000) {
       user = await this.userModel.findOneAndUpdate(
         { _id: user._id },
         {

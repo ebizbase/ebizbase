@@ -2,21 +2,24 @@ name: ebizbase
 
 x-common-config: &common
   healthcheck:
-    interval: 5s
     timeout: 5s
 
 x-infras-config: &infras
   <<: *common
+  restart: always
   healthcheck:
+    interval: 30s
     start_period: 10s
     retries: 3
 
 x-apps-config: &apps
   <<: *common
   env_file: .env
+  restart: always
   healthcheck:
+    interval: 3s
     start_period: 10s
-    retries: 100
+    retries: 10
 
 x-services-config: &services
   <<: *apps
@@ -145,7 +148,7 @@ services:
 
   static-assets:
     <<: *apps
-    image: flashspys/nginx-static
+    build: infras/nginx-static-cors
     container_name: static-assets
     volumes:
       - ./apps/static-assets/public:/static
