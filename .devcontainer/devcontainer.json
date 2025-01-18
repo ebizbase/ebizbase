@@ -53,7 +53,8 @@
         "firsttris.vscode-jest-runner",
         "Angular.ng-template",
         "mrmlnc.vscode-scss",
-        "alexkrechik.cucumberautocomplete"
+        "alexkrechik.cucumberautocomplete",
+        "bradlc.vscode-tailwindcss"
       ]
     }
   }
