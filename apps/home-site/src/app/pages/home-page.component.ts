@@ -266,7 +266,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
               <li class="flex space-x-3">
                 <!-- Icon -->
                 <svg
-                  class="flex-shrink-0 w-5 h-5 text-purple-500 dark:text-purple-400"
+                  class="flex-shrink-0 w-5 h-5 text-indigo-500 dark:text-indigo-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -284,7 +284,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
               <li class="flex space-x-3">
                 <!-- Icon -->
                 <svg
-                  class="flex-shrink-0 w-5 h-5 text-purple-500 dark:text-purple-400"
+                  class="flex-shrink-0 w-5 h-5 text-indigo-500 dark:text-indigo-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -302,7 +302,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
               <li class="flex space-x-3">
                 <!-- Icon -->
                 <svg
-                  class="flex-shrink-0 w-5 h-5 text-purple-500 dark:text-purple-400"
+                  class="flex-shrink-0 w-5 h-5 text-indigo-500 dark:text-indigo-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -353,7 +353,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
               <li class="flex space-x-3">
                 <!-- Icon -->
                 <svg
-                  class="flex-shrink-0 w-5 h-5 text-purple-500 dark:text-purple-400"
+                  class="flex-shrink-0 w-5 h-5 text-indigo-500 dark:text-indigo-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -371,7 +371,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
               <li class="flex space-x-3">
                 <!-- Icon -->
                 <svg
-                  class="flex-shrink-0 w-5 h-5 text-purple-500 dark:text-purple-400"
+                  class="flex-shrink-0 w-5 h-5 text-indigo-500 dark:text-indigo-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -389,7 +389,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
               <li class="flex space-x-3">
                 <!-- Icon -->
                 <svg
-                  class="flex-shrink-0 w-5 h-5 text-purple-500 dark:text-purple-400"
+                  class="flex-shrink-0 w-5 h-5 text-indigo-500 dark:text-indigo-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -407,7 +407,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
               <li class="flex space-x-3">
                 <!-- Icon -->
                 <svg
-                  class="flex-shrink-0 w-5 h-5 text-purple-500 dark:text-purple-400"
+                  class="flex-shrink-0 w-5 h-5 text-indigo-500 dark:text-indigo-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -425,7 +425,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
               <li class="flex space-x-3">
                 <!-- Icon -->
                 <svg
-                  class="flex-shrink-0 w-5 h-5 text-purple-500 dark:text-purple-400"
+                  class="flex-shrink-0 w-5 h-5 text-indigo-500 dark:text-indigo-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -456,7 +456,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
         class="items-center max-w-screen-xl px-4 py-8 mx-auto lg:grid lg:grid-cols-4 lg:gap-16 xl:gap-24 lg:py-24 lg:px-6"
       >
         <div class="col-span-2 mb-8">
-          <p class="text-lg font-medium text-purple-600 dark:text-purple-500">Trusted Worldwide</p>
+          <p class="text-lg font-medium text-indigo-600 dark:text-indigo-500">Trusted Worldwide</p>
           <h2
             class="mt-3 mb-4 text-3xl font-extrabold tracking-tight text-gray-900 md:text-3xl dark:text-white"
           >
@@ -470,7 +470,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
             <div>
               <a
                 href="#"
-                class="inline-flex items-center text-base font-medium text-purple-600 hover:text-purple-800 dark:text-purple-500 dark:hover:text-purple-700"
+                class="inline-flex items-center text-base font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-500 dark:hover:text-indigo-700"
               >
                 Explore Legality Guide
                 <svg
@@ -490,7 +490,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
             <div>
               <a
                 href="#"
-                class="inline-flex items-center text-base font-medium text-purple-600 hover:text-purple-800 dark:text-purple-500 dark:hover:text-purple-700"
+                class="inline-flex items-center text-base font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-500 dark:hover:text-indigo-700"
               >
                 Visit the Trust Center
                 <svg
@@ -512,7 +512,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
         <div class="col-span-2 space-y-8 md:grid md:grid-cols-2 md:gap-12 md:space-y-0">
           <div>
             <svg
-              class="w-10 h-10 mb-2 text-purple-600 md:w-12 md:h-12 dark:text-purple-500"
+              class="w-10 h-10 mb-2 text-indigo-600 md:w-12 md:h-12 dark:text-indigo-500"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -530,7 +530,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
           </div>
           <div>
             <svg
-              class="w-10 h-10 mb-2 text-purple-600 md:w-12 md:h-12 dark:text-purple-500"
+              class="w-10 h-10 mb-2 text-indigo-600 md:w-12 md:h-12 dark:text-indigo-500"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -546,7 +546,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
           </div>
           <div>
             <svg
-              class="w-10 h-10 mb-2 text-purple-600 md:w-12 md:h-12 dark:text-purple-500"
+              class="w-10 h-10 mb-2 text-indigo-600 md:w-12 md:h-12 dark:text-indigo-500"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -564,7 +564,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
           </div>
           <div>
             <svg
-              class="w-10 h-10 mb-2 text-purple-600 md:w-12 md:h-12 dark:text-purple-500"
+              class="w-10 h-10 mb-2 text-indigo-600 md:w-12 md:h-12 dark:text-indigo-500"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -690,7 +690,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
             </ul>
             <a
               href="#"
-              class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900"
+              class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-indigo-900"
               >Get started</a
             >
           </div>
@@ -791,7 +791,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
             </ul>
             <a
               href="#"
-              class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900"
+              class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-indigo-900"
               >Get started</a
             >
           </div>
@@ -892,7 +892,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
             </ul>
             <a
               href="#"
-              class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900"
+              class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-indigo-900"
               >Get started</a
             >
           </div>
@@ -914,7 +914,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
           </p>
           <a
             href="#"
-            class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800"
+            class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800"
             >Free trial for 30 days</a
           >
         </div>
