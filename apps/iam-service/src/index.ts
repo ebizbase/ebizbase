@@ -10,7 +10,9 @@ async function bootstrap() {
   const logger = new PinoLogger();
   const app = await NestFactory.create<NestFastifyApplication>(MainModule, new FastifyAdapter(), {
     logger,
-    cors: true,
+    cors: {
+      origin: '*',
+    },
   });
   app.useGlobalPipes(
     new ValidationPipe({
