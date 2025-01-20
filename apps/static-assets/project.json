@@ -1,8 +1,0 @@
-{
-  "name": "static-assets",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "projectType": "application",
-  "sourceRoot": "apps/static-assets/public",
-  "// targets": "to see all targets run: nx show project static-assets --web",
-  "targets": {}
-}

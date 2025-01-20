@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 import { IAccessTokenPayload } from '../common/access-token-payload.interface';
 
 @Injectable()
@@ -28,7 +28,7 @@ export class AccessTokenGuard implements CanActivate {
     if (!payload.userId) {
       throw new UnauthorizedException('Invalid token payload');
     } else {
-      request['userId'] = payload;
+      request['userId'] = payload.userId;
     }
 
     return true;

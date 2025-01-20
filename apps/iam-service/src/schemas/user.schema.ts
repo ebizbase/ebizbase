@@ -1,4 +1,5 @@
 import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Exclude } from 'class-transformer';
 import { HydratedDocument, Model } from 'mongoose';
 import speakeasy from 'speakeasy';
 
@@ -13,15 +14,19 @@ export class User {
   @Prop()
   lastName?: string;
 
+  @Exclude()
   @Prop({ default: () => speakeasy.generateSecret().base32 })
   otpSecret: string;
 
+  @Exclude()
   @Prop({ default: 0 })
   otpCounter: number;
 
+  @Exclude()
   @Prop({ default: false })
   otpUsed: boolean;
 
+  @Exclude()
   @Prop({ default: () => new Date() })
   otpIssuedAt: Date;
 }

@@ -1,2 +1,2 @@
-export * from './lib/get-otp';
-export * from './lib/verify';
+export * from './lib/authenticate';
+export * from './lib/me';

@@ -3,7 +3,6 @@
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "e2e/src",
-  "implicitDependencies": ["home-site", "iam-service", "mailer-service"],
   "targets": {
     "bddgen": {
       "command": "bddgen",

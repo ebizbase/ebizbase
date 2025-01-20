@@ -1,26 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FullColorLogoComponent } from '@ebizbase/angular-common-ui';
+import { AssetSrcDirective, SystemUrl } from '@ebizbase/angular-common';
 @Component({
   selector: 'app-layout-main-header',
   standalone: true,
-  imports: [CommonModule, FullColorLogoComponent],
+  imports: [CommonModule, AssetSrcDirective],
   providers: [],
   template: `
     <header class="fixed w-full">
       <nav class="bg-white border-gray-200 py-2.5 dark:bg-gray-900">
         <div class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
           <a href="#" class="flex items-center">
-            <cmui-full-color-logo />
+            <img class="h-10" [assetSrc]="'images/logos/wordmark.svg'" alt="Logo" />
           </a>
           <div class="flex items-center lg:order-2">
             <a
-              href="authenticate/sign-in"
+              [href]="systemUrl.AccountsSiteBaseURL + '/identify'"
               class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
               >Log in</a
             >
             <a
-              href="authenticate/register"
+              [href]="systemUrl.AccountsSiteBaseURL + '/identify'"
               class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800"
               >Free trail</a
             >
@@ -113,4 +113,6 @@ import { FullColorLogoComponent } from '@ebizbase/angular-common-ui';
     </header>
   `,
 })
-export class LayoutMainHeaderComponent {}
+export class LayoutMainHeaderComponent {
+  constructor(public systemUrl: SystemUrl) {}
+}

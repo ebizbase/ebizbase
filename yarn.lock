@@ -4741,6 +4741,20 @@
   dependencies:
     tslib ">=2.8.1"
 
+"@taiga-ui/icons-fontawesome@^4.20.0":
+  version "4.20.0"
+  resolved "https://registry.yarnpkg.com/@taiga-ui/icons-fontawesome/-/icons-fontawesome-4.20.0.tgz#0c67a035960135926787d91c91be9a27bd0fa661"
+  integrity sha512-xsb53QxUk4b3XU3tZPPiNZXBEd6biFiyFppDy7zKLND0D+KXmXhu1g+qSE96YMmKl8gaieuuZjs5VGQsxW3E0Q==
+  dependencies:
+    tslib "^2.3.0"
+
+"@taiga-ui/icons-material@^4.20.0":
+  version "4.20.0"
+  resolved "https://registry.yarnpkg.com/@taiga-ui/icons-material/-/icons-material-4.20.0.tgz#dd85face5498a1ee2b5668da2685617a3e672c3b"
+  integrity sha512-z52SN7/uaO5S+acd9c6fPjSXUUk/2gAsr1j9oBjA/6iR7UnsIwJtkONmRyC3ZDvOHcFTzIyKYgc07x0398oiag==
+  dependencies:
+    tslib "^2.3.0"
+
 "@taiga-ui/icons@^4.20.0":
   version "4.20.0"
   resolved "https://registry.yarnpkg.com/@taiga-ui/icons/-/icons-4.20.0.tgz#0e76b67d86b5ee018e2fcb5c01d9a45d3905b0f3"
@@ -4759,6 +4773,13 @@
   version "4.20.0"
   resolved "https://registry.yarnpkg.com/@taiga-ui/layout/-/layout-4.20.0.tgz#d25d88a990963418b99ba28928079a29b23ffdf4"
   integrity sha512-+VBEQJ44n8d+CGFX43Moj+r+2CBk746u7Kxvtb8Lsisz2W7g6M9h6fNkhA/OnhonHkyf10lx6TiuJtEpEXwWSw==
+  dependencies:
+    tslib ">=2.8.1"
+
+"@taiga-ui/legacy@^4.20.0":
+  version "4.20.0"
+  resolved "https://registry.yarnpkg.com/@taiga-ui/legacy/-/legacy-4.20.0.tgz#df23c77d1bc86963228d5e2d404ede800e145f0c"
+  integrity sha512-kYFKdkBeHsWDJr4r5lQJNBHT38qIjLrYMtq4IBuj6choEtPu8wNINgasF4ZsTw08TKMVdmIGMovrCfmRAJgT8g==
   dependencies:
     tslib ">=2.8.1"
 
@@ -11745,13 +11766,6 @@ ng-morph@^4.8.4:
     minimatch "10.0.1"
     multimatch "5.0.0"
     ts-morph "23.0.0"
-
-ngx-cookie-service-ssr@^19.0.0:
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/ngx-cookie-service-ssr/-/ngx-cookie-service-ssr-19.0.0.tgz#44ea63cb32165874bc6c8a84ede577ef17a5f91e"
-  integrity sha512-t6z3eePPfJvwVsOGsEFADIJzWLFfeSCCX93LyygU+VWAZBlKSWmy/TGS4Pq7h+ZdDN5h15qw7RJ66bVsM+LM8Q==
-  dependencies:
-    tslib "^2.8.0"
 
 no-case@^3.0.4:
   version "3.0.4"

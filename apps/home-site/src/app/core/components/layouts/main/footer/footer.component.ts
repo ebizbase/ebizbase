@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { AssetSrcDirective } from '@ebizbase/angular-common';
 @Component({
   selector: 'app-layout-main-footer',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, AssetSrcDirective],
   template: `
     <footer class="bg-white dark:bg-gray-800">
       <div class="max-w-screen-xl p-4 py-6 mx-auto lg:py-16 md:p-8 lg:p-10">
@@ -108,25 +108,10 @@ import { RouterModule } from '@angular/router';
             href="#"
             class="flex items-center justify-center mb-5 text-2xl font-semibold text-gray-900 dark:text-white"
           >
-            <img
-              src="./logo/digital/full_color/full-color-logo.svg"
-              class="h-6 mr-3 sm:h-9"
-              alt="Landwind Logo"
-            />
+            <img class="h-6 mr-3 sm:h-9" [assetSrc]="'images/logos/wordmark.svg'" alt="Logo" />
           </a>
-          <span class="block text-sm text-center text-gray-500 dark:text-gray-400"
-            >© 2021-2022 Landwind™. All Rights Reserved. Built with
-            <a
-              href="https://flowbite.com"
-              class="text-purple-600 hover:underline dark:text-purple-500"
-              >Flowbite</a
-            >
-            and
-            <a
-              href="https://tailwindcss.com"
-              class="text-purple-600 hover:underline dark:text-purple-500"
-              >Tailwind CSS</a
-            >.
+          <span class="block text-sm text-center text-gray-500 dark:text-gray-400">
+            © eBizBase™. All Rights Reserved
           </span>
           <ul class="flex justify-center mt-5 space-x-5">
             <li>

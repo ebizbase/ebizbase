@@ -1,84 +1,69 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { DomainService } from '@ebizbase/angular-common-service';
-import { WA_LOCATION } from '@ng-web-apis/common';
-import {
-  IdentifyFormComponent,
-  IdentifyFormSubmmittedEvent,
-  IdentifyGetOTPEvent,
-} from '../components/identify-form.component';
-import { IamService } from '../services/iam.service';
+import { Component, Inject, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { WA_NAVIGATOR } from '@ng-web-apis/common';
+import { TuiDialogService } from '@taiga-ui/core';
+import { BehaviorSubject } from 'rxjs';
+import { MainContainerComponent } from '../components/containers/main.component';
+import { IdentifyFormComponent } from '../components/forms/identify-form.component';
+import { GetOTPEvent } from '../models/get-otp.event';
+import { AuthenticateService } from '../services/authenticate.service';
 
 @Component({
   selector: 'app-identify-page',
   standalone: true,
-  imports: [CommonModule, IdentifyFormComponent],
+  imports: [CommonModule, IdentifyFormComponent, MainContainerComponent],
   template: `
-    <div class="bg-gray-50 font-[sans-serif] text-[#333]">
-      <div class="min-h-screen flex flex-col items-center justify-center py-6 px-4">
-        <main
-          class="max-w-4xl w-full py-12 px-6 md:border md:rounded-3xl md:border-gray-300 md:bg-white md:min-h-80"
+    <app-main-container>
+      <header class="py-6 md:py-0 md:flex-1">
+        <h1
+          class="text-xl md:text-4xl font-semibold leading-tight text-center md:text-left w-full mb-4"
         >
-          <div class="flex flex-col md:flex-row">
-            <div class="w-full">
-              <h1 class="text-xl md:text-4xl font-semibold leading-tight w-full mb-4">
-                Welcome to NextBON
-              </h1>
-              <h2 class="md:text-lg leading-tight w-full">Enter your email</h2>
-            </div>
-            <div class="w-full">
-              <app-identify-form
-                [isLoading]="isLoading"
-                (getOtp)="getOtp($event)"
-                (formSubmit)="formSubmitted($event)"
-              />
-            </div>
-          </div>
-        </main>
-        <footer class="flex max-w-4xl w-full justify-between mt-6">
-          <div>
-            <p class="text-sm text-gray-500"></p>
-          </div>
-          <ul class="flex space-x-6">
-            <li class="text-sm text-gray-500"><a href="#">Help</a></li>
-            <li class="text-sm text-gray-500"><a href="#">Privacy</a></li>
-            <li class="text-sm text-gray-500"><a href="#">Terms</a></li>
-          </ul>
-        </footer>
-      </div>
-    </div>
+          Access NextBON
+        </h1>
+        <h2 class="md:text-lg w-full text-center md:text-left">Enter your information</h2>
+      </header>
+      <main class="md:flex-1">
+        <app-identify-form (formSubmit)="requestOtp($event)" [loading]="loading" />
+      </main>
+    </app-main-container>
   `,
 })
 export class IdentifyPageComponent {
-  isLoading = false;
+  @Input() loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
-    @Inject(WA_LOCATION) private location: Location,
-    private route: ActivatedRoute,
-    private domain: DomainService,
-    private iamService: IamService
+    @Inject(WA_NAVIGATOR) private navigator: Navigator,
+    private dialogService: TuiDialogService,
+    private router: Router,
+    private iamService: AuthenticateService
   ) {}
 
-  async formSubmitted(data: IdentifyFormSubmmittedEvent) {
-    this.isLoading = true;
-    this.iamService.verifyOtp(data).subscribe({
-      next: () => {
-        this.location.href =
-          this.route.snapshot.queryParams['continue'] ??
-          `${this.domain.Protocol}//${this.domain.MyAccountSiteDomain}`;
-      },
-      error: (error: HttpErrorResponse) => {
-        console.log(error);
-      },
-    });
-  }
-
-  async getOtp(data: IdentifyGetOTPEvent) {
+  async requestOtp(data: GetOTPEvent) {
+    this.loading.next(true);
     this.iamService.getOtp(data).subscribe({
+      next: () => {
+        this.router.navigate(['verify-hotp'], {
+          queryParams: data,
+          queryParamsHandling: 'merge',
+        });
+      },
       error: (error: HttpErrorResponse) => {
-        console.log(error);
+        if (error.status === 0) {
+          if (this.navigator.onLine) {
+            this.dialogService.open('Can not connect to server').subscribe();
+          } else {
+            this.dialogService.open('Check internet connection').subscribe();
+          }
+        } else if (error.status > 500) {
+          this.dialogService.open('Internal Server Error. Please try again later.').subscribe();
+        } else if (error.status >= 400) {
+          this.dialogService.open('Bad Request. Please check your input.').subscribe();
+        }
+      },
+      complete: () => {
+        this.loading.next(false);
       },
     });
   }

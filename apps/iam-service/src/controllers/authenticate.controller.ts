@@ -1,8 +1,8 @@
 import { Dict, IRestfulResponse } from '@ebizbase/common-types';
-import { Body, Controller, Headers, HttpCode, Logger, Patch, Post } from '@nestjs/common';
-import { GetOtpInputDTO } from '../dtos/get-otp-input.dto';
-import { VerifyInputDTO } from '../dtos/verify-input.dto';
-import { VerifyOutputDTO } from '../dtos/verify-output.dto';
+import { Body, Controller, Headers, HttpCode, Logger, Post } from '@nestjs/common';
+import { GetOtpInputDTO } from '../dtos/authenticate/get-otp-input.dto';
+import { VerifyHotpInputDTO } from '../dtos/authenticate/verify-input.dto';
+import { VerifyHotpOutputDTO } from '../dtos/authenticate/verify-output.dto';
 import { AuthenticateService } from '../services/authenticate.service';
 
 @Controller('authenticate')
@@ -11,20 +11,30 @@ export class AuthenticateController {
 
   constructor(private authenticateService: AuthenticateService) {}
 
-  @Patch('')
+  @Post('/get-otp')
   @HttpCode(200)
   async getOtp(@Body() body: GetOtpInputDTO): Promise<IRestfulResponse> {
     this.logger.debug({ msg: 'Get OTP', body });
     return this.authenticateService.getOTP(body);
   }
 
-  @Post('')
+  @Post('/verify-hotp')
   @HttpCode(200)
   async verify(
-    @Body() body: VerifyInputDTO,
+    @Body() body: VerifyHotpInputDTO,
     @Headers() headers: Dict<string>
-  ): Promise<IRestfulResponse<VerifyOutputDTO>> {
+  ): Promise<IRestfulResponse<VerifyHotpOutputDTO>> {
     this.logger.debug({ msg: 'Verify identity', body });
+    return this.authenticateService.verify(body, headers);
+  }
+
+  @Post('/refresh-token')
+  @HttpCode(200)
+  async refresh(
+    @Body() body: VerifyHotpInputDTO,
+    @Headers() headers: Dict<string>
+  ): Promise<IRestfulResponse<VerifyHotpOutputDTO>> {
+    this.logger.debug({ msg: 'RefreshToken', body });
     return this.authenticateService.verify(body, headers);
   }
 }

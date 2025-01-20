@@ -130,35 +130,38 @@ services:
     healthcheck:
       test: ['CMD', 'mc', 'ready', 'local']
 
-  mailer-service:
-    <<: *services
-    container_name: mailer-service
-    working_dir: /workspace/apps/mailer-service
-    labels:
-      - traefik.http.routers.mailer-service.rule=Host(`mailer-service.fbi.com`)
-      - traefik.http.routers.mailer-service.entrypoints=http
-      - traefik.http.services.mailer-service.loadbalancer.server.port=3000
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mongodb:
-        condition: service_healthy
-      maildev:
-        condition: service_healthy
-
-  static-assets:
+  assets:
     <<: *apps
-    build: infras/nginx-static-cors
-    container_name: static-assets
+    build:
+      dockerfile: apps/assets/Dockerfile.development
+      context: .
+    container_name: assets
     volumes:
-      - ./apps/static-assets/public:/static
-      - ./node_modules/@taiga-ui/icons/src:/static/icons
+      - ./apps/assets/public:/static
     labels:
-      - traefik.http.routers.static-assets.rule=Host(`static-assets.fbi.com`)
-      - traefik.http.routers.static-assets.entrypoints=http
-      - traefik.http.services.static-assets.loadbalancer.server.port=80
+      - traefik.http.routers.assets.rule=Host(`assets.fbi.com`)
+      - traefik.http.routers.assets.entrypoints=http
+      - traefik.http.services.assets.loadbalancer.server.port=80
     healthcheck:
       test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1/favicon.ico']
+
+  icons:
+    <<: *apps
+    build:
+      dockerfile: apps/icons/Dockerfile.development
+      context: .
+    container_name: icons
+    volumes:
+      - ./node_modules/@taiga-ui/icons/src:/static/tui:ro
+      - ./node_modules/@taiga-ui/icons-fontawesome/src:/static/fa:ro
+      - ./node_modules/@taiga-ui/icons-material/src:/static/mat:ro
+    labels:
+      - traefik.http.routers.icons.rule=Host(`icons.fbi.com`)
+      - traefik.http.routers.icons.entrypoints=http
+      - traefik.http.services.icons.loadbalancer.server.port=80
+    healthcheck:
+      test:
+        ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1/tui/a-arrow-down-filled.svg']
 
   iam-service:
     <<: *services
@@ -169,8 +172,6 @@ services:
       - traefik.http.routers.iam-service.entrypoints=http
       - traefik.http.services.iam-service.loadbalancer.server.port=3000
     depends_on:
-      rabbitmq:
-        condition: service_healthy
       mongodb:
         condition: service_healthy
 
@@ -193,13 +194,3 @@ services:
       - traefik.http.routers.accounts-site.rule=Host(`accounts.fbi.com`)
       - traefik.http.routers.accounts-site.entrypoints=http
       - traefik.http.services.accounts-site.loadbalancer.server.port=80
-
-  my-account-site:
-    <<: *sites
-    container_name: my-account-site
-    environment:
-      - PROJECT=my-account-site
-    labels:
-      - traefik.http.routers.my-account-site.rule=Host(`my-account.fbi.com`)
-      - traefik.http.routers.my-account-site.entrypoints=http
-      - traefik.http.services.my-account-site.loadbalancer.server.port=80

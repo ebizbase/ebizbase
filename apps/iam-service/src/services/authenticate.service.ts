@@ -1,8 +1,7 @@
 import { Dict, IRestfulResponse } from '@ebizbase/common-types';
-import { ITransactionalMail } from '@ebizbase/mail-interfaces';
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -11,11 +10,12 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import ms from 'ms';
 import speakeasy from 'speakeasy';
-import { GetOtpInputDTO } from '../dtos/get-otp-input.dto';
-import { VerifyInputDTO } from '../dtos/verify-input.dto';
-import { VerifyOutputDTO } from '../dtos/verify-output.dto';
+import { GetOtpInputDTO } from '../dtos/authenticate/get-otp-input.dto';
+import { VerifyHotpInputDTO } from '../dtos/authenticate/verify-input.dto';
+import { VerifyHotpOutputDTO } from '../dtos/authenticate/verify-output.dto';
 import { InjectSessionModel, SessionModel } from '../schemas/session.schema';
 import { InjectUserModel, UserDocument, UserModel } from '../schemas/user.schema';
+import { MailerService } from './mailer.service';
 
 @Injectable()
 export class AuthenticateService {
@@ -25,8 +25,8 @@ export class AuthenticateService {
   private readonly OTP_EXPIRES_IN = parseInt(process.env['OTP_EXPIRES_IN']) || 10 * 60 * 1000;
 
   constructor(
-    private readonly amqpConnection: AmqpConnection,
     private readonly jwtService: JwtService,
+    private readonly mailerService: MailerService,
     @InjectSessionModel() private sessionModel: SessionModel,
     @InjectUserModel() private userModel: UserModel
   ) {}
@@ -34,10 +34,17 @@ export class AuthenticateService {
   async getOTP({ email }: GetOtpInputDTO): Promise<IRestfulResponse> {
     let user = await this.userModel.findOne({ email });
     if (!user) {
+      this.logger.debug('User email is not exist on system');
       user = await this.userModel.create({ email });
       const otp = speakeasy.hotp({ secret: user.otpSecret, counter: user.otpCounter });
-      await this.sendOtpEmail(user.email, otp);
-    } else if (user.otpUsed || Date.now() - user.otpIssuedAt.getTime() > 60 * 10000) {
+      await this.mailerService.sendOTPEmail(user.email, otp);
+      return {};
+    } else {
+      this.logger.debug('User exist on system');
+      if (!user.otpUsed && Date.now() - user.otpIssuedAt.getTime() > 60 * 10000) {
+        this.logger.debug('Send otp too fast');
+        throw new HttpException({ message: 'Too many request' }, 429);
+      }
       user = await this.userModel.findOneAndUpdate(
         { _id: user._id },
         {
@@ -50,15 +57,15 @@ export class AuthenticateService {
         }
       );
       const otp = speakeasy.hotp({ secret: user.otpSecret, counter: user.otpCounter });
-      await this.sendOtpEmail(user.email, otp);
+      await this.mailerService.sendOTPEmail(user.email, otp);
+      return {};
     }
-    return {};
   }
 
   async verify(
-    { email, otp }: VerifyInputDTO,
+    { email, otp }: VerifyHotpInputDTO,
     headers: Dict<string>
-  ): Promise<IRestfulResponse<VerifyOutputDTO>> {
+  ): Promise<IRestfulResponse<VerifyHotpOutputDTO>> {
     const user = await this.userModel.findOne({ email });
 
     if (!user) {
@@ -71,7 +78,7 @@ export class AuthenticateService {
       throw new BadRequestException({ message: 'Invalid OTP or expired' });
     }
     await this.userModel.findOneAndUpdate({ _id: user._id }, { otpUsed: true });
-    return { data: await this.issueNewToken(user.id, headers) };
+    return { data: { ...(await this.issueNewToken(user.id, headers)), ...user } };
   }
 
   async verifyHOTP(user: UserDocument, token: string): Promise<boolean> {
@@ -132,18 +139,5 @@ export class AuthenticateService {
       refreshToken,
       refreshTokenExpiresAt,
     };
-  }
-
-  async sendOtpEmail(email: string, otp: string) {
-    const transactionalMail: ITransactionalMail = {
-      event: 'account-otp',
-      to: email,
-      data: { otp },
-    };
-    await this.amqpConnection.publish(
-      'transactional_mail_exchange',
-      'send',
-      Buffer.from(JSON.stringify(transactionalMail))
-    );
   }
 }

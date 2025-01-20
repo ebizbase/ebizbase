@@ -1,35 +1,29 @@
-import { NodeMailerModule } from '@ebizbase/nestjs-node-mailer';
-import { RabbitModule } from '@ebizbase/nestjs-rabbit';
 import { MongoModule } from '@ebizbase/nestjs-mongo';
+import { NodeMailerModule } from '@ebizbase/nestjs-node-mailer';
 import { Module } from '@nestjs/common';
-import { HealthyController } from './controllers/healthy.controller';
-import { HealthyService } from './services/healthy.service';
-import { AuthenticateService } from './services/authenticate.service';
-import { AuthenticateController } from './controllers/authenticate.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from './schemas/user.schema';
-import { Session } from 'inspector/promises';
-import { SessionSchema } from './schemas/session.schema';
 import { JwtModule } from '@nestjs/jwt';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Session } from 'inspector/promises';
+import { AuthenticateController } from './controllers/authenticate.controller';
+import { HealthyController } from './controllers/healthy.controller';
+import { MeController } from './controllers/me.controller';
+import { EmailTemplate, EmailTemplateSchema } from './schemas/email-template.schema';
+import { SessionSchema } from './schemas/session.schema';
+import { User, UserSchema } from './schemas/user.schema';
+import { AuthenticateService } from './services/authenticate.service';
+import { HealthyService } from './services/healthy.service';
+import { MailerService } from './services/mailer.service';
+import { MeService } from './services/me.service';
 
 @Module({
   imports: [
     MongoModule.register('iam-service'),
     MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema },
       { name: Session.name, schema: SessionSchema },
+      { name: User.name, schema: UserSchema },
+      { name: EmailTemplate.name, schema: EmailTemplateSchema },
     ]),
     NodeMailerModule.register(),
-    RabbitModule.register({
-      exchanges: [
-        {
-          name: 'transactional_mail_exchange',
-          type: 'direct',
-          createExchangeIfNotExists: true,
-          options: { durable: true },
-        },
-      ],
-    }),
     JwtModule.registerAsync({
       global: true,
       useFactory: () => {
@@ -43,7 +37,7 @@ import { JwtModule } from '@nestjs/jwt';
       },
     }),
   ],
-  controllers: [HealthyController, AuthenticateController],
-  providers: [HealthyService, AuthenticateService],
+  controllers: [HealthyController, AuthenticateController, MeController],
+  providers: [HealthyService, AuthenticateService, MeService, MailerService],
 })
 export class MainModule {}

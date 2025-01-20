@@ -8,7 +8,9 @@ import { TuiRoot } from '@taiga-ui/core';
   selector: 'app-root',
   template: `
     <tui-root>
-      <router-outlet></router-outlet>
+      <div class="bg-gray-50 font-[sans-serif] text-[#333] min-h-screen">
+        <router-outlet></router-outlet>
+      </div>
       <ng-container ngProjectAs="tuiOverContent"></ng-container>
       <ng-container ngProjectAs="tuiOverDialogs"></ng-container>
       <ng-container ngProjectAs="tuiOverAlerts"></ng-container>

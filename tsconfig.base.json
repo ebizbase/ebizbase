@@ -28,11 +28,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ebizbase/angular-common-service": ["libs/angular/angular-common-service/src/index.ts"],
-      "@ebizbase/angular-common-ui": ["libs/angular/angular-common-ui/src/index.ts"],
+      "@ebizbase/angular-common": ["libs/angular/angular-common/src/index.ts"],
+      "@ebizbase/angular-form": ["libs/angular/angular-form/src/index.ts"],
       "@ebizbase/common-types": ["libs/common/common-types/src/index.ts"],
       "@ebizbase/iam-interfaces": ["libs/common/iam-interfaces/src/index.ts"],
-      "@ebizbase/mail-interfaces": ["libs/common/mail-interfaces/src/index.ts"],
       "@ebizbase/nestjs-mongo": ["libs/nestjs/nestjs-mongo/src/index.ts"],
       "@ebizbase/nestjs-node-mailer": ["libs/nestjs/nestjs-node-mailer/src/index.ts"],
       "@ebizbase/nestjs-pino-logger": ["libs/nestjs/nestjs-pino-logger/src/index.ts"],
