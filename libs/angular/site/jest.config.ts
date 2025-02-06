@@ -1,8 +1,8 @@
 export default {
-  displayName: 'angular-main-layout',
+  displayName: 'angular-site',
   preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../coverage/libs/angular/main-layout',
+  coverageDirectory: '../../../coverage/libs/angular/site',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

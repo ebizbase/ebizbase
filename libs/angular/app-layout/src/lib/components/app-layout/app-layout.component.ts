@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { EbbSite, EbbSiteService } from '@ebizbase/angular-site';
@@ -11,47 +11,51 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 @Component({
   selector: 'app-layout',
   imports: [
-    CommonModule,
+    NgIf,
+    NgClass,
     RouterOutlet,
-    SidebarComponent,
     NavbarComponent,
+    SidebarComponent,
     PageHeadingComponent,
     EbbSite,
   ],
   template: `
     <ebb-site>
-      <app-layout-navbar />
-      <div class="flex flex-row-reverse bg-[var(--tui-background-base-alt)]">
-        <div
-          class="lg:rounded-tl-3xl flex flex-col flex-1 h-[calc(100dvh-3.5rem)] bg-[var(--tui-background-base)]"
-        >
-          <div class="flex w-full h-16 items-center" *ngIf="layoutService.info?.heading">
-            <app-layout-page-heading class="px-2 lg:px-4 {{ getContentSizeClsx() }}" />
-          </div>
+      <div class="flex flex-col h-[calc(100dvh)] overflow-hidden text-base">
+        <app-layout-navbar />
+        <div class="flex flex-row-reverse bg-[var(--tui-background-base-alt)]">
           <div
-            id="main-content"
-            class="flex-1 w-full {{ scrollbarClsx }}"
-            [ngClass]="{
-              'h-[calc(100dvh-8rem)]': layoutService.info?.heading,
-              'h-[calc(100dvh-4rem)]': !layoutService.info?.heading,
-            }"
+            class="flex flex-col flex-1 h-[calc(100dvh-3.5rem)] bg-[var(--tui-background-base)]"
+            [ngClass]="{ 'lg:rounded-tl-3xl': layoutService.menus.length > 0 }"
           >
-            <div class="p-4 lg:p-8 pb-20 {{ getContentSizeClsx() }}">
-              <router-outlet></router-outlet>
+            <div class="flex w-full h-16 items-center" *ngIf="layoutService.info?.heading">
+              <app-layout-page-heading class="px-2 lg:px-4 {{ getContentSizeClsx() }}" />
+            </div>
+            <div
+              id="main-content"
+              class="flex-1 w-full {{ scrollbarClsx }}"
+              [ngClass]="{
+                'h-[calc(100dvh-8rem)]': layoutService.info?.heading,
+                'h-[calc(100dvh-4rem)]': !layoutService.info?.heading,
+              }"
+            >
+              <div class="p-4 lg:p-8 pb-20 {{ getContentSizeClsx() }}">
+                <router-outlet></router-outlet>
+              </div>
             </div>
           </div>
+          <div
+            class="fixed top-0 bottom-0 w-screen transition-all duration-750 backdrop-blur-[0px] lg:hidden -translate-x-full"
+            tabindex="0"
+            [ngClass]="getSidebarClassClsx()"
+            (click)="layoutService.toggleMobileSidebar()"
+            (keydown.enter)="layoutService.toggleMobileSidebar()"
+            (keydown.space)="layoutService.toggleMobileSidebar()"
+            (wheel)="$event.preventDefault()"
+            (touchmove)="$event.preventDefault()"
+          ></div>
+          <app-layout-sidebar *ngIf="layoutService.menus.length > 0"></app-layout-sidebar>
         </div>
-        <div
-          class="fixed top-0 bottom-0 w-screen transition-all duration-750 backdrop-blur-[0px] lg:hidden -translate-x-full"
-          tabindex="0"
-          [ngClass]="getSidebarClassClsx()"
-          (click)="layoutService.toggleMobileSidebar()"
-          (keydown.enter)="layoutService.toggleMobileSidebar()"
-          (keydown.space)="layoutService.toggleMobileSidebar()"
-          (wheel)="$event.preventDefault()"
-          (touchmove)="$event.preventDefault()"
-        ></div>
-        <app-layout-sidebar *ngIf="layoutService.menus.length > 0"></app-layout-sidebar>
       </div>
     </ebb-site>
   `,
