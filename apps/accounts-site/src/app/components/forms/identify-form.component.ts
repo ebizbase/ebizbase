@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TuiButton, TuiTextfield } from '@taiga-ui/core';
+import { TuiButton, TuiLink, TuiTextfield } from '@taiga-ui/core';
 import { TuiButtonLoading } from '@taiga-ui/kit';
 import { Subject } from 'rxjs';
 import { GetOTPEvent } from '../../models/get-otp.event';
@@ -11,7 +11,8 @@ import { EmailFormControlComponent } from '../form-controls/email-form-control.c
   selector: 'app-identify-form',
   standalone: true,
   imports: [
-    CommonModule,
+    AsyncPipe,
+    TuiLink,
     ReactiveFormsModule,
     FormsModule,
     TuiTextfield,
@@ -33,10 +34,8 @@ import { EmailFormControlComponent } from '../form-controls/email-form-control.c
           Next
         </button>
         <p class="mt-6 text-xs text-gray-600 text-center">
-          I agree to abide by ebizbase's
-          <a href="#" class="border-b border-gray-500 border-dotted"> Terms of Service </a>
-          and its
-          <a href="#" class="border-b border-gray-500 border-dotted"> Privacy Policy </a>
+          I agree to abide by ebizbase's <a href="#" tuiLink>Terms of Service</a> and its
+          <a href="#" tuiLink>Privacy Policy</a>
         </p>
       </div>
     </form>

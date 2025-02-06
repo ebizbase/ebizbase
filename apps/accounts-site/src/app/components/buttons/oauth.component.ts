@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { AssetSrcDirective } from '@ebizbase/angular-common';
+import { AssetSrcDirective } from '@ebizbase/angular-asset';
 
 @Component({
   selector: 'app-oauth-button',
@@ -8,7 +8,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
   imports: [CommonModule, AssetSrcDirective],
   template: `
     <div class="bg-white p-2 rounded-full">
-      <img [class]="imgClass" [assetSrc]="assetSrc" [alt]="alt ?? title" />
+      <img [class]="imgClass" [ebbAssetSrc]="assetSrc" [alt]="alt ?? title" />
     </div>
     <span class="ml-4">
       {{ title }}

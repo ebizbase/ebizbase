@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AppLayoutComponent, AppLayoutService, MenuItem } from '@ebizbase/angular-app-layout';
-import { ResponsiveHelperComponent } from '@ebizbase/angular-common';
 
 const pages: MenuItem[] = [
   {
@@ -26,12 +25,9 @@ const pages: MenuItem[] = [
 
 @Component({
   standalone: true,
-  imports: [ResponsiveHelperComponent, AppLayoutComponent],
+  imports: [AppLayoutComponent],
   selector: 'app-root',
-  template: `
-    <app-layout />
-    <responsive-helper />
-  `,
+  template: ` <app-layout /> `,
 })
 export class AppComponent {
   constructor(layoutService: AppLayoutService) {

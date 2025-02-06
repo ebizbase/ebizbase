@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { AssetSrcDirective } from '@ebizbase/angular-common';
 import { WA_NAVIGATOR } from '@ng-web-apis/common';
 import { TuiDialogService } from '@taiga-ui/core';
 import { BehaviorSubject } from 'rxjs';
@@ -14,7 +13,7 @@ import { AuthenticateService } from '../services/authenticate.service';
 @Component({
   selector: 'app-identify-page',
   standalone: true,
-  imports: [CommonModule, IdentifyFormComponent, AssetSrcDirective, OAuthButtonComponent],
+  imports: [CommonModule, IdentifyFormComponent, OAuthButtonComponent],
   template: `
     <div class="w-full mx-auto max-w-sm flex-1 mt-8 flex items-center flex-col gap-4">
       <app-oauth-button

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SystemUrl } from '@ebizbase/angular-common';
+import { DOMAIN_COMPONENTS, EbbDomain } from '@ebizbase/angular-domain';
 import { WA_LOCATION, WA_NAVIGATOR } from '@ng-web-apis/common';
 import { TuiDialogService } from '@taiga-ui/core';
 import { BehaviorSubject } from 'rxjs';
@@ -33,7 +33,7 @@ export class VerifyHotpPageComponent implements OnInit {
     @Inject(WA_LOCATION) private location: Location,
     @Inject(WA_NAVIGATOR) private navigator: Navigator,
     private route: ActivatedRoute,
-    private systemUrl: SystemUrl,
+    private domain: EbbDomain,
     private router: Router,
     private iamService: AuthenticateService,
     private dialogService: TuiDialogService
@@ -60,7 +60,7 @@ export class VerifyHotpPageComponent implements OnInit {
         } else {
           this.location.href =
             this.route.snapshot.queryParams['continue'] ??
-            `${this.systemUrl.Protocol}//${this.systemUrl.HomeSiteBaseURL}`;
+            `${this.domain.getUrl(DOMAIN_COMPONENTS.HOME_SITE)}`;
         }
       },
       error: (error: HttpErrorResponse) => {

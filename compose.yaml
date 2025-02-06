@@ -8,18 +8,18 @@ x-infras-config: &infras
   <<: *common
   restart: always
   healthcheck:
-    interval: 30s
+    interval: 6s
     start_period: 10s
-    retries: 3
+    retries: 10
 
 x-apps-config: &apps
   <<: *common
   env_file: .env
   restart: always
   healthcheck:
-    interval: 3s
+    interval: 2s
     start_period: 10s
-    retries: 10
+    retries: 30
 
 x-services-config: &services
   <<: *apps
@@ -138,6 +138,7 @@ services:
     container_name: assets
     volumes:
       - ./apps/assets/public:/static
+      - ./node_modules/@taiga-ui/icons/src:/static/tui:ro
     labels:
       - traefik.http.routers.assets.rule=Host(`assets.fbi.com`)
       - traefik.http.routers.assets.entrypoints=http

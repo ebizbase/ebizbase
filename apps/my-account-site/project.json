@@ -10,88 +10,49 @@
     "namespace": "ebizbase/my-account-site"
   },
   "targets": {
-    "browser": {
-      "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+    "compile": {
+      "executor": "@angular-devkit/build-angular:application",
       "options": {
-        "outputPath": "dist/apps/my-account-site/browser",
+        "outputPath": "dist/apps/my-account-site",
         "index": "apps/my-account-site/src/index.html",
-        "main": "apps/my-account-site/src/main.ts",
-        "polyfills": ["zone.js"],
+        "browser": "apps/my-account-site/src/main.ts",
         "tsConfig": "apps/my-account-site/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
+        "polyfills": ["zone.js"],
         "assets": [],
         "styles": [
           "@taiga-ui/core/styles/taiga-ui-theme.less",
           "@taiga-ui/core/styles/taiga-ui-fonts.less",
           "@taiga-ui/addon-mobile/styles/taiga-ui-mobile.less",
-          "apps/my-account-site/src/styles.scss"
+          "apps/home-site/src/styles.scss"
         ],
         "scripts": []
       },
       "configurations": {
         "production": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
-            },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "4kb",
-              "maximumError": "8kb"
-            }
-          ],
           "outputHashing": "all"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
-          "extractLicenses": false,
           "sourceMap": true,
+          "extractLicenses": false,
           "namedChunks": true
         }
       },
       "defaultConfiguration": "production"
     },
-    "compile": {
-      "dependsOn": ["browser"],
-      "executor": "@angular-devkit/build-angular:server",
-      "options": {
-        "outputPath": "dist/apps/my-account-site/server",
-        "main": "apps/my-account-site/server.ts",
-        "tsConfig": "apps/my-account-site/tsconfig.server.json",
-        "inlineStyleLanguage": "scss"
-      },
-      "configurations": {
-        "production": {
-          "outputHashing": "media"
-        },
-        "development": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "sourceMap": true,
-          "extractLicenses": false,
-          "vendorChunk": true
-        }
-      },
-      "defaultConfiguration": "production"
-    },
     "serve": {
-      "executor": "@angular-devkit/build-angular:ssr-dev-server",
+      "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
+        "host": "0.0.0.0",
         "port": 4200
       },
       "configurations": {
         "development": {
-          "browserTarget": "my-account-site:browser:development",
-          "serverTarget": "my-account-site:compile:development"
+          "buildTarget": "my-account-site:compile:development"
         },
         "production": {
-          "browserTarget": "my-account-site:browser:production",
-          "serverTarget": "my-account-site:compile:production"
+          "buildTarget": "my-account-site:compile:production"
         }
       },
       "defaultConfiguration": "development"
@@ -101,23 +62,6 @@
       "options": {
         "buildTarget": "my-account-site:browser"
       }
-    },
-    "prerender": {
-      "executor": "@angular-devkit/build-angular:prerender",
-      "options": {
-        "routes": ["/"]
-      },
-      "configurations": {
-        "development": {
-          "browserTarget": "my-account-site:browser:development",
-          "serverTarget": "my-account-site:compile:development"
-        },
-        "production": {
-          "browserTarget": "my-account-site:browser:production",
-          "serverTarget": "my-account-site:compile:production"
-        }
-      },
-      "defaultConfiguration": "production"
     },
     "build": {
       "dependsOn": ["compile"],

@@ -1,7 +1,8 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideCommon } from '@ebizbase/angular-common';
+import { provideHomeSiteMark } from '@ebizbase/angular-domain';
+import { provideEbbSite } from '@ebizbase/angular-site';
 import { appRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
-  providers: [...provideCommon(appRoutes)],
+  providers: [provideEbbSite(appRoutes, true), provideHomeSiteMark()],
 };

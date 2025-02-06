@@ -17,7 +17,6 @@ module.exports = [
       curly: 'error',
       quotes: ['error', 'single'],
       semi: ['error', 'always'],
-      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -41,7 +40,6 @@ module.exports = [
       ],
     },
   },
-
   {
     files: [
       '**/*.test.ts',
@@ -68,9 +66,5 @@ module.exports = [
       ],
     },
     languageOptions: { parser: require('jsonc-eslint-parser') },
-  },
-  {
-    files: ['**/*.md'],
-    processor: 'markdown/markdown',
   },
 ];

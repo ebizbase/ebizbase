@@ -1,5 +1,4 @@
 import { Route } from '@angular/router';
-import { NotFoundComponent } from '@ebizbase/angular-common';
 import { MainLayoutComponent } from './components/layouts/main.component';
 export const appRoutes: Route[] = [
   {
@@ -25,6 +24,6 @@ export const appRoutes: Route[] = [
   },
   {
     path: '**',
-    loadComponent: () => NotFoundComponent,
+    redirectTo: 'google.com',
   },
 ];

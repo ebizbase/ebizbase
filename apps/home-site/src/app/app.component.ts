@@ -1,20 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { TuiRoot } from '@taiga-ui/core';
-
+import { RouterOutlet } from '@angular/router';
+import { EbbSite } from '@ebizbase/angular-site';
 @Component({
   standalone: true,
-  imports: [TuiRoot, RouterModule],
+  imports: [EbbSite, RouterOutlet],
   selector: 'app-root',
   template: `
-    <tui-root>
+    <ebb-site>
       <router-outlet></router-outlet>
-      <ng-container ngProjectAs="tuiOverContent"></ng-container>
-      <ng-container ngProjectAs="tuiOverDialogs"></ng-container>
-      <ng-container ngProjectAs="tuiOverAlerts"></ng-container>
-      <ng-container ngProjectAs="tuiOverDropdowns"></ng-container>
-      <ng-container ngProjectAs="tuiOverHints"></ng-container>
-    </tui-root>
+    </ebb-site>
   `,
 })
 export class AppComponent {}

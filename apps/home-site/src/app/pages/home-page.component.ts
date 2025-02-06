@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { AssetSrcDirective } from '@ebizbase/angular-common';
+import { AssetSrcDirective } from '@ebizbase/angular-asset';
 
 @Component({
   selector: 'app-home-page',
@@ -25,7 +25,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
           <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4"></div>
         </div>
         <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-          <img [assetSrc]="'images/hero.png'" alt="Hero" />
+          <img [ebbAssetSrc]="'images/hero.png'" alt="Hero" />
         </div>
       </div>
     </section>
@@ -324,7 +324,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
             </p>
           </div>
           <img
-            [assetSrc]="'images/feature-1.png'"
+            [ebbAssetSrc]="'images/feature-1.png'"
             alt="dashboard feature image 1"
             class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex"
           />
@@ -332,7 +332,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
         <!-- Row -->
         <div class="items-center gap-8 lg:grid lg:grid-cols-2 xl:gap-16">
           <img
-            [assetSrc]="'images/feature-2.png'"
+            [ebbAssetSrc]="'images/feature-2.png'"
             alt="dashboard feature image 2"
             class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex"
           />

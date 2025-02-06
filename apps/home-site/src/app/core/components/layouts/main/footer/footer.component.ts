@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { AssetSrcDirective } from '@ebizbase/angular-common';
+import { AssetSrcDirective } from '@ebizbase/angular-asset';
 @Component({
   selector: 'app-layout-main-footer',
   standalone: true,
@@ -108,7 +108,7 @@ import { AssetSrcDirective } from '@ebizbase/angular-common';
             href="#"
             class="flex items-center justify-center mb-5 text-2xl font-semibold text-gray-900 dark:text-white"
           >
-            <img class="h-6 mr-3 sm:h-9" [assetSrc]="'images/logos/wordmark.svg'" alt="Logo" />
+            <img class="h-6 mr-3 sm:h-9" [ebbAssetSrc]="'images/logos/wordmark.svg'" alt="Logo" />
           </a>
           <span class="block text-sm text-center text-gray-500 dark:text-gray-400">
             © eBizBase™. All Rights Reserved
