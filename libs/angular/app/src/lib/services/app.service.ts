@@ -9,7 +9,7 @@ import { PageInfo } from '../models/page-information.model';
 @Injectable({
   providedIn: 'root',
 })
-export class AppLayoutService implements OnDestroy {
+export class EbbAppService implements OnDestroy {
   // sidebar menu
   private _navigrationEndSubscription = new Subscription();
   private _mobileMenusOpened = signal(false);

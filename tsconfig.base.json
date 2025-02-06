@@ -28,7 +28,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ebizbase/angular-app-layout": ["libs/angular/app-layout/src/index.ts"],
+      "@ebizbase/angular-app": ["libs/angular/app/src/index.ts"],
       "@ebizbase/angular-asset": ["libs/angular/asset/src/index.ts"],
       "@ebizbase/angular-authenticate": ["libs/angular/authenticate/src/index.ts"],
       "@ebizbase/angular-common": ["libs/angular/common/src/index.ts"],

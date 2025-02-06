@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { AppLayoutService } from '@ebizbase/angular-app-layout';
+import { EbbAppService } from '@ebizbase/angular-app';
 import { TuiTextfield } from '@taiga-ui/core';
 
 @Component({
@@ -10,8 +10,8 @@ import { TuiTextfield } from '@taiga-ui/core';
   template: '',
 })
 export class AvatarComponent {
-  constructor(private layoutService: AppLayoutService) {
-    this.layoutService.info = {
+  constructor(private app: EbbAppService) {
+    this.app.info = {
       title: 'Avatar',
       heading: {
         title: 'Avatar',

@@ -2,14 +2,14 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AssetSrcDirective } from '@ebizbase/angular-asset';
 import { TuiButton } from '@taiga-ui/core';
-import { AppLayoutService } from '../../services';
-import { NotificationMenuComponent } from './notification-menu/notification-menu.component';
-import { UserMenuComponent } from './user-menu/user-menu.component';
+import { EbbAppService } from '../../services';
+import { NotificationMenu } from './notification-menu/notification-menu.component';
+import { UserMenu } from './user-menu/user-menu.component';
 
 @Component({
-  selector: 'app-layout-navbar',
+  selector: 'ebb-app-navbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, TuiButton, UserMenuComponent, NotificationMenuComponent, AssetSrcDirective],
+  imports: [NgIf, TuiButton, UserMenu, NotificationMenu, AssetSrcDirective],
   template: `
     <div class="flex h-16 w-screen items-center bg-[var(--tui-background-base-alt)] px-2 lg:px-4">
       <div class="flex items-center">
@@ -35,12 +35,12 @@ import { UserMenuComponent } from './user-menu/user-menu.component';
         </div>
       </div>
       <div class="flex flex-1 gap-3 justify-end items-center">
-        <app-layout-notification-menu class="hidden" />
-        <app-layout-user-menu />
+        <ebb-app-notification-menu class="hidden" />
+        <ebb-app-user-menu />
       </div>
     </div>
   `,
 })
-export class NavbarComponent {
-  constructor(protected layoutService: AppLayoutService) {}
+export class Navbar {
+  constructor(protected layoutService: EbbAppService) {}
 }

@@ -13,7 +13,7 @@ import {
   TuiStringifyContentPipe,
 } from '@taiga-ui/kit';
 import { TuiComboBoxModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
-import { AppLayoutService } from '../../../services';
+import { EbbAppService } from '../../../services';
 
 const LANGUAGES = [
   { code: 'en', title: 'English' },
@@ -21,7 +21,7 @@ const LANGUAGES = [
 ];
 
 @Component({
-  selector: 'app-layout-user-menu',
+  selector: 'ebb-app-user-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
@@ -150,11 +150,11 @@ const LANGUAGES = [
     </ng-template>
   `,
 })
-export class UserMenuComponent {
+export class UserMenu {
   protected open = false;
 
   constructor(
-    public layoutService: AppLayoutService,
+    public layoutService: EbbAppService,
     public siteService: EbbSiteService
   ) {}
 

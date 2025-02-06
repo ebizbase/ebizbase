@@ -3,17 +3,17 @@ import { Component, Input } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { TuiIcon } from '@taiga-ui/core';
 import { SubMenuItem } from '../../../models/menu.model';
-import { AppLayoutService } from '../../../services';
+import { EbbAppService } from '../../../services';
 
 @Component({
-  selector: 'app-layout-sidebar-submenu',
+  selector: 'ebb-app-sidebar-submenu',
   templateUrl: './sidebar-submenu.component.html',
   imports: [CommonModule, RouterModule, RouterLink, TuiIcon],
 })
 export class SidebarSubmenuComponent {
   @Input() public submenu = <SubMenuItem>{};
 
-  constructor(public layoutService: AppLayoutService) {}
+  constructor(public layoutService: EbbAppService) {}
 
   private collapse(items: Array<SubMenuItem>) {
     items.forEach((item) => {

@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { AppLayoutComponent } from './app-layout.component';
+import { EbbApp } from './app.component';
 
-describe('AppLayoutComponent', () => {
-  let component: AppLayoutComponent;
-  let fixture: ComponentFixture<AppLayoutComponent>;
+describe('EbbApp', () => {
+  let component: EbbApp;
+  let fixture: ComponentFixture<EbbApp>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppLayoutComponent, NoopAnimationsModule],
+      imports: [EbbApp, NoopAnimationsModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppLayoutComponent);
+    fixture = TestBed.createComponent(EbbApp);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

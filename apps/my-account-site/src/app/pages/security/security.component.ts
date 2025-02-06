@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { AppLayoutService } from '@ebizbase/angular-app-layout';
+import { EbbAppService } from '@ebizbase/angular-app';
 import { tuiDialog, TuiIcon, TuiLink, TuiTextfield } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { TuiCell } from '@taiga-ui/layout';
@@ -170,8 +170,8 @@ export class SecurityComponent {
     label: 'Send feedback to eBizBase',
   });
 
-  constructor(private layoutService: AppLayoutService) {
-    this.layoutService.info = {
+  constructor(private app: EbbAppService) {
+    this.app.info = {
       title: 'Security',
       contentSize: 'm',
     };

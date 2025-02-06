@@ -3,10 +3,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TuiActiveZone, TuiObscured } from '@taiga-ui/cdk';
 import { TuiButton, TuiDropdown } from '@taiga-ui/core';
 import { TuiBadgedContent, TuiBadgeNotification } from '@taiga-ui/kit';
-import { AppLayoutService } from '../../../services';
+import { EbbAppService } from '../../../services';
 
 @Component({
-  selector: 'app-layout-notification-menu',
+  selector: 'ebb-app-notification-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
@@ -45,10 +45,10 @@ import { AppLayoutService } from '../../../services';
     </ng-template>
   `,
 })
-export class NotificationMenuComponent {
+export class NotificationMenu {
   protected open = false;
 
-  constructor(public layoutService: AppLayoutService) {}
+  constructor(public layoutService: EbbAppService) {}
 
   protected toggleDropdown(): void {
     this.open = !this.open;

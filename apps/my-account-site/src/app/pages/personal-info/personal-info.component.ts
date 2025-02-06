@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AppLayoutService } from '@ebizbase/angular-app-layout';
+import { EbbAppService } from '@ebizbase/angular-app';
 import { tuiDialog, TuiFallbackSrcPipe, TuiIcon, TuiTextfield } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { FeedbackDialogComponent } from '../../components/feedback/feedback-dialog.component';
@@ -151,8 +151,8 @@ export class PersonalInfoComponent {
     label: 'Send feedback to eBizBase',
   });
 
-  constructor(private layoutService: AppLayoutService) {
-    this.layoutService.info = {
+  constructor(private app: EbbAppService) {
+    this.app.info = {
       title: 'eBizBase Account',
       contentSize: 'm',
     };

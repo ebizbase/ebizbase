@@ -1,7 +1,7 @@
 {
-  "name": "angular-app-layout",
+  "name": "angular-app",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/angular/app-layout/src",
+  "sourceRoot": "libs/angular/app/src",
   "prefix": "",
   "projectType": "library",
   "tags": [],
@@ -10,7 +10,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/angular/app-layout/jest.config.ts"
+        "jestConfig": "libs/angular/app/jest.config.ts"
       }
     },
     "lint": {

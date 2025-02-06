@@ -2,10 +2,10 @@ import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TuiButton } from '@taiga-ui/core';
-import { AppLayoutService } from '../../services';
+import { EbbAppService } from '../../services';
 
 @Component({
-  selector: 'app-layout-page-heading',
+  selector: 'ebb-app-page-heading',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, NgIf, NgFor, TuiButton],
   host: {
@@ -39,6 +39,6 @@ import { AppLayoutService } from '../../services';
     </div>
   `,
 })
-export class PageHeadingComponent {
-  constructor(public layoutService: AppLayoutService) {}
+export class PageHeading {
+  constructor(public layoutService: EbbAppService) {}
 }

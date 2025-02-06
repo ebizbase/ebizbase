@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AppLayoutComponent, AppLayoutService, MenuItem } from '@ebizbase/angular-app-layout';
+import { EbbApp, EbbAppService, MenuItem } from '@ebizbase/angular-app';
 
 const pages: MenuItem[] = [
   {
@@ -25,12 +25,12 @@ const pages: MenuItem[] = [
 
 @Component({
   standalone: true,
-  imports: [AppLayoutComponent],
+  imports: [EbbApp],
   selector: 'app-root',
-  template: ` <app-layout /> `,
+  template: ' <ebb-app /> ',
 })
 export class AppComponent {
-  constructor(layoutService: AppLayoutService) {
-    layoutService.menus = pages;
+  constructor(private app: EbbAppService) {
+    this.app.menus = pages;
   }
 }

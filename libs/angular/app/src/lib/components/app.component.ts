@@ -3,33 +3,25 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { EbbSite, EbbSiteService } from '@ebizbase/angular-site';
 import clsx from 'clsx';
-import { AppLayoutService } from '../../services';
-import { NavbarComponent } from '../navbar/navbar.component';
-import { PageHeadingComponent } from '../page-heading/page-heading.component';
-import { SidebarComponent } from '../sidebar/sidebar.component';
+import { EbbAppService } from '../services';
+import { Navbar } from './navbar/navbar.component';
+import { PageHeading } from './page-heading/page-heading.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @Component({
-  selector: 'app-layout',
-  imports: [
-    NgIf,
-    NgClass,
-    RouterOutlet,
-    NavbarComponent,
-    SidebarComponent,
-    PageHeadingComponent,
-    EbbSite,
-  ],
+  selector: 'ebb-app',
+  imports: [NgIf, NgClass, RouterOutlet, Navbar, SidebarComponent, PageHeading, EbbSite],
   template: `
     <ebb-site>
       <div class="flex flex-col h-[calc(100dvh)] overflow-hidden text-base">
-        <app-layout-navbar />
+        <ebb-app-navbar />
         <div class="flex flex-row-reverse bg-[var(--tui-background-base-alt)]">
           <div
             class="flex flex-col flex-1 h-[calc(100dvh-3.5rem)] bg-[var(--tui-background-base)]"
             [ngClass]="{ 'lg:rounded-tl-3xl': layoutService.menus.length > 0 }"
           >
             <div class="flex w-full h-16 items-center" *ngIf="layoutService.info?.heading">
-              <app-layout-page-heading class="px-2 lg:px-4 {{ getContentSizeClsx() }}" />
+              <ebb-app-page-heading class="px-2 lg:px-4 {{ getContentSizeClsx() }}" />
             </div>
             <div
               id="main-content"
@@ -54,17 +46,17 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
             (wheel)="$event.preventDefault()"
             (touchmove)="$event.preventDefault()"
           ></div>
-          <app-layout-sidebar *ngIf="layoutService.menus.length > 0"></app-layout-sidebar>
+          <ebb-app-sidebar *ngIf="layoutService.menus.length > 0"></ebb-app-sidebar>
         </div>
       </div>
     </ebb-site>
   `,
 })
-export class AppLayoutComponent {
+export class EbbApp {
   protected readonly scrollbarClsx =
     'scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thumb-[var(--tui-background-neutral-2)] scrollbar-thin scrollbar-track-transparent scrollbar-corner-rounded-full';
   constructor(
-    public layoutService: AppLayoutService,
+    public layoutService: EbbAppService,
     protected siteService: EbbSiteService
   ) {}
 
