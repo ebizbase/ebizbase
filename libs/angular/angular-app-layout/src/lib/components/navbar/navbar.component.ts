@@ -14,15 +14,20 @@ import { UserMenuComponent } from './user-menu/user-menu.component';
     <div class="flex h-16 w-screen items-center bg-[var(--tui-background-base-alt)] px-2 lg:px-4">
       <div class="flex items-center">
         <!-- Open sidebar (only mobile) -->
-        <button
+        <a
           *ngIf="layoutService.menus.length > 0"
-          tuiIconButton
+          tuiButton
           appearance="flat"
           size="s"
           class="!rounded-full lg:!hidden "
           iconStart="@tui.align-justify"
+          tabindex="0"
           (click)="layoutService.toggleMobileSidebar()"
-        ></button>
+          (key)="layoutService.toggleMobileSidebar()"
+          (keydown.enter)="layoutService.toggleMobileSidebar()"
+          (keydown.space)="layoutService.toggleMobileSidebar()"
+        >
+        </a>
 
         <div class="flex-1 hidden lg:flex space-x-1 items-center">
           <img class="h-5" [assetSrc]="'images/logos/wordmark.svg'" alt="Logo" />

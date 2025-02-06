@@ -7,7 +7,7 @@ import { TuiTextfield } from '@taiga-ui/core';
   selector: 'app-color-mode',
   imports: [CommonModule, TuiTextfield],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ``,
+  template: '',
 })
 export class ColorModeComponent {
   constructor(private layoutService: AppLayoutService) {

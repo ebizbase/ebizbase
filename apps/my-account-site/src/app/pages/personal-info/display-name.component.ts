@@ -7,7 +7,7 @@ import { TuiTextfield } from '@taiga-ui/core';
   selector: 'app-display-name',
   imports: [CommonModule, TuiTextfield],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ``,
+  template: '',
 })
 export class DisplayNameComponent {
   constructor(private layoutService: AppLayoutService) {

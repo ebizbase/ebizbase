@@ -12,7 +12,7 @@ import { PageHeadingComponent } from '../../components/page-heading/page-heading
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-page-heading title="Security" subtitle="Settings options to keep your account secure" />
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Recent Security Activity -->
       <div
         class="flex flex-col bg-[var(--tui-background-base)] lg:col-span-2 rounded-lg border border-[var(--tui-background-neutral-1-hover)] [&>:not]"

@@ -20,20 +20,24 @@ import { AppLayoutService } from '../../../services';
   template: `
     <tui-badged-content [style.--tui-radius.%]="100">
       <tui-badge-notification size="s" tuiSlot="top">8</tui-badge-notification>
-      <button
-        tuiIconButton
+      <a
+        tuiButton
         [style.--tui-radius.%]="100"
         appearance="flat"
         size="m"
         iconStart="@tui.bell"
+        tabindex="0"
         (click)="toggleDropdown()"
+        (keydown.enter)="toggleDropdown()"
+        (keydown.space)="toggleDropdown()"
         [tuiDropdown]="notification"
         [tuiDropdownMaxHeight]="600"
         [tuiDropdownManual]="open"
         [tuiObscuredEnabled]="open"
         (tuiActiveZoneChange)="closeDropdownIfInactive($event)"
         (tuiObscured)="closeDropdownIfObscured($event)"
-      ></button>
+      >
+      </a>
     </tui-badged-content>
 
     <ng-template #notification>

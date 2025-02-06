@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'flex flex-col items-center space-y-3',
+    class: 'flex flex-col items-center space-y-3 mb-6',
   },
   template: `
     <div class="text-3xl" *ngIf="title">{{ title }}</div>

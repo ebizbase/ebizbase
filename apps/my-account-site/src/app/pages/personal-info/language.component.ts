@@ -7,7 +7,7 @@ import { TuiTextfield } from '@taiga-ui/core';
   selector: 'app-languagues',
   imports: [CommonModule, TuiTextfield],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ``,
+  template: '',
 })
 export class LanguageComponent {
   constructor(private layoutService: AppLayoutService) {
