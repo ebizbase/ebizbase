@@ -1,16 +1,26 @@
+import { IRestfulResponse } from '@ebizbase/common-types';
 import { IVerifyHotpResponse } from '@ebizbase/iam-interfaces';
-import { IsString } from 'class-validator';
+import { Expose, Type } from 'class-transformer';
 
-export class VerifyHotpOutputDTO implements IVerifyHotpResponse {
-  @IsString()
+export class VerifyHotpOuputData implements IVerifyHotpResponse {
+  @Expose()
   firstName?: string;
 
-  @IsString()
+  @Expose()
   lastName?: string;
 
-  @IsString()
+  @Expose()
   accessToken: string;
 
-  @IsString()
+  @Expose()
   refreshToken: string;
+}
+
+export class VerifyHotpOutputDTO implements IRestfulResponse<VerifyHotpOuputData> {
+  @Expose()
+  message?: string;
+
+  @Expose()
+  @Type(() => VerifyHotpOuputData)
+  data: VerifyHotpOuputData;
 }

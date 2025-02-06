@@ -33,7 +33,6 @@ export class AuthenticateService extends BaseAuthenticateService {
     const url = `${this.systemUrl.IamServiceBaseURL}/authenticate/verify-hotp`;
     return this.http.post<IRestfulResponse<IVerifyHotpResponse>>(url, data).pipe(
       tap(({ data }) => {
-        console.log(data);
         this.setTokens(data.accessToken, data.refreshToken);
       })
     );

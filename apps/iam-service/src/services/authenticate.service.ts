@@ -1,4 +1,4 @@
-import { Dict, IRestfulResponse } from '@ebizbase/common-types';
+import { Dict } from '@ebizbase/common-types';
 import {
   BadRequestException,
   HttpException,
@@ -13,6 +13,7 @@ import speakeasy from 'speakeasy';
 import { GetOtpInputDTO } from '../dtos/authenticate/get-otp-input.dto';
 import { VerifyHotpInputDTO } from '../dtos/authenticate/verify-input.dto';
 import { VerifyHotpOutputDTO } from '../dtos/authenticate/verify-output.dto';
+import { OutPutDto } from '../dtos/output.dto';
 import { InjectSessionModel, SessionModel } from '../schemas/session.schema';
 import { InjectUserModel, UserDocument, UserModel } from '../schemas/user.schema';
 import { MailerService } from './mailer.service';
@@ -31,19 +32,23 @@ export class AuthenticateService {
     @InjectUserModel() private userModel: UserModel
   ) {}
 
-  async getOTP({ email }: GetOtpInputDTO): Promise<IRestfulResponse> {
+  async getOTP({ email }: GetOtpInputDTO): Promise<OutPutDto> {
     let user = await this.userModel.findOne({ email });
     if (!user) {
       this.logger.debug('User email is not exist on system');
       user = await this.userModel.create({ email });
       const otp = speakeasy.hotp({ secret: user.otpSecret, counter: user.otpCounter });
       await this.mailerService.sendOTPEmail(user.email, otp);
-      return {};
+      return { message: 'OTP email sent successfully' };
     } else {
       this.logger.debug('User exist on system');
-      if (!user.otpUsed && Date.now() - user.otpIssuedAt.getTime() > 60 * 10000) {
+      const lastIssueSince = Date.now() - user.otpIssuedAt.getTime();
+      if (!user.otpUsed && lastIssueSince < 30 * 1_000) {
         this.logger.debug('Send otp too fast');
-        throw new HttpException({ message: 'Too many request' }, 429);
+        throw new HttpException(
+          { message: 'You requested to send OTP too fast please wait a moment' },
+          429
+        );
       }
       user = await this.userModel.findOneAndUpdate(
         { _id: user._id },
@@ -58,14 +63,15 @@ export class AuthenticateService {
       );
       const otp = speakeasy.hotp({ secret: user.otpSecret, counter: user.otpCounter });
       await this.mailerService.sendOTPEmail(user.email, otp);
-      return {};
+      return { message: 'OTP email sent successfully' };
     }
   }
 
   async verify(
     { email, otp }: VerifyHotpInputDTO,
     headers: Dict<string>
-  ): Promise<IRestfulResponse<VerifyHotpOutputDTO>> {
+  ): Promise<VerifyHotpOutputDTO> {
+    this.logger.debug({ msg: 'Verifying Identify', email, otp });
     const user = await this.userModel.findOne({ email });
 
     if (!user) {
@@ -77,8 +83,15 @@ export class AuthenticateService {
       this.logger.debug(`Invalid OTP for user with email ${email}`);
       throw new BadRequestException({ message: 'Invalid OTP or expired' });
     }
-    await this.userModel.findOneAndUpdate({ _id: user._id }, { otpUsed: true });
-    return { data: { ...(await this.issueNewToken(user.id, headers)), ...user } };
+
+    const data = {
+      ...user.toObject(),
+      ...(await this.issueNewToken(user.id, headers)),
+    };
+
+    this.logger.debug({ msg: 'Verifying Identify Response', data });
+
+    return { data };
   }
 
   async verifyHOTP(user: UserDocument, token: string): Promise<boolean> {
@@ -98,6 +111,8 @@ export class AuthenticateService {
       this.logger.debug('OTP is invalid');
       return false;
     }
+
+    await this.userModel.findOneAndUpdate({ _id: user._id }, { otpUsed: true });
 
     return true;
   }

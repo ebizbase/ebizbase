@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { AssetSrcDirective } from '@ebizbase/angular-common';
 import { WA_NAVIGATOR } from '@ng-web-apis/common';
 import { TuiDialogService } from '@taiga-ui/core';
 import { BehaviorSubject } from 'rxjs';
-import { MainContainerComponent } from '../components/containers/main.component';
+import { OAuthButtonComponent } from '../components/buttons/oauth.component';
 import { IdentifyFormComponent } from '../components/forms/identify-form.component';
 import { GetOTPEvent } from '../models/get-otp.event';
 import { AuthenticateService } from '../services/authenticate.service';
@@ -13,21 +14,34 @@ import { AuthenticateService } from '../services/authenticate.service';
 @Component({
   selector: 'app-identify-page',
   standalone: true,
-  imports: [CommonModule, IdentifyFormComponent, MainContainerComponent],
+  imports: [CommonModule, IdentifyFormComponent, AssetSrcDirective, OAuthButtonComponent],
   template: `
-    <app-main-container>
-      <header class="py-6 md:py-0 md:flex-1">
-        <h1
-          class="text-xl md:text-4xl font-semibold leading-tight text-center md:text-left w-full mb-4"
-        >
-          Access NextBON
-        </h1>
-        <h2 class="md:text-lg w-full text-center md:text-left">Enter your information</h2>
-      </header>
-      <main class="md:flex-1">
-        <app-identify-form (formSubmit)="requestOtp($event)" [loading]="loading" />
-      </main>
-    </app-main-container>
+    <div class="w-full mx-auto max-w-sm flex-1 mt-8 flex items-center flex-col gap-4">
+      <app-oauth-button
+        class="w-full font-bold shadow-sm rounded-lg p-3 bg-indigo-100 text-gray-800 flex items-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
+        imgClass="w-4"
+        [assetSrc]="'images/auth/google.svg'"
+        alt="Google Logo"
+        title="Continue with Google"
+      />
+      <app-oauth-button
+        class="w-full font-bold shadow-sm rounded-lg p-3 bg-indigo-100 text-gray-800 flex items-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
+        imgClass="w-6"
+        [assetSrc]="'images/auth/github.svg'"
+        alt="Github Logo"
+        title="Continue with Github"
+      />
+      <div
+        class="leading-none px-2 text-center text-sm text-gray-600 tracking-wide font-medium py-3"
+      >
+        or continue with e-mail
+      </div>
+      <app-identify-form
+        class="w-full pb-48"
+        (formSubmit)="requestOtp($event)"
+        [loading]="loading"
+      />
+    </div>
   `,
 })
 export class IdentifyPageComponent {

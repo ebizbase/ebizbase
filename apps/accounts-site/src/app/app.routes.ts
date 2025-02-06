@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { NotFoundComponent } from '@ebizbase/angular-common';
+import { MainLayoutComponent } from './components/layouts/main.component';
 export const appRoutes: Route[] = [
   {
     path: '',
@@ -7,18 +8,20 @@ export const appRoutes: Route[] = [
     redirectTo: '/identify',
   },
   {
-    path: 'identify',
-    loadComponent: () => import('./pages/identify.component').then((c) => c.IdentifyPageComponent),
-  },
-  {
-    path: 'verify-hotp',
-    loadComponent: () =>
-      import('./pages/verify-hotp.component').then((c) => c.VerifyHotpPageComponent),
-  },
-  {
-    path: 'onboarding/name',
-    loadComponent: () =>
-      import('./pages/onboarding-name.component').then((c) => c.OnboardingNamePageComponent),
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: 'identify',
+        loadComponent: () =>
+          import('./pages/identify.component').then((c) => c.IdentifyPageComponent),
+      },
+      {
+        path: 'verify-hotp',
+        loadComponent: () =>
+          import('./pages/verify-hotp.component').then((c) => c.VerifyHotpPageComponent),
+      },
+    ],
   },
   {
     path: '**',

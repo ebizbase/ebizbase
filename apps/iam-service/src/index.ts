@@ -1,33 +1,43 @@
 import { PinoLogger } from '@ebizbase/nestjs-pino-logger';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
-import { NestFactory, Reflector } from '@nestjs/core';
+import fastifyCsrf from '@fastify/csrf-protection';
+import helmet from '@fastify/helmet';
+import { HttpStatus, UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { MainModule } from './main.module';
 
 async function bootstrap() {
-  const bind = process.env['BIND'] || '0.0.0.0';
-  const port = process.env['PORT'] || 3005;
   const logger = new PinoLogger();
+  const domain = process.env['DOMAIN'];
+  if (!domain) {
+    throw new Error('Missing DOMAIN enviroment!');
+  }
+  const port = process.env['PORT'] || 3005;
   const app = await NestFactory.create<NestFastifyApplication>(MainModule, new FastifyAdapter(), {
     logger,
     cors: {
-      origin: '*',
+      origin: new RegExp(`^(https?://(?:.+.)?${domain})$`),
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+      credentials: true,
     },
   });
+
+  await app.register(fastifyCsrf);
+  await app.register(helmet);
+
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true,
       whitelist: true,
+      transform: true,
+      dismissDefaultMessages: true,
       forbidNonWhitelisted: true,
+      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+      exceptionFactory: (errors) => new UnprocessableEntityException(errors),
     })
   );
-  app.useGlobalInterceptors(
-    new ClassSerializerInterceptor(app.get(Reflector), {
-      strategy: 'excludeAll',
-    })
-  );
-  await app.listen(port, bind);
-  logger.log(`REST API PORT ${bind}:${port}`, 'Bootstrap');
+
+  await app.listen(port, '0.0.0.0');
+  logger.log(`REST API PORT ${port}`, 'Bootstrap');
   logger.log('IAM service is up and running', 'Bootstrap');
 }
 

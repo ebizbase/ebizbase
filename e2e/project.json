@@ -4,7 +4,13 @@
   "projectType": "application",
   "sourceRoot": "e2e/src",
   "targets": {
-    "bddgen": {
+    "export": {
+      "command": "bddgen export",
+      "options": {
+        "cwd": "{projectRoot}"
+      }
+    },
+    "gen": {
       "command": "bddgen",
       "options": {
         "cwd": "{projectRoot}"
@@ -12,7 +18,7 @@
     },
     "automate": {
       "executor": "@nx/playwright:playwright",
-      "dependsOn": ["bddgen"],
+      "dependsOn": ["gen"],
       "options": {
         "skipInstall": true,
         "config": "{projectRoot}/playwright.config.ts"

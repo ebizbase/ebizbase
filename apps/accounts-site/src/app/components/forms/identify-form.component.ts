@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TuiButton, TuiDialogService, TuiTextfield } from '@taiga-ui/core';
-import { TuiButtonLoading, TuiCheckbox } from '@taiga-ui/kit';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TuiButton, TuiTextfield } from '@taiga-ui/core';
+import { TuiButtonLoading } from '@taiga-ui/kit';
 import { Subject } from 'rxjs';
 import { GetOTPEvent } from '../../models/get-otp.event';
 import { EmailFormControlComponent } from '../form-controls/email-form-control.component';
@@ -17,19 +17,12 @@ import { EmailFormControlComponent } from '../form-controls/email-form-control.c
     TuiTextfield,
     TuiButton,
     TuiButtonLoading,
-    TuiCheckbox,
     EmailFormControlComponent,
   ],
   template: `
     <form class="flex flex-col gap-2 h-full" [formGroup]="form">
       <div class="flex flex-col flex-1 gap-4">
         <app-email-form-control autocomplete="email" />
-        <div class="flex gap-2 items-center">
-          <input tuiCheckbox type="checkbox" size="s" formControlName="termsAgreed" />
-          <span>I agree to the <a href="#">terms of service</a></span>
-        </div>
-      </div>
-      <div class="flex flex-col gap-8 mt-8 md:justify-end md:flex-row md:items-center">
         <button
           tuiButton
           size="m"
@@ -39,6 +32,12 @@ import { EmailFormControlComponent } from '../form-controls/email-form-control.c
         >
           Next
         </button>
+        <p class="mt-6 text-xs text-gray-600 text-center">
+          I agree to abide by ebizbase's
+          <a href="#" class="border-b border-gray-500 border-dotted"> Terms of Service </a>
+          and its
+          <a href="#" class="border-b border-gray-500 border-dotted"> Privacy Policy </a>
+        </p>
       </div>
     </form>
   `,
@@ -51,10 +50,8 @@ export class IdentifyFormComponent implements AfterViewInit {
 
   form: FormGroup;
 
-  constructor(private readonly dialogService: TuiDialogService) {
-    this.form = new FormGroup({
-      termsAgreed: new FormControl(true),
-    });
+  constructor() {
+    this.form = new FormGroup({});
   }
 
   ngAfterViewInit(): void {
@@ -65,11 +62,7 @@ export class IdentifyFormComponent implements AfterViewInit {
     console.log(this.form.value);
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      if (!this.form.get('termsAgreed').value) {
-        this.dialogService.open('<p>ABC</p>', { label: 'HEADING', size: 's' }).subscribe();
-      } else {
-        this.formSubmit.emit({ email: this.form.value.email });
-      }
+      this.formSubmit.emit({ email: this.form.value.email });
     }
   }
 }

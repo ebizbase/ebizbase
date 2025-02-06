@@ -28,6 +28,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ebizbase/angular-app-layout": ["libs/angular/angular-app-layout/src/index.ts"],
       "@ebizbase/angular-common": ["libs/angular/angular-common/src/index.ts"],
       "@ebizbase/angular-form": ["libs/angular/angular-form/src/index.ts"],
       "@ebizbase/common-types": ["libs/common/common-types/src/index.ts"],

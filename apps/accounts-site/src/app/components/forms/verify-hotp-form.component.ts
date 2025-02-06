@@ -25,9 +25,7 @@ import { OtpFormControlComponent } from '../form-controls/otp-form-control.compo
       <div class="flex flex-col flex-1 gap-4">
         <app-otp-form-control (requestOtp)="onRequestOtp()" />
       </div>
-      <div
-        class="flex flex-col gap-8 justify-center mt-8 md:justify-between md:flex-row md:items-center"
-      >
+      <div class="flex flex-col gap-8 mt-8 md:justify-end md:flex-row md:items-center">
         <button
           tuiButton
           size="m"

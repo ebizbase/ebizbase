@@ -48,6 +48,7 @@ export default defineConfig({
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    ...devices['Desktop Chrome'],
     video: {
       mode: !process.env['CI']
         ? process.env['CIDEV']
@@ -57,37 +58,36 @@ export default defineConfig({
       size: { width: 640, height: 480 },
     },
   },
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    // Uncomment for mobile browsers support
-    /*{
-     name: 'firefox',
-     use: { ...devices['Desktop Firefox'] },
-   },
-   {
-     name: 'webkit',
-     use: { ...devices['Desktop Safari'] },
-   },*/
-    /* {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    }, */
+  // projects: [
+  //   {
+  //     name: 'chromium',
+  //     use: { ...devices['Desktop Chrome'] },
+  //   },
+  //   /*{
+  //    name: 'firefox',
+  //    use: { ...devices['Desktop Firefox'] },
+  //  },
+  //  {
+  //    name: 'webkit',
+  //    use: { ...devices['Desktop Safari'] },
+  //  },*/
+  //   /* {
+  //     name: 'Mobile Chrome',
+  //     use: { ...devices['Pixel 5'] },
+  //   },
+  //   {
+  //     name: 'Mobile Safari',
+  //     use: { ...devices['iPhone 12'] },
+  //   }, */
 
-    // Uncomment for branded browsers
-    /* {
-      name: 'Microsoft Edge',
-      use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    },
-    {
-      name: 'Google Chrome',
-      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    } */
-  ],
+  //   // Uncomment for branded browsers
+  //   /* {
+  //     name: 'Microsoft Edge',
+  //     use: { ...devices['Desktop Edge'], channel: 'msedge' },
+  //   },
+  //   {
+  //     name: 'Google Chrome',
+  //     use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+  //   } */
+  // ],
 });

@@ -1,8 +1,10 @@
-import { Dict, IRestfulResponse } from '@ebizbase/common-types';
-import { Body, Controller, Headers, HttpCode, Logger, Post } from '@nestjs/common';
+import { Dict } from '@ebizbase/common-types';
+import { Body, Controller, Headers, HttpCode, Logger, Post, UseInterceptors } from '@nestjs/common';
+import { SerializeInterceptor } from '../common/serialize.interceptor';
 import { GetOtpInputDTO } from '../dtos/authenticate/get-otp-input.dto';
 import { VerifyHotpInputDTO } from '../dtos/authenticate/verify-input.dto';
 import { VerifyHotpOutputDTO } from '../dtos/authenticate/verify-output.dto';
+import { OutPutDto } from '../dtos/output.dto';
 import { AuthenticateService } from '../services/authenticate.service';
 
 @Controller('authenticate')
@@ -13,28 +15,30 @@ export class AuthenticateController {
 
   @Post('/get-otp')
   @HttpCode(200)
-  async getOtp(@Body() body: GetOtpInputDTO): Promise<IRestfulResponse> {
+  @UseInterceptors(new SerializeInterceptor(OutPutDto))
+  async getOtp(@Body() body: GetOtpInputDTO): Promise<OutPutDto> {
     this.logger.debug({ msg: 'Get OTP', body });
     return this.authenticateService.getOTP(body);
   }
 
   @Post('/verify-hotp')
   @HttpCode(200)
+  @UseInterceptors(new SerializeInterceptor(VerifyHotpOutputDTO))
   async verify(
     @Body() body: VerifyHotpInputDTO,
     @Headers() headers: Dict<string>
-  ): Promise<IRestfulResponse<VerifyHotpOutputDTO>> {
+  ): Promise<VerifyHotpOutputDTO> {
     this.logger.debug({ msg: 'Verify identity', body });
     return this.authenticateService.verify(body, headers);
   }
 
-  @Post('/refresh-token')
-  @HttpCode(200)
-  async refresh(
-    @Body() body: VerifyHotpInputDTO,
-    @Headers() headers: Dict<string>
-  ): Promise<IRestfulResponse<VerifyHotpOutputDTO>> {
-    this.logger.debug({ msg: 'RefreshToken', body });
-    return this.authenticateService.verify(body, headers);
-  }
+  // @Post('/refresh-token')
+  // @HttpCode(200)
+  // async refresh(
+  //   @Body() body: VerifyHotpInputDTO,
+  //   @Headers() headers: Dict<string>
+  // ): Promise<OutPutDto<VerifyHotpOutputDTO>> {
+  //   this.logger.debug({ msg: 'RefreshToken', body });
+  //   return this.authenticateService.verify(body, headers);
+  // }
 }

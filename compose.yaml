@@ -194,3 +194,13 @@ services:
       - traefik.http.routers.accounts-site.rule=Host(`accounts.fbi.com`)
       - traefik.http.routers.accounts-site.entrypoints=http
       - traefik.http.services.accounts-site.loadbalancer.server.port=80
+
+  my-account-site:
+    <<: *sites
+    container_name: my-account-site
+    environment:
+      - PROJECT=my-account-site
+    labels:
+      - traefik.http.routers.my-account-site.rule=Host(`my-account.fbi.com`)
+      - traefik.http.routers.my-account-site.entrypoints=http
+      - traefik.http.services.my-account-site.loadbalancer.server.port=80

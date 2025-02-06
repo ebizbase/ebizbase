@@ -1,0 +1,138 @@
+{
+  "name": "my-account-site",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/my-account-site/src",
+  "tags": ["sites"],
+  "metadata": {
+    "version": "0.0.0",
+    "namespace": "ebizbase/my-account-site"
+  },
+  "targets": {
+    "browser": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/my-account-site/browser",
+        "index": "apps/my-account-site/src/index.html",
+        "main": "apps/my-account-site/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/my-account-site/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [],
+        "styles": [
+          "@taiga-ui/core/styles/taiga-ui-theme.less",
+          "@taiga-ui/core/styles/taiga-ui-fonts.less",
+          "@taiga-ui/addon-mobile/styles/taiga-ui-mobile.less",
+          "apps/my-account-site/src/styles.scss"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "compile": {
+      "dependsOn": ["browser"],
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/apps/my-account-site/server",
+        "main": "apps/my-account-site/server.ts",
+        "tsConfig": "apps/my-account-site/tsconfig.server.json",
+        "inlineStyleLanguage": "scss"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false,
+          "vendorChunk": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:ssr-dev-server",
+      "options": {
+        "port": 4200
+      },
+      "configurations": {
+        "development": {
+          "browserTarget": "my-account-site:browser:development",
+          "serverTarget": "my-account-site:compile:development"
+        },
+        "production": {
+          "browserTarget": "my-account-site:browser:production",
+          "serverTarget": "my-account-site:compile:production"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "my-account-site:browser"
+      }
+    },
+    "prerender": {
+      "executor": "@angular-devkit/build-angular:prerender",
+      "options": {
+        "routes": ["/"]
+      },
+      "configurations": {
+        "development": {
+          "browserTarget": "my-account-site:browser:development",
+          "serverTarget": "my-account-site:compile:development"
+        },
+        "production": {
+          "browserTarget": "my-account-site:browser:production",
+          "serverTarget": "my-account-site:compile:production"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "build": {
+      "dependsOn": ["compile"],
+      "executor": "@ebizbase/nx-docker:build",
+      "defaultConfiguration": "development",
+      "configurations": {
+        "development": {
+          "load": true,
+          "tags": ["edge"]
+        },
+        "production": {
+          "push": true,
+          "tags": ["{major}.{minor}.{patch}"]
+        }
+      }
+    }
+  }
+}
