@@ -13,8 +13,8 @@ export class EbbSiteService implements OnDestroy {
   private _isMonochromeMode = signal<boolean>(false);
 
   // General page config
-  public _language = signal('en');
-  public _metas = signal<Record<string, string>>({});
+  public language = signal('en');
+  public metas = signal<Record<string, string>>({});
 
   constructor(
     @Inject(PLATFORM_ID) protected platformId: object,
@@ -22,7 +22,7 @@ export class EbbSiteService implements OnDestroy {
     private titleService: Title
   ) {
     effect(() => {
-      this.window.document.documentElement.lang = this._language();
+      this.window.document.documentElement.lang = this.language();
     });
 
     effect(() => {
@@ -30,12 +30,12 @@ export class EbbSiteService implements OnDestroy {
         .querySelectorAll('meta[managed="true"]') // get all managed meta tags
         .forEach((currentMeta) => {
           const currentName = currentMeta.getAttribute('name');
-          if (currentName === null || this._metas()[currentName] === currentName) {
+          if (currentName === null || this.metas()[currentName] === currentName) {
             currentMeta.remove();
           }
         });
 
-      Object.entries(this._metas()).forEach(([name, content]) => {
+      Object.entries(this.metas()).forEach(([name, content]) => {
         let meta = this.window.document.querySelector(`meta[name="${name}"][managed="true"]`);
         if (meta === null) {
           meta = this.window.document.createElement('meta');

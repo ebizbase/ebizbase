@@ -18,6 +18,7 @@ import { EbbSiteService } from '../services/ebb-site.service';
   ],
   template: `
     <tui-root
+      class="text-base"
       [attr.tuiTheme]="site.isDarkMode ? 'dark' : 'light'"
       [ngClass]="{ dark: site.isDarkMode, grayscale: this.site.isMonochromeMode }"
     >

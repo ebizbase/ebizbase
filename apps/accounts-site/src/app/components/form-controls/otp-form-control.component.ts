@@ -9,7 +9,7 @@ import { TuiButton } from '@taiga-ui/core';
   standalone: true,
   imports: [CommonModule, TuiButton, TextfieldFormControlComponent],
   template: `
-    <form-control-textfield [control]="control" label="OTP" icon="@tui.key" type="number">
+    <form-control-textfield [control]="control" label="OTP" icon="@tui.key" [type]="'number'">
       <button
         tuiButton
         appearance="flat"

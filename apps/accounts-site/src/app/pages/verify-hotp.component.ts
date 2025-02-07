@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DOMAIN_COMPONENTS, EbbDomain } from '@ebizbase/angular-domain';
+import { EbbSiteService } from '@ebizbase/angular-site';
 import { WA_LOCATION, WA_NAVIGATOR } from '@ng-web-apis/common';
 import { TuiDialogService } from '@taiga-ui/core';
 import { BehaviorSubject } from 'rxjs';
@@ -15,14 +16,18 @@ import { AuthenticateService } from '../services/authenticate.service';
   selector: 'app-verify-hotp',
   standalone: true,
   imports: [CommonModule, VerifyHotpFormComponent],
+  host: { class: 'flex flex-col gap-4 py-16' },
   template: `
-    <div class="w-full mx-auto max-w-sm flex-1 mt-8 flex items-center flex-col gap-4">
-      <app-verify-htop-form
-        (requestOtp)="requestOtp($event)"
-        (identifySubmit)="formSubmitted($event)"
-        [loading]="loading"
-      />
-    </div>
+    <h1 class="w-full text-center text-2xl font-medium mb-2">Verify OTP</h1>
+    <h2 class="w-full text-center text-base mb-6">
+      Check your mailbox and get the one time password!
+    </h2>
+    <app-verify-htop-form
+      class="w-full"
+      (requestOtp)="requestOtp($event)"
+      (identifySubmit)="formSubmitted($event)"
+      [loading]="loading"
+    />
   `,
 })
 export class VerifyHotpPageComponent implements OnInit {
@@ -36,8 +41,14 @@ export class VerifyHotpPageComponent implements OnInit {
     private domain: EbbDomain,
     private router: Router,
     private iamService: AuthenticateService,
-    private dialogService: TuiDialogService
-  ) {}
+    private dialogService: TuiDialogService,
+    private siteService: EbbSiteService
+  ) {
+    this.siteService.title = 'Verify OTP';
+    this.siteService.metas.set({
+      description: 'Verify the one time password you got from your email',
+    });
+  }
 
   ngOnInit(): void {
     this.email = this.route.snapshot.queryParams['email'];

@@ -21,9 +21,6 @@ import { EbbColorModeSwitcher, EbbSite } from '@ebizbase/angular-site';
               >
             </div>
             <div class="flex items-center">
-              <button
-                class="h-8 px-4 text-sm font-semibold text-gray-600 dark:text-gray-400"
-              ></button>
               <ebb-site-color-mode-switcher class="h-8" />
             </div>
           </div>

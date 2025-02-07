@@ -21,18 +21,10 @@ import { OtpFormControlComponent } from '../form-controls/otp-form-control.compo
     OtpFormControlComponent,
   ],
   template: `
-    <form class="flex flex-col gap-2 h-full" [formGroup]="form">
+    <form class="flex flex-col gap-2" [formGroup]="form">
       <div class="flex flex-col flex-1 gap-4">
         <app-otp-form-control (requestOtp)="onRequestOtp()" />
-      </div>
-      <div class="flex flex-col gap-8 mt-8 md:justify-end md:flex-row md:items-center">
-        <button
-          tuiButton
-          size="m"
-          type="button"
-          [loading]="loading | async"
-          (click)="onFormSubmit()"
-        >
+        <button tuiButton type="button" [loading]="loading | async" (click)="onFormSubmit()">
           Next
         </button>
       </div>

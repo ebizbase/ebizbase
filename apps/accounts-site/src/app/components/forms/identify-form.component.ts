@@ -1,11 +1,11 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MessageableValidators, TextfieldFormControlComponent } from '@ebizbase/angular-form';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiButton, TuiLink, TuiTextfield } from '@taiga-ui/core';
 import { TuiButtonLoading } from '@taiga-ui/kit';
 import { Subject } from 'rxjs';
 import { GetOTPEvent } from '../../models/get-otp.event';
+import { EmailFormControlComponent } from '../form-controls/email-form-control.component';
 
 @Component({
   selector: 'app-identify-form',
@@ -18,18 +18,12 @@ import { GetOTPEvent } from '../../models/get-otp.event';
     TuiTextfield,
     TuiButton,
     TuiButtonLoading,
-    TextfieldFormControlComponent,
+    EmailFormControlComponent,
   ],
   template: `
-    <form class="flex flex-col gap-2 h-full" [formGroup]="form">
+    <form class="flex flex-col gap-2" [formGroup]="form">
       <div class="flex flex-col flex-1 gap-4">
-        <form-control-textfield
-          [control]="emailControl"
-          [type]="'email'"
-          autocomplete="email"
-          label="Email"
-          icon="@tui.mail"
-        />
+        <app-email-form-control autocomplete="email" label="Email" icon="@tui.mail" />
         <button tuiButton type="button" [loading]="loading | async" (click)="onFormSubmit()">
           Next
         </button>
@@ -41,19 +35,20 @@ import { GetOTPEvent } from '../../models/get-otp.event';
     </form>
   `,
 })
-export class IdentifyFormComponent {
+export class IdentifyFormComponent implements AfterViewInit {
   @Input() loading: Subject<boolean>;
   @Output() formSubmit = new EventEmitter<GetOTPEvent>();
 
-  protected form: FormGroup = new FormGroup({
-    email: new FormControl('', {
-      updateOn: 'change',
-      validators: [MessageableValidators.required(), MessageableValidators.email()],
-    }),
-  });
+  @ViewChild(EmailFormControlComponent) emailControlComponent: EmailFormControlComponent;
 
-  get emailControl(): FormControl {
-    return this.form.get('email') as FormControl;
+  form: FormGroup;
+
+  constructor() {
+    this.form = new FormGroup({});
+  }
+
+  ngAfterViewInit(): void {
+    this.form.addControl('email', this.emailControlComponent.control);
   }
 
   onFormSubmit() {

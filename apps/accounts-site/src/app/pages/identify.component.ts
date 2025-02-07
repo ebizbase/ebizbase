@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { EbbSiteService } from '@ebizbase/angular-site';
 import { WA_NAVIGATOR } from '@ng-web-apis/common';
 import { TuiDialogService } from '@taiga-ui/core';
 import { BehaviorSubject } from 'rxjs';
@@ -14,8 +15,12 @@ import { AuthenticateService } from '../services/authenticate.service';
   selector: 'app-identify-page',
   standalone: true,
   imports: [CommonModule, IdentifyFormComponent, OAuthButtonComponent],
-  host: { class: 'flex flex-col gap-4' },
+  host: { class: 'flex flex-col gap-4 py-16' },
   template: `
+    <h1 class="w-full text-center text-2xl font-medium mb-2">One-Step Secure Access</h1>
+    <h2 class="w-full text-center text-base mb-10">
+      If you're a new user, an account will be created for you automatically
+    </h2>
     <app-oauth-button
       assetSrc="/images/google.svg"
       alt="Google Logo"
@@ -29,7 +34,7 @@ import { AuthenticateService } from '../services/authenticate.service';
     <div class="leading-none px-2 text-center text-sm text-gray-600 tracking-wide font-medium py-3">
       or continue with e-mail
     </div>
-    <app-identify-form class="w-full pb-48" (formSubmit)="requestOtp($event)" [loading]="loading" />
+    <app-identify-form class="w-full" (formSubmit)="requestOtp($event)" [loading]="loading" />
   `,
 })
 export class IdentifyPageComponent {
@@ -39,8 +44,14 @@ export class IdentifyPageComponent {
     @Inject(WA_NAVIGATOR) private navigator: Navigator,
     private dialogService: TuiDialogService,
     private router: Router,
-    private iamService: AuthenticateService
-  ) {}
+    private iamService: AuthenticateService,
+    private siteService: EbbSiteService
+  ) {
+    this.siteService.title = 'One-Step Secure Access';
+    this.siteService.metas.set({
+      description: 'Sign in to ecoma without password, quick and secure',
+    });
+  }
 
   async requestOtp(data: GetOTPEvent) {
     this.loading.next(true);
