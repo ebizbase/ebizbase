@@ -8,7 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 export class EbbSiteService implements OnDestroy {
   // color mode
   private _systemColorSchemeSubscription = new Subscription();
-  private _colorMode = signal<'dark' | 'light' | 'monochrome' | 'system'>('system');
+  private _colorMode = signal<'dark' | 'light' | 'monochrome' | 'system'>('light');
   private _isDarkMode = signal<boolean>(false);
   private _isMonochromeMode = signal<boolean>(false);
 

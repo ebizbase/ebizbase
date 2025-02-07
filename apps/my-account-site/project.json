@@ -42,9 +42,8 @@
         ],
         "styles": [
           "@taiga-ui/core/styles/taiga-ui-theme.less",
-          "@taiga-ui/core/styles/taiga-ui-fonts.less",
           "@taiga-ui/addon-mobile/styles/taiga-ui-mobile.less",
-          "apps/home-site/src/styles.scss"
+          "apps/my-account-site/src/styles.scss"
         ],
         "scripts": []
       },

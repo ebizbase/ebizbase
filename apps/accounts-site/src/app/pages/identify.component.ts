@@ -14,33 +14,22 @@ import { AuthenticateService } from '../services/authenticate.service';
   selector: 'app-identify-page',
   standalone: true,
   imports: [CommonModule, IdentifyFormComponent, OAuthButtonComponent],
+  host: { class: 'flex flex-col gap-4' },
   template: `
-    <div class="w-full mx-auto max-w-sm flex-1 mt-8 flex items-center flex-col gap-4">
-      <app-oauth-button
-        class="w-full font-bold shadow-sm rounded-lg p-3 bg-indigo-100 text-gray-800 flex items-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
-        imgClass="w-4"
-        assetSrc="/images/google.svg"
-        alt="Google Logo"
-        title="Continue with Google"
-      />
-      <app-oauth-button
-        class="w-full font-bold shadow-sm rounded-lg p-3 bg-indigo-100 text-gray-800 flex items-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
-        imgClass="w-6"
-        assetSrc="/images/github.svg"
-        alt="Github Logo"
-        title="Continue with Github"
-      />
-      <div
-        class="leading-none px-2 text-center text-sm text-gray-600 tracking-wide font-medium py-3"
-      >
-        or continue with e-mail
-      </div>
-      <app-identify-form
-        class="w-full pb-48"
-        (formSubmit)="requestOtp($event)"
-        [loading]="loading"
-      />
+    <app-oauth-button
+      assetSrc="/images/google.svg"
+      alt="Google Logo"
+      title="Continue with Google"
+    />
+    <app-oauth-button
+      assetSrc="/images/github.svg"
+      alt="Github Logo"
+      title="Continue with Github"
+    />
+    <div class="leading-none px-2 text-center text-sm text-gray-600 tracking-wide font-medium py-3">
+      or continue with e-mail
     </div>
+    <app-identify-form class="w-full pb-48" (formSubmit)="requestOtp($event)" [loading]="loading" />
   `,
 })
 export class IdentifyPageComponent {
