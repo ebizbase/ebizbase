@@ -6,11 +6,11 @@ import clsx from 'clsx';
 import { EbbAppService } from '../services';
 import { Navbar } from './navbar/navbar.component';
 import { PageHeading } from './page-heading/page-heading.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
+import { Sidebar } from './sidebar/sidebar.component';
 
 @Component({
   selector: 'ebb-app',
-  imports: [NgIf, NgClass, RouterOutlet, Navbar, SidebarComponent, PageHeading, EbbSite],
+  imports: [NgIf, NgClass, RouterOutlet, Navbar, Sidebar, PageHeading, EbbSite],
   template: `
     <ebb-site>
       <div class="flex flex-col h-[calc(100dvh)] overflow-hidden text-base">

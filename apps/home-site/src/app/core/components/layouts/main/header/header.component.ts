@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { AssetSrcDirective } from '@ebizbase/angular-asset';
+import { EbbAssetSrc } from '@ebizbase/angular-asset';
 import { DOMAIN_COMPONENTS, EbbDomain } from '@ebizbase/angular-domain';
 @Component({
   selector: 'app-layout-main-header',
   standalone: true,
-  imports: [CommonModule, AssetSrcDirective],
+  imports: [CommonModule, EbbAssetSrc],
   providers: [],
   template: `
     <header class="fixed w-full">

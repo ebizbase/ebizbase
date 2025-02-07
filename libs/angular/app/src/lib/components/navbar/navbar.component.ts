@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { AssetSrcDirective } from '@ebizbase/angular-asset';
+import { EbbAssetSrc } from '@ebizbase/angular-asset';
 import { TuiButton } from '@taiga-ui/core';
 import { EbbAppService } from '../../services';
 import { NotificationMenu } from './notification-menu/notification-menu.component';
@@ -9,7 +9,7 @@ import { UserMenu } from './user-menu/user-menu.component';
 @Component({
   selector: 'ebb-app-navbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, TuiButton, UserMenu, NotificationMenu, AssetSrcDirective],
+  imports: [NgIf, TuiButton, UserMenu, NotificationMenu, EbbAssetSrc],
   template: `
     <div class="flex h-16 w-screen items-center bg-[var(--tui-background-base-alt)] px-2 lg:px-4">
       <div class="flex items-center">

@@ -1,11 +1,11 @@
-import 'zone.js/node';
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr/node';
+import { provideLocation, provideUserAgent } from '@ng-web-apis/universal';
 import express from 'express';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import 'zone.js/node';
 import bootstrap from './src/main.server';
-import { provideLocation, provideUserAgent } from '@ng-web-apis/universal';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -47,7 +47,6 @@ export function app(): express.Express {
         url: `${protocol}://${host}${originalUrl}`,
         publicPath: distFolder,
         providers: [
-          { provide: 'DOMAIN', useValue: process.env['DOMAIN'] },
           { provide: APP_BASE_HREF, useValue: baseUrl },
           { provide: 'REQUEST', useValue: req },
           { provide: 'RESPONSE', useValue: res },
@@ -63,12 +62,12 @@ export function app(): express.Express {
 }
 
 function run(): void {
-  const port = process.env['PORT'] || 4000;
+  const port = process.env['PORT'] || '4000';
 
   // Start up the Node server
   const server = app();
-  server.listen(port, () => {
-    console.log(`Node Express server listening on http://127.0.0.1:${port}`);
+  server.listen(parseInt(port), '0.0.0.0', () => {
+    console.log(`Node Express server listening on http://0.0.0.0:${port}`);
   });
 }
 

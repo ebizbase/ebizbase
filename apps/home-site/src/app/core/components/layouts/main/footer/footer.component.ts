@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { AssetSrcDirective } from '@ebizbase/angular-asset';
+import { EbbAssetSrc } from '@ebizbase/angular-asset';
 @Component({
   selector: 'app-layout-main-footer',
   standalone: true,
-  imports: [CommonModule, AssetSrcDirective],
+  imports: [CommonModule, EbbAssetSrc],
   template: `
     <footer class="bg-white dark:bg-gray-800">
       <div class="max-w-screen-xl p-4 py-6 mx-auto lg:py-16 md:p-8 lg:p-10">

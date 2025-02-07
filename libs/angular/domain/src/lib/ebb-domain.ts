@@ -3,7 +3,7 @@ import { WA_LOCATION } from '@ng-web-apis/common';
 
 export const IS_HOME_SITE = 'IS_HOME_SITE';
 
-export function provideHomeSiteMark() {
+export function provideEbbHomeSiteMark() {
   return {
     provide: IS_HOME_SITE,
     useValue: true,

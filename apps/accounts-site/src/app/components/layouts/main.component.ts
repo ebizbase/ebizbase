@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AssetBgDirective, AssetSrcDirective } from '@ebizbase/angular-asset';
+import { EbbAssetBg, EbbAssetSrc } from '@ebizbase/angular-asset';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, AssetSrcDirective, AssetBgDirective],
+  imports: [CommonModule, RouterOutlet, EbbAssetSrc, EbbAssetBg],
   template: `
     <div class="w-screen min-h-screen bg-gray-50 text-gray-900 flex">
       <div class="md:max-w-2xl md:w-2/5 w-full sm:p-12 p-6 !pt-0 flex flex-col justify-center">

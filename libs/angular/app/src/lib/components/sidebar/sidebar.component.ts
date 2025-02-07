@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostBinding } from '@angular/core';
-import { AssetSrcDirective } from '@ebizbase/angular-asset';
+import { EbbAssetSrc } from '@ebizbase/angular-asset';
 import { clsx } from 'clsx';
 import { EbbAppService } from '../../services';
-import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
+import { SidebarMenu } from './sidebar-menu/sidebar-menu.component';
 
 @Component({
   selector: 'ebb-app-sidebar',
-  imports: [CommonModule, SidebarMenuComponent, AssetSrcDirective],
+  imports: [CommonModule, SidebarMenu, EbbAssetSrc],
   template: `
     <div class="flex lg:hidden items-center space-x-1 h-14 pl-2">
       <img class="h-5" [ebbAssetSrc]="'images/logos/wordmark.svg'" alt="Logo" />
@@ -16,7 +16,7 @@ import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
     <ebb-app-sidebar-menu />
   `,
 })
-export class SidebarComponent {
+export class Sidebar {
   constructor(public layoutService: EbbAppService) {}
 
   @HostBinding('class') get classes() {

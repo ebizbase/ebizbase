@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { AssetSrcDirective } from '@ebizbase/angular-asset';
+import { EbbAssetSrc } from '@ebizbase/angular-asset';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [CommonModule, AssetSrcDirective],
+  imports: [CommonModule, EbbAssetSrc],
   template: `
     <section class="bg-white dark:bg-gray-900">
       <div

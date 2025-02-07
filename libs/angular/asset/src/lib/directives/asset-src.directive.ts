@@ -1,9 +1,9 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2 } from '@angular/core';
 import { DOMAIN_COMPONENTS, EbbDomain } from '@ebizbase/angular-domain';
 
-@Directive({ selector: '[ebbAssetBg]' })
-export class AssetBgDirective implements OnChanges {
-  @Input() ebbAssetBg?: string;
+@Directive({ selector: '[ebbAssetSrc]' })
+export class EbbAssetSrc implements OnChanges {
+  @Input() ebbAssetSrc!: string;
 
   constructor(
     private el: ElementRef,
@@ -12,14 +12,14 @@ export class AssetBgDirective implements OnChanges {
   ) {}
 
   ngOnChanges() {
-    if (this.ebbAssetBg) {
+    if (this.ebbAssetSrc) {
       const imgElement = this.el.nativeElement as HTMLElement;
       // Remove the leading "/" if present
-      const path = this.ebbAssetBg.startsWith('/') ? this.ebbAssetBg.slice(1) : this.ebbAssetBg;
+      const path = this.ebbAssetSrc.startsWith('/') ? this.ebbAssetSrc.slice(1) : this.ebbAssetSrc;
       // Create the full path
       const fullPath = `${this.domain.getUrl(DOMAIN_COMPONENTS.ASSET)}/${path}`;
       // Set the attribute for the element
-      this.renderer.setStyle(imgElement, 'background-image', `url('${fullPath}')`);
+      this.renderer.setAttribute(imgElement, 'src', fullPath);
     }
   }
 }
