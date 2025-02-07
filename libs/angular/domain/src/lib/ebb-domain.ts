@@ -11,7 +11,6 @@ export function provideEbbHomeSiteMark() {
 }
 
 export enum DOMAIN_COMPONENTS {
-  ASSET,
   HOME_SITE,
   ACCOUNTS_SITE,
   MY_ACCOUNT_SITE,
@@ -42,8 +41,6 @@ export class EbbDomain {
 
   getUrl(component: DOMAIN_COMPONENTS) {
     switch (component) {
-      case DOMAIN_COMPONENTS.ASSET:
-        return `${this.Protocol}://assets.${this.RootDomain}`;
       case DOMAIN_COMPONENTS.HOME_SITE:
         return `${this.Protocol}://${this.RootDomain}`;
       case DOMAIN_COMPONENTS.ACCOUNTS_SITE:

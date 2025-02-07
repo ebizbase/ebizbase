@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { WA_LOCATION } from '@ng-web-apis/common';
-import { EbbDomain, IS_HOME_SITE } from './ebb-domain';
+import { DOMAIN_COMPONENTS, EbbDomain, IS_HOME_SITE } from './ebb-domain';
 
 describe('EbbDomain', () => {
   let service: EbbDomain;
@@ -58,7 +58,6 @@ describe('EbbDomain', () => {
         { provide: IS_HOME_SITE, useValue: false },
       ],
     });
-
     service = TestBed.inject(EbbDomain);
     expect(service.RootDomain).toBe('domain.com');
   });
@@ -73,8 +72,13 @@ describe('EbbDomain', () => {
     });
 
     service = TestBed.inject(EbbDomain);
-    const component = 'app';
-    const expectedUrl = 'https://app.sub.domain.com';
-    expect(service.getUrl(component)).toBe(expectedUrl);
+    expect(service.getUrl(DOMAIN_COMPONENTS.HOME_SITE)).toBe('https://sub.domain.com');
+    expect(service.getUrl(DOMAIN_COMPONENTS.ACCOUNTS_SITE)).toBe('https://accounts.sub.domain.com');
+    expect(service.getUrl(DOMAIN_COMPONENTS.MY_ACCOUNT_SITE)).toBe(
+      'https://my-account.sub.domain.com'
+    );
+    expect(service.getUrl(DOMAIN_COMPONENTS.IAM_SERVICE)).toBe(
+      'https://iam-service.sub.domain.com'
+    );
   });
 });
