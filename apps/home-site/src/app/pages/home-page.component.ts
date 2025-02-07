@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { EbbAssetSrc } from '@ebizbase/angular-asset';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [CommonModule, EbbAssetSrc],
+  imports: [CommonModule],
   template: `
     <section class="bg-white dark:bg-gray-900">
       <div
@@ -13,7 +12,7 @@ import { EbbAssetSrc } from '@ebizbase/angular-asset';
       >
         <div class="mr-auto place-self-center lg:col-span-7">
           <h1
-            class="max-w-2xl mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white"
+            class="max-w-2xl mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white "
           >
             bizsuits <br />products & brands
           </h1>
@@ -25,7 +24,7 @@ import { EbbAssetSrc } from '@ebizbase/angular-asset';
           <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4"></div>
         </div>
         <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-          <img [ebbAssetSrc]="'images/hero.png'" alt="Hero" />
+          <img src="/images/hero.png" alt="Hero" />
         </div>
       </div>
     </section>
@@ -324,7 +323,7 @@ import { EbbAssetSrc } from '@ebizbase/angular-asset';
             </p>
           </div>
           <img
-            [ebbAssetSrc]="'images/feature-1.png'"
+            [src]="'images/feature-1.png'"
             alt="dashboard feature image 1"
             class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex"
           />
@@ -332,7 +331,7 @@ import { EbbAssetSrc } from '@ebizbase/angular-asset';
         <!-- Row -->
         <div class="items-center gap-8 lg:grid lg:grid-cols-2 xl:gap-16">
           <img
-            [ebbAssetSrc]="'images/feature-2.png'"
+            [src]="'images/feature-2.png'"
             alt="dashboard feature image 2"
             class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex"
           />

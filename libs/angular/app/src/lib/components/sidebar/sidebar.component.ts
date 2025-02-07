@@ -1,17 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostBinding } from '@angular/core';
-import { EbbAssetSrc } from '@ebizbase/angular-asset';
 import { clsx } from 'clsx';
 import { EbbAppService } from '../../services';
 import { SidebarMenu } from './sidebar-menu/sidebar-menu.component';
 
 @Component({
   selector: 'ebb-app-sidebar',
-  imports: [CommonModule, SidebarMenu, EbbAssetSrc],
+  imports: [CommonModule, SidebarMenu],
   template: `
     <div class="flex lg:hidden items-center space-x-1 h-14 pl-2">
-      <img class="h-5" [ebbAssetSrc]="'images/logos/wordmark.svg'" alt="Logo" />
-      <span class="text-lg text-sky-700 font-semibold">Account</span>
+      <img class="h-5" src="/images/logo.svg" alt="Logo" />
+      <span class="ml-0.5 text-xl font-semibold text-gray-600 dark:text-gray-400 tracking-wide"
+        >comma</span
+      >
+      <span class="ml-0.5 text-xl font-semibold text-gray-600 dark:text-gray-400 tracking-wide"
+        >Account</span
+      >
     </div>
     <ebb-app-sidebar-menu />
   `,

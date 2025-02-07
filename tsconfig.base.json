@@ -29,7 +29,6 @@
     "baseUrl": ".",
     "paths": {
       "@ebizbase/angular-app": ["libs/angular/app/src/index.ts"],
-      "@ebizbase/angular-asset": ["libs/angular/asset/src/index.ts"],
       "@ebizbase/angular-authenticate": ["libs/angular/authenticate/src/index.ts"],
       "@ebizbase/angular-common": ["libs/angular/common/src/index.ts"],
       "@ebizbase/angular-cookie": ["libs/angular/cookie/src/index.ts"],

@@ -16,7 +16,7 @@ import {
 } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, Route } from '@angular/router';
-import { provideEbbAsset } from '@ebizbase/angular-asset';
+import { TUI_ICON_RESOLVER } from '@taiga-ui/core';
 import { NG_EVENT_PLUGINS } from '@taiga-ui/event-plugins';
 
 export const provideEbbSite = (
@@ -29,7 +29,18 @@ export const provideEbbSite = (
   provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(appRoutes),
   NG_EVENT_PLUGINS,
-  provideEbbAsset(),
+  {
+    provide: TUI_ICON_RESOLVER,
+    deps: [],
+    useFactory() {
+      return (name: string) => {
+        // using @tui.[icon-name] for taiga icons
+        // @mat.[icon-name] for material icons
+        // @fa.[icon-name] for font awesome icons
+        return name.startsWith('@') ? `/icons/${name.slice(1).replace('.', '/')}.svg` : name;
+      };
+    },
+  },
   provideAppInitializer(async () => {
     // Display Xss waring
     if (isPlatformBrowser(inject(PLATFORM_ID)) && !isDevMode()) {

@@ -19,14 +19,14 @@ import { AuthenticateService } from '../services/authenticate.service';
       <app-oauth-button
         class="w-full font-bold shadow-sm rounded-lg p-3 bg-indigo-100 text-gray-800 flex items-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
         imgClass="w-4"
-        [assetSrc]="'images/auth/google.svg'"
+        assetSrc="/images/google.svg"
         alt="Google Logo"
         title="Continue with Google"
       />
       <app-oauth-button
         class="w-full font-bold shadow-sm rounded-lg p-3 bg-indigo-100 text-gray-800 flex items-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
         imgClass="w-6"
-        [assetSrc]="'images/auth/github.svg'"
+        assetSrc="/images/github.svg"
         alt="Github Logo"
         title="Continue with Github"
       />

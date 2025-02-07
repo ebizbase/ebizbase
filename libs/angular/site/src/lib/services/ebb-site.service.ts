@@ -1,4 +1,5 @@
 import { effect, Inject, Injectable, OnDestroy, signal } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { WA_WINDOW } from '@ng-web-apis/common';
 import { Observable, Subscription } from 'rxjs';
 
@@ -10,7 +11,44 @@ export class EbbSiteService implements OnDestroy {
   private _isDarkMode = signal<boolean>(false);
   private _isMonochromeMode = signal<boolean>(false);
 
-  constructor(@Inject(WA_WINDOW) private window: Window) {
+  // General page config
+  public _language = signal('en');
+  public _metas = signal<Record<string, string>>({});
+
+  constructor(
+    @Inject(WA_WINDOW) private window: Window,
+    private titleService: Title
+  ) {
+    effect(() => {
+      this.window.document.documentElement.lang = this._language();
+    });
+
+    effect(() => {
+      this.window.document
+        .querySelectorAll('meta[managed="true"]') // get all managed meta tags
+        .forEach((currentMeta) => {
+          const currentName = currentMeta.getAttribute('name');
+          if (currentName === null || this._metas()[currentName] === currentName) {
+            currentMeta.remove();
+          }
+        });
+
+      Object.entries(this._metas()).forEach(([name, content]) => {
+        let meta = this.window.document.querySelector(`meta[name="${name}"][managed="true"]`);
+        if (meta === null) {
+          meta = this.window.document.createElement('meta');
+          meta.setAttribute('name', name);
+          meta.setAttribute('content', content);
+          meta.setAttribute('managed', 'true');
+          this.window.document.head.appendChild(meta);
+        } else {
+          meta.setAttribute('name', name);
+          meta.setAttribute('content', content);
+          meta.setAttribute('managed', 'true');
+        }
+      });
+    });
+
     effect(() => {
       if (this._colorMode() === 'system') {
         this._systemColorSchemeSubscription.add(
@@ -40,12 +78,20 @@ export class EbbSiteService implements OnDestroy {
     return this._colorMode();
   }
 
-  public isDarkMode() {
+  public get isDarkMode() {
     return this._isDarkMode();
   }
 
-  public isMonochromeMode() {
+  public get isMonochromeMode() {
     return this._isMonochromeMode();
+  }
+
+  public get title() {
+    return this.titleService.getTitle();
+  }
+
+  public set title(title: string) {
+    this.titleService.setTitle(title);
   }
 
   private isDarkModeObserverable(signal?: AbortSignal): Observable<boolean> {

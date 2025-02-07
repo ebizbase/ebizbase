@@ -130,40 +130,6 @@ services:
     healthcheck:
       test: ['CMD', 'mc', 'ready', 'local']
 
-  assets:
-    <<: *apps
-    build:
-      dockerfile: apps/assets/Dockerfile.development
-      context: .
-    container_name: assets
-    volumes:
-      - ./apps/assets/public:/static
-      - ./node_modules/@taiga-ui/icons/src:/static/tui:ro
-    labels:
-      - traefik.http.routers.assets.rule=Host(`assets.fbi.com`)
-      - traefik.http.routers.assets.entrypoints=http
-      - traefik.http.services.assets.loadbalancer.server.port=80
-    healthcheck:
-      test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1/favicon.ico']
-
-  icons:
-    <<: *apps
-    build:
-      dockerfile: apps/icons/Dockerfile.development
-      context: .
-    container_name: icons
-    volumes:
-      - ./node_modules/@taiga-ui/icons/src:/static/tui:ro
-      - ./node_modules/@taiga-ui/icons-fontawesome/src:/static/fa:ro
-      - ./node_modules/@taiga-ui/icons-material/src:/static/mat:ro
-    labels:
-      - traefik.http.routers.icons.rule=Host(`icons.fbi.com`)
-      - traefik.http.routers.icons.entrypoints=http
-      - traefik.http.services.icons.loadbalancer.server.port=80
-    healthcheck:
-      test:
-        ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1/tui/a-arrow-down-filled.svg']
-
   iam-service:
     <<: *services
     container_name: iam-service

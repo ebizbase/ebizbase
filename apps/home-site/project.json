@@ -20,7 +20,27 @@
         "polyfills": ["zone.js"],
         "tsConfig": "apps/home-site/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": [],
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/home-site/public"
+          },
+          {
+            "glob": "**/*",
+            "input": "node_modules/@taiga-ui/icons/src",
+            "output": "icons/tui"
+          },
+          {
+            "glob": "**/*",
+            "input": "node_modules/@taiga-ui/icons-material/src",
+            "output": "icons/mat"
+          },
+          {
+            "glob": "**/*",
+            "input": "node_modules/@taiga-ui/icons-fontawesome/src",
+            "output": "icons/fa"
+          }
+        ],
         "styles": [
           "@taiga-ui/core/styles/taiga-ui-theme.less",
           "@taiga-ui/core/styles/taiga-ui-fonts.less",
@@ -80,6 +100,23 @@
       "defaultConfiguration": "production"
     },
     "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "disableHostCheck": true,
+        "host": "0.0.0.0",
+        "port": 4200
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "home-site:browser:development"
+        },
+        "production": {
+          "buildTarget": "home-site:browser:production"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve-ssr": {
       "executor": "@angular-devkit/build-angular:ssr-dev-server",
       "options": {
         "port": 4200
