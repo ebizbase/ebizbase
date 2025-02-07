@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NotificationMenuComponent } from './notification-menu.component';
+import { NotificationMenu } from './notification-menu.component';
 
-describe('NotificationMenuComponent', () => {
-  let component: NotificationMenuComponent;
-  let fixture: ComponentFixture<NotificationMenuComponent>;
+describe('NotificationMenu', () => {
+  let component: NotificationMenu;
+  let fixture: ComponentFixture<NotificationMenu>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NotificationMenuComponent, NoopAnimationsModule],
+      imports: [NotificationMenu, NoopAnimationsModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NotificationMenuComponent);
+    fixture = TestBed.createComponent(NotificationMenu);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

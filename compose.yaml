@@ -36,8 +36,8 @@ x-sites-config: &sites
     dockerfile: Dockerfile.site
   volumes:
     - .:/workspace
-    - ./.angular/deployment:/workspace/.angular
-    - ./dist/deployment:/workspace/dist
+    - ./.deployment:/workspace/.angular
+    - ./deployment:/workspace/dist
   healthcheck:
     test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1']
 
