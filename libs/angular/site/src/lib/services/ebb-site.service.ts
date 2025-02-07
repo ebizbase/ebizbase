@@ -1,4 +1,5 @@
-import { effect, Inject, Injectable, OnDestroy, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { effect, Inject, Injectable, OnDestroy, PLATFORM_ID, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { WA_WINDOW } from '@ng-web-apis/common';
 import { Observable, Subscription } from 'rxjs';
@@ -16,6 +17,7 @@ export class EbbSiteService implements OnDestroy {
   public _metas = signal<Record<string, string>>({});
 
   constructor(
+    @Inject(PLATFORM_ID) protected platformId: object,
     @Inject(WA_WINDOW) private window: Window,
     private titleService: Title
   ) {
@@ -68,6 +70,10 @@ export class EbbSiteService implements OnDestroy {
         monochrome: this._isMonochromeMode(),
       });
     });
+  }
+
+  get isPlatformBrowser() {
+    return isPlatformBrowser(this.platformId);
   }
 
   public set colorMode(mode: 'dark' | 'light' | 'monochrome' | 'system') {

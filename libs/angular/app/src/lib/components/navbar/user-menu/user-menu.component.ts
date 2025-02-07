@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { EbbSiteService } from '@ebizbase/angular-site';
+import { EbbColorModeSwitcher, EbbSiteService } from '@ebizbase/angular-site';
 import { TuiDropdownMobile } from '@taiga-ui/addon-mobile';
 import { TuiActiveZone, TuiObscured } from '@taiga-ui/cdk';
 import { TuiDropdown, TuiFallbackSrcPipe, TuiIcon } from '@taiga-ui/core';
@@ -9,7 +9,6 @@ import {
   TuiAvatar,
   TuiDataListWrapper,
   TuiFilterByInputPipe,
-  TuiSegmented,
   TuiStringifyContentPipe,
 } from '@taiga-ui/kit';
 import { TuiComboBoxModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
@@ -32,20 +31,13 @@ const LANGUAGES = [
     TuiObscured,
     TuiActiveZone,
     TuiFallbackSrcPipe,
-    TuiSegmented,
+    EbbColorModeSwitcher,
     ReactiveFormsModule,
     TuiComboBoxModule,
     TuiDataListWrapper,
     TuiFilterByInputPipe,
     TuiStringifyContentPipe,
     TuiTextfieldControllerModule,
-  ],
-  styles: [
-    `
-      :host {
-        --tui-height-l: 2.7rem;
-      }
-    `,
   ],
   template: `
     <tui-avatar
@@ -62,7 +54,7 @@ const LANGUAGES = [
       (tuiObscured)="onObscured($event)"
     />
 
-    <ng-template #userMenu>
+    <ng-template #userMenu tuiTheme="light">
       <div class="w-full bg-[var(--tui-background-neutral-1)] p-8 space-y-6">
         <div class="flex items-center space-x-4">
           <tui-avatar
@@ -80,57 +72,23 @@ const LANGUAGES = [
         </div>
 
         <div
-          class="flex text-sm lg:text-base justify-between w-full border border-[var(--tui-background-neutral-1-hover)] rounded-full bg-[var(--tui-background-neutral-1)]"
+          class="flex h-12 text-sm lg:text-base justify-between w-full border border-[var(--tui-background-neutral-1-hover)] rounded-full bg-[var(--tui-background-neutral-1)]"
         >
           <div
-            class="flex flex-1 p-3.5 space-x-2 justify-center items-center border-r border-[var(--tui-background-neutral-1-hover)] hover:bg-[var(--tui-background-neutral-1-hover)] rounded-s-full"
+            class="flex flex-1 space-x-2 justify-center items-center border-r border-[var(--tui-background-neutral-1-hover)] hover:bg-[var(--tui-background-neutral-1-hover)] rounded-s-full"
           >
-            <tui-icon icon="@tui.user-pen" />
-            <span>Your profile</span>
+            <tui-icon icon="@tui.user-pen" class="text-sm" />
+            <span>Profile</span>
           </div>
           <div
-            class="flex flex-1 p-3.5 space-x-2 justify-center items-center hover:bg-[var(--tui-background-neutral-1-hover)] rounded-e-full"
+            class="flex flex-1 space-x-2 justify-center items-center hover:bg-[var(--tui-background-neutral-1-hover)] rounded-e-full"
           >
-            <tui-icon icon="@tui.log-out" />
+            <tui-icon icon="@tui.log-out" class="text-sm" />
             <span>Logout</span>
           </div>
         </div>
 
-        <tui-segmented
-          size="l"
-          [style.border-radius.rem]="10"
-          class="flex justify-between"
-          [activeItemIndex]="getCurrentColorModeIndex()"
-        >
-          <button
-            type="button"
-            class="text-sm lg:text-base text-center"
-            (click)="onChangeColorMode('light')"
-          >
-            Light
-          </button>
-          <button
-            type="button"
-            class="text-sm lg:text-base text-center"
-            (click)="onChangeColorMode('dark')"
-          >
-            Dark
-          </button>
-          <button
-            type="button"
-            class="text-sm lg:text-base text-center"
-            (click)="onChangeColorMode('monochrome')"
-          >
-            Monochrome
-          </button>
-          <button
-            type="button"
-            class="text-sm lg:text-base text-center"
-            (click)="onChangeColorMode('system')"
-          >
-            System
-          </button>
-        </tui-segmented>
+        <ebb-site-color-mode-switcher class="flex w-full h-14" />
 
         <tui-combo-box
           class="!hidden w-full !rounded-full"

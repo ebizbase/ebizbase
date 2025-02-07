@@ -1,5 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { EbbSiteService } from '@ebizbase/angular-site';
 import { TuiButton } from '@taiga-ui/core';
 import { EbbAppService } from '../../services';
 import { NotificationMenu } from './notification-menu/notification-menu.component';
@@ -14,17 +15,17 @@ import { UserMenu } from './user-menu/user-menu.component';
       <div class="flex items-center">
         <!-- Open sidebar (only mobile) -->
         <a
-          *ngIf="layoutService.menus.length > 0"
+          *ngIf="app.menus.length > 0"
           tuiButton
           appearance="flat"
           size="s"
           class="!rounded-full lg:!hidden "
           iconStart="@tui.align-justify"
           tabindex="0"
-          (click)="layoutService.toggleMobileSidebar()"
-          (key)="layoutService.toggleMobileSidebar()"
-          (keydown.enter)="layoutService.toggleMobileSidebar()"
-          (keydown.space)="layoutService.toggleMobileSidebar()"
+          (click)="app.toggleMobileSidebar()"
+          (key)="app.toggleMobileSidebar()"
+          (keydown.enter)="app.toggleMobileSidebar()"
+          (keydown.space)="app.toggleMobileSidebar()"
         >
         </a>
 
@@ -37,11 +38,14 @@ import { UserMenu } from './user-menu/user-menu.component';
       </div>
       <div class="flex flex-1 gap-3 justify-end items-center">
         <ebb-app-notification-menu class="hidden" />
-        <ebb-app-user-menu />
+        <ebb-app-user-menu *ngIf="site.isPlatformBrowser" />
       </div>
     </div>
   `,
 })
 export class Navbar {
-  constructor(protected layoutService: EbbAppService) {}
+  constructor(
+    protected app: EbbAppService,
+    protected site: EbbSiteService
+  ) {}
 }
