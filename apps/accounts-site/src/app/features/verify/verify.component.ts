@@ -24,13 +24,9 @@ import { LifeCycle } from '../../core/services/lifecycle.service';
     TuiButton,
     TextfieldFormControlComponent,
   ],
-  host: { class: 'flex flex-col gap-4 py-16 items-center' },
+  host: { class: 'flex flex-col gap-4 w-screen max-w-sm' },
   template: `
     <h1 class="text-2xl font-medium w-full text-center">OTP Verification</h1>
-    <div class="leading-6 text-sm text-gray-600 tracking-wide text-center">
-      Check your inbox for our email! If it’s not there, look in your spam/junk folder and mark it
-      as ‘Not Spam’ to receive future messages smoothly.
-    </div>
     <form class="flex flex-col gap-2 w-full" [formGroup]="form">
       <div class="flex flex-col flex-1 gap-4">
         <form-control-textfield
@@ -50,6 +46,10 @@ import { LifeCycle } from '../../core/services/lifecycle.service';
             {{ otpResendCountdown === 0 ? 'Get OTP' : otpResendCountdown }}
           </button>
         </form-control-textfield>
+        <div class="leading-6 text-sm text-gray-600 tracking-wide text-center">
+          Check your inbox for our email! If it’s not there, look in your spam/junk folder and mark
+          it as ‘Not Spam’ to receive future messages smoothly.
+        </div>
         <button tuiButton type="button" [loading]="loading" (click)="onFormSubmit()">Next</button>
       </div>
     </form>

@@ -19,13 +19,11 @@ import { LifeCycle } from './../../core/services/lifecycle.service';
     TuiButton,
     TextfieldFormControlComponent,
   ],
-  host: { class: 'flex flex-col gap-4 py-16' },
+  host: { class: 'flex flex-col gap-4 w-screen max-w-sm' },
   template: `
     <!-- HEADHING -->
-    <h1 class="w-full text-center text-2xl font-medium">One-Step Secure Access</h1>
-    <h2 class="w-full text-center text-base mb-6">
-      If you're a new user, an account will be created for you automatically
-    </h2>
+    <h1 class="w-full text-center text-2xl font-medium">Secure Access</h1>
+    <h2 class="w-full text-center text-base mb-6">New users get an account automatically</h2>
 
     <!-- OAuth Buttons -->
     <button

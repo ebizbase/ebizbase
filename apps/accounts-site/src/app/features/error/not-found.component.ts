@@ -11,9 +11,7 @@ import { EbbSiteService } from '@ebizbase/angular-site';
   },
   template: `
     <div class="flex-1">
-      <div class="flex items-center">
-        <img class="h-5" src="/images/logo.svg" alt="Logo" />
-      </div>
+      <img class="h-5" src="/images/logo.svg" alt="Logo" />
       <h1 class="w-full text-center lg:text-left text-lg font-bold mt-4">
         404. <span class="text-gray-500">That’s an error.</span>
       </h1>

@@ -1,32 +1,32 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { EbbColorModeSwitcher } from '@ebizbase/angular-site';
+import LanguageSelectComponent from '../../shared/language-select.component';
 
 @Component({
   standalone: true,
-  imports: [RouterOutlet, EbbColorModeSwitcher],
+  imports: [RouterOutlet, EbbColorModeSwitcher, LanguageSelectComponent],
   selector: 'app-main-layout',
   host: {
     class: '"w-screen flex flex-col',
   },
   template: `
-    <header class="w-full bg-[var(--tui-background-base-alt)] h-16">
-      <div
-        class="flex w-full h-full max-w-screen-lg px-8 justify-between items-center mx-auto bg-[var(--tui-background-base-alt)]"
-      >
-        <img class="h-4" src="/images/logo.svg" alt="Logo" />
-        <div class="flex items-center">
-          <ebb-site-color-mode-switcher class="h-8" />
+    <div class="min-h-screen w-screen bg-[var(--tui-background-base-alt)] flex justify-center">
+      <div class="flex flex-col justify-center max-w-2xl mx-auto min-h-screen">
+        <img class="h-5 my-10" src="/images/logo.svg" alt="Logo" />
+        <div
+          class="bg-[var(--tui-background-base-alt)] sm:bg-[var(--tui-background-base)] sm:rounded-lg flex-1 sm:flex-initial"
+        >
+          <div class="p-6 sm:p-12">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+        <div class="flex justify-between py-4 px-6 sm:px-0">
+          <app-language-select class="min-w-32" />
+          <ebb-site-color-mode-switcher />
         </div>
       </div>
-    </header>
-    <main
-      class="flex-1 h-[calc(100dvh-4rem)] flex flex-col w-full px-8 justify-center items-center"
-    >
-      <div class="max-w-xl w-full">
-        <router-outlet></router-outlet>
-      </div>
-    </main>
+    </div>
   `,
 })
 export class MailLayoutComponent {}
