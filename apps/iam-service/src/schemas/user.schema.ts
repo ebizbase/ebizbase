@@ -3,16 +3,30 @@ import { Exclude } from 'class-transformer';
 import { HydratedDocument, Model } from 'mongoose';
 import speakeasy from 'speakeasy';
 
+const generateRandomUserName = (): string => {
+  const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
+
+  const firstChar = upperChars.charAt(Math.floor(Math.random() * upperChars.length));
+  let randomStr = '';
+
+  for (let i = 0; i < 5; i++) {
+    randomStr += lowerChars.charAt(Math.floor(Math.random() * lowerChars.length));
+  }
+
+  return `User ${firstChar}${randomStr}`;
+};
+
 @Schema({ versionKey: false, timestamps: true })
 export class User {
   @Prop({ required: true, unique: true })
   email: string;
 
   @Prop()
-  firstName?: string;
+  avatar?: string;
 
-  @Prop()
-  lastName?: string;
+  @Prop({ default: generateRandomUserName })
+  name: string;
 
   @Exclude()
   @Prop({ default: () => speakeasy.generateSecret().base32 })

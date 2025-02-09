@@ -1,7 +1,7 @@
-import { IVerifyHotpRequest } from '@ebizbase/iam-interfaces';
+import { IVerifyRequest } from '@ebizbase/iam-interfaces';
 import { IsString } from 'class-validator';
 
-export class VerifyHotpInputDTO implements IVerifyHotpRequest {
+export class VerifyInputDTO implements IVerifyRequest {
   @IsString()
   email: string;
   @IsString()

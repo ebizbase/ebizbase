@@ -1,25 +1,31 @@
 import { Route } from '@angular/router';
+import { AuthGuard } from './core/guard/auth.guard';
 export const appRoutes: Route[] = [
   {
     path: '',
+    canActivate: [AuthGuard],
     loadComponent: () =>
       import('./core/components/main-layout.component').then((c) => c.MailLayoutComponent),
     children: [
       {
         path: '',
         loadComponent: () =>
-          import('./features/email/email.component').then((c) => c.EmailComponent),
+          import('./features/authenticate.component').then((c) => c.AuthenticateComponent),
       },
       {
         path: 'verify',
-        loadComponent: () =>
-          import('./features/verify/verify.component').then((c) => c.VerifyComponent),
+        loadComponent: () => import('./features/verify.component').then((c) => c.VerifyComponent),
       },
     ],
   },
   {
+    path: 'bad-request',
+    loadComponent: () =>
+      import('./features/bad-request-error.component').then((c) => c.BadRequestErrorComponent),
+  },
+  {
     path: '**',
     loadComponent: () =>
-      import('./features/error/not-found.component').then((c) => c.NotFoundComponent),
+      import('./features/not-found-error.component').then((c) => c.NotFoundErrorComponent),
   },
 ];

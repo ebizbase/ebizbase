@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { EbbSiteService } from '@ebizbase/angular-site';
 
 @Component({
-  selector: 'app-error-bad-request',
+  selector: 'app-error-not-found',
   standalone: true,
   imports: [CommonModule],
   host: {
@@ -11,14 +11,12 @@ import { EbbSiteService } from '@ebizbase/angular-site';
   },
   template: `
     <div class="flex-1">
-      <div class="flex items-center">
-        <img class="h-5" src="/images/logo.svg" alt="Logo" />
-      </div>
+      <img class="h-5" src="/images/logo.svg" alt="Logo" />
       <h1 class="w-full text-center lg:text-left text-lg font-bold mt-4">
-        400. <span class="text-gray-500">That’s an error.</span>
+        404. <span class="text-gray-500">That’s an error.</span>
       </h1>
       <p class="w-fill text-center lg:text-left text-gray-600 dark:text-gray-400 mt-2">
-        The server cannot process the request because it is malformed. It should not be retried.
+        The requested URL was not found on this server.
         <span class="text-gray-500">That’s all we know.</span>
       </p>
     </div>
@@ -318,10 +316,10 @@ import { EbbSiteService } from '@ebizbase/angular-site';
     </div>
   `,
 })
-export class NotFoundComponent {
+export class NotFoundErrorComponent {
   protected siteService: EbbSiteService = inject(EbbSiteService);
 
   constructor() {
-    this.siteService.title = 'Error 400 - Bad Request';
+    this.siteService.title = 'Error 404 - Not Found';
   }
 }

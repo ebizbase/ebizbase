@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { EbbCookie } from '@ebizbase/angular-cookie';
 import { DOMAIN_COMPONENTS, EbbDomain } from '@ebizbase/angular-domain';
 import { IRestfulResponse } from '@ebizbase/common-types';
-import { IRefreshTokenResponse } from '@ebizbase/iam-interfaces';
+import { IMeBasicInfoResponse, IRefreshTokenResponse } from '@ebizbase/iam-interfaces';
 import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -53,6 +53,11 @@ export class EbbAuthenticate {
     this.cookie.set(this.accessTokenKey, accessToken, options);
     this.cookie.set(this.refreshTokenKey, refreshToken, options);
     this.isLoggedIn$.next(true);
+  }
+
+  getMyInfo(): Observable<IRestfulResponse<IMeBasicInfoResponse>> {
+    const url = `${this.domain.getUrl(DOMAIN_COMPONENTS.IAM_SERVICE)}/me`;
+    return this.http.get(url).pipe();
   }
 
   refreshAccessToken(): Observable<boolean> {

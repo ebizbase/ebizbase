@@ -21,7 +21,12 @@ interface Language {
     TuiStringifyContentPipe,
   ],
   template: `
-    <tui-combo-box [formControl]="control" [stringify]="stringify" tuiTextfieldSize="s">
+    <tui-combo-box
+      class="!shadow-none"
+      [formControl]="control"
+      [stringify]="stringify"
+      tuiTextfieldSize="s"
+    >
       <tui-data-list-wrapper
         *tuiDataList
         [itemContent]="stringify | tuiStringifyContent"

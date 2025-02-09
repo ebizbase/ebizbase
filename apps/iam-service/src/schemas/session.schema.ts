@@ -6,16 +6,22 @@ export class Session {
   @Prop({ required: true })
   userId: string;
 
-  @Prop({ required: true })
-  userAgent: string;
+  @Prop()
+  flatform: string;
 
-  @Prop({ required: true })
-  ipAddress: string;
+  @Prop()
+  browser: string;
+
+  @Prop()
+  device?: string;
+
+  @Prop({ required: true, type: [{ ip: String, timestamp: { type: Date, default: Date.now } }] })
+  ipHistory: Array<{ ip: string; timestamp: Date }>;
 
   @Prop({ required: true, default: () => Date.now() })
   createdAt: Date;
 
-  @Prop({ required: true })
+  @Prop({ required: true, index: { expireAfterSeconds: 0 } })
   expiredAt: Date;
 
   @Prop()

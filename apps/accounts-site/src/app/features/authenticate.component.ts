@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DOMAIN_COMPONENTS, EbbDomain } from '@ebizbase/angular-domain';
 import { MessageableValidators, TextfieldFormControlComponent } from '@ebizbase/angular-form';
 import { EbbSiteService } from '@ebizbase/angular-site';
-import { WA_NAVIGATOR } from '@ng-web-apis/common';
+import { WA_LOCAL_STORAGE, WA_NAVIGATOR } from '@ng-web-apis/common';
 import { TuiButton, TuiDialogService, TuiLink, TuiTextfield } from '@taiga-ui/core';
-import { AuthenticateService } from '../../core/services/authenticate.service';
-import { LifeCycle } from './../../core/services/lifecycle.service';
+import { CURRENT_IDENTITY_STORAGE_KEY } from '../core/constant';
+import { AuthenticateService } from '../core/services/authenticate.service';
 
 @Component({
   selector: 'app-email',
@@ -31,6 +32,7 @@ import { LifeCycle } from './../../core/services/lifecycle.service';
       appearance="outline"
       class="w-full !justify-start"
       tuiAppearanceMode="checked"
+      (click)="onLoginWithGoogleAccount()"
     >
       <div class="bg-white p-2 rounded-full">
         <img class="w-4" src="/images/google.svg" alt="Google Logo" />
@@ -55,16 +57,17 @@ import { LifeCycle } from './../../core/services/lifecycle.service';
           icon="@tui.mail"
           placeholder="Enter your email "
         />
-        <button tuiButton type="button" (click)="requestOtp()">Next</button>
+        <button tuiButton type="button" (click)="onEmailSubmit()">Next</button>
         <p class="mt-6 text-xs text-gray-600 text-center">
-          I agree to abide by ebizbase's <a href="#" tuiLink>Terms of Service</a> and its
-          <a href="#" tuiLink>Privacy Policy</a>
+          I agree to abide by ebizbase's
+          <a href="{{ policiesSiteUrl }}/terms" target="_blank" tuiLink>Terms of Service</a> and its
+          <a href="{{ policiesSiteUrl }}/privacy" target="_blank" tuiLink>Privacy Policy</a>
         </p>
       </div>
     </form>
   `,
 })
-export class EmailComponent implements OnInit, AfterViewInit {
+export class AuthenticateComponent implements OnInit, AfterViewInit {
   protected form = new FormGroup({
     email: new FormControl('', {
       validators: [MessageableValidators.required(), MessageableValidators.email()],
@@ -72,11 +75,13 @@ export class EmailComponent implements OnInit, AfterViewInit {
   });
   protected emailControl: FormControl = this.form.get('email') as FormControl;
   protected navigator: Navigator = inject(WA_NAVIGATOR);
+  protected storage: Storage = inject(WA_LOCAL_STORAGE);
   protected dialogService: TuiDialogService = inject(TuiDialogService);
   protected router: Router = inject(Router);
   protected authenticateService: AuthenticateService = inject(AuthenticateService);
   protected siteService: EbbSiteService = inject(EbbSiteService);
-  protected lifeCycle: LifeCycle = inject(LifeCycle);
+  protected currentIdentity: { email?: string } = {};
+  protected domain: EbbDomain = inject(EbbDomain);
 
   constructor() {
     this.siteService.title = 'One-Step Secure Access';
@@ -86,25 +91,46 @@ export class EmailComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.lifeCycle.email = undefined;
+    console.log('EmailComponent initialized');
+    const raw = this.storage.getItem(CURRENT_IDENTITY_STORAGE_KEY);
+    if (raw) {
+      try {
+        this.currentIdentity = JSON.parse(raw);
+      } catch {
+        // do not thing
+      }
+    }
+
+    this.emailControl.setValue(this.currentIdentity.email);
   }
 
   ngAfterViewInit(): void {
-    const firstInput = document.querySelector('input') as HTMLInputElement;
-    if (firstInput) {
-      firstInput.focus();
-    }
+    console.log('EmailComponent after view initialized');
   }
 
-  async requestOtp() {
+  async onEmailSubmit() {
+    console.log('requestOtp called');
     this.form.markAllAsTouched();
     if (!this.form.valid) {
       return;
     }
-    this.lifeCycle.email = this.emailControl.value;
-    this.router.navigate(['verify'], {
-      skipLocationChange: true,
-      queryParamsHandling: 'merge',
-    });
+    console.log('Navigating to verify');
+    if (this.emailControl.value !== this.currentIdentity.email) {
+      this.storage.setItem(
+        CURRENT_IDENTITY_STORAGE_KEY,
+        JSON.stringify({ email: this.emailControl.value })
+      );
+    }
+    this.router.navigate(['verify'], { queryParamsHandling: 'preserve' });
+  }
+
+  onLoginWithGoogleAccount() {
+    this.dialogService
+      .open('Feature under construction will be available in next upgrade')
+      .subscribe();
+  }
+
+  get policiesSiteUrl() {
+    return this.domain.getUrl(DOMAIN_COMPONENTS.POLICIES_SITE);
   }
 }

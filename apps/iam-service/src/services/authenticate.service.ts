@@ -1,17 +1,18 @@
 import { Dict } from '@ebizbase/common-types';
 import {
   BadRequestException,
+  ForbiddenException,
   HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import ms from 'ms';
 import speakeasy from 'speakeasy';
+import { UAParser } from 'ua-parser-js';
 import { GetOtpInputDTO } from '../dtos/authenticate/get-otp-input.dto';
-import { VerifyHotpInputDTO } from '../dtos/authenticate/verify-input.dto';
+import { VerifyInputDTO } from '../dtos/authenticate/verify-input.dto';
 import { VerifyHotpOutputDTO } from '../dtos/authenticate/verify-output.dto';
 import { OutPutDto } from '../dtos/output.dto';
 import { InjectSessionModel, SessionModel } from '../schemas/session.schema';
@@ -22,7 +23,7 @@ import { MailerService } from './mailer.service';
 export class AuthenticateService {
   private readonly logger = new Logger(AuthenticateService.name);
   private readonly ACCESS_TOKEN_EXPIRES_IN = process.env['ACCESS_TOKEN_EXPIRES_IN'] || '15m';
-  private readonly REFRESH_TOKEN_EXPIRES_IN = process.env['REFRESH_TOKEN_EXPIRES_IN'] || '7d';
+  private readonly REFRESH_TOKEN_EXPIRES_IN = process.env['REFRESH_TOKEN_EXPIRES_IN'] || '28d';
   private readonly OTP_EXPIRES_IN = parseInt(process.env['OTP_EXPIRES_IN']) || 10 * 60 * 1000;
 
   constructor(
@@ -43,7 +44,7 @@ export class AuthenticateService {
     } else {
       this.logger.debug('User exist on system');
       const lastIssueSince = Date.now() - user.otpIssuedAt.getTime();
-      if (!user.otpUsed && lastIssueSince < 30 * 1_000) {
+      if (!user.otpUsed && lastIssueSince < 60 * 1_000) {
         this.logger.debug('Send otp too fast');
         throw new HttpException(
           { message: 'You requested to send OTP too fast please wait a moment' },
@@ -63,17 +64,18 @@ export class AuthenticateService {
       );
       const otp = speakeasy.hotp({ secret: user.otpSecret, counter: user.otpCounter });
       await this.mailerService.sendOTPEmail(user.email, otp);
-      return { message: 'OTP email sent successfully' };
+      return {
+        message: `An email has been sent to ${user.email}. Check your inbox for our email! If it is not there, look in your spam/junk folder and mark it as "Not Spam" to receive future messages smoothly.`,
+      };
     }
   }
 
   async verify(
-    { email, otp }: VerifyHotpInputDTO,
+    { email, otp }: VerifyInputDTO,
     headers: Dict<string>
   ): Promise<VerifyHotpOutputDTO> {
     this.logger.debug({ msg: 'Verifying Identify', email, otp });
     const user = await this.userModel.findOne({ email });
-
     if (!user) {
       this.logger.warn({ msg: 'Verify user with email not found', email });
       throw new BadRequestException({ message: 'Incorrect email' });
@@ -119,13 +121,39 @@ export class AuthenticateService {
 
   private async issueNewToken(userId: string, headers: Dict<string>) {
     const userAgent = headers['user-agent'];
-    const ipAddress = headers['x-forwarded-for'] || headers['cf-connecting-ip'];
+    const clientIP = headers['x-forwarded-for'] || headers['cf-connecting-ip'];
+    let device: string | undefined;
+    let flatform: string;
+    let browser: string;
 
-    if (!userAgent) {
-      throw new UnauthorizedException('User-Agent header is missing');
-    } else if (!ipAddress) {
+    if (!clientIP) {
       this.logger.error({ msg: 'Can not extract user remote ip from headers', headers });
       throw new InternalServerErrorException('Can not get user remote ip');
+    } else if (!userAgent) {
+      this.logger.warn({ msg: 'Request without user agent header', headers, ip: clientIP });
+      throw new ForbiddenException();
+    } else {
+      const uaParserResult = UAParser(userAgent);
+
+      if (!uaParserResult.os.name) {
+        this.logger.warn({
+          msg: 'Request user agent can not detect flatform',
+          headers,
+          uaParserResult,
+          ip: clientIP,
+        });
+        throw new ForbiddenException();
+      }
+
+      flatform = uaParserResult.os.name;
+      browser = uaParserResult.browser.name;
+      if (uaParserResult.device.vendor) {
+        if (uaParserResult.device.model) {
+          device = `${uaParserResult.device.vendor} ${uaParserResult.device.model}`;
+        } else {
+          device = `${uaParserResult.device.vendor}`;
+        }
+      }
     }
 
     const now = Date.now();
@@ -134,13 +162,15 @@ export class AuthenticateService {
 
     const session = await this.sessionModel.create({
       userId,
-      userAgent,
-      ipAddress,
+      flatform,
+      browser,
+      device,
+      ipHistory: [{ ip: clientIP }],
       expiredAt: refreshTokenExpiresAt,
     });
 
     const accessToken = await this.jwtService.signAsync(
-      { userId },
+      { userId, sessionId: session.id },
       { expiresIn: this.ACCESS_TOKEN_EXPIRES_IN }
     );
     const refreshToken = await this.jwtService.signAsync(

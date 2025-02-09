@@ -14,6 +14,7 @@ export enum DOMAIN_COMPONENTS {
   HOME_SITE,
   ACCOUNTS_SITE,
   MY_ACCOUNT_SITE,
+  POLICIES_SITE,
   IAM_SERVICE,
 }
 
@@ -47,6 +48,8 @@ export class EbbDomain {
         return `${this.Protocol}://accounts.${this.RootDomain}`;
       case DOMAIN_COMPONENTS.MY_ACCOUNT_SITE:
         return `${this.Protocol}://my-account.${this.RootDomain}`;
+      case DOMAIN_COMPONENTS.POLICIES_SITE:
+        return `${this.Protocol}://policies.${this.RootDomain}`;
       case DOMAIN_COMPONENTS.IAM_SERVICE:
         return `${this.Protocol}://iam-service.${this.RootDomain}`;
       default:

@@ -1,2 +1,1 @@
-export * from './me-request.interface';
-export * from './me-response.interface';
+export * from './me-basic-info-response.interface';

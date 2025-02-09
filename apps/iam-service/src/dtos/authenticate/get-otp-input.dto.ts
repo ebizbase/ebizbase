@@ -1,7 +1,8 @@
 import { IGetOtpRequest } from '@ebizbase/iam-interfaces';
-import { IsString } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 
 export class GetOtpInputDTO implements IGetOtpRequest {
   @IsString()
+  @IsEmail()
   email: string;
 }
