@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { EbbSite } from '@ebizbase/angular-site';
+import { EcommaRoot } from '@ebizbase/angular-common';
 
 @Component({
   standalone: true,
-  imports: [EbbSite, RouterOutlet],
+  imports: [EcommaRoot, RouterOutlet],
   selector: 'app-root',
   template: `
-    <ebb-site>
+    <ecomma-root>
       <router-outlet />
-    </ebb-site>
+    </ecomma-root>
   `,
 })
 export class AppComponent {}

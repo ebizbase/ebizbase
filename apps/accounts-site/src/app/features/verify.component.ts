@@ -3,9 +3,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DOMAIN_COMPONENTS, EbbDomain } from '@ebizbase/angular-domain';
+import { DOMAIN_NAME_COMPONENTS, DomainName, EcommaSite } from '@ebizbase/angular-common';
 import { MessageableValidators, TextfieldFormControlComponent } from '@ebizbase/angular-form';
-import { EbbSiteService } from '@ebizbase/angular-site';
 import { WA_LOCAL_STORAGE, WA_LOCATION, WA_NAVIGATOR } from '@ng-web-apis/common';
 import { TuiButton, TuiDialogService, TuiTextfield } from '@taiga-ui/core';
 import { TuiButtonLoading, TuiFade } from '@taiga-ui/kit';
@@ -81,10 +80,10 @@ export class VerifyComponent implements OnInit, AfterViewInit {
   protected ngLocation: NgLocation = inject(NgLocation);
   protected router: Router = inject(Router);
   protected route: ActivatedRoute = inject(ActivatedRoute);
-  protected domain: EbbDomain = inject(EbbDomain);
+  protected domain: DomainName = inject(DomainName);
   protected authenticateService: AuthenticateService = inject(AuthenticateService);
   protected dialogService: TuiDialogService = inject(TuiDialogService);
-  protected siteService: EbbSiteService = inject(EbbSiteService);
+  protected siteService: EcommaSite = inject(EcommaSite);
   protected cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected storage: Storage = inject(WA_LOCAL_STORAGE);
   protected location: Location = inject(WA_LOCATION);
@@ -173,7 +172,7 @@ export class VerifyComponent implements OnInit, AfterViewInit {
           this.storage.removeItem(CURRENT_IDENTITY_STORAGE_KEY);
           this.location.href =
             this.route.snapshot.queryParams['continue'] ??
-            this.domain.getUrl(DOMAIN_COMPONENTS.MY_ACCOUNT_SITE);
+            this.domain.getUrl(DOMAIN_NAME_COMPONENTS.MY_ACCOUNT_SITE);
         },
         error: (error: HttpErrorResponse) => {
           this.loading = false;

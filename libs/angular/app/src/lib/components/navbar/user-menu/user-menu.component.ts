@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { EbbAuthenticate } from '@ebizbase/angular-authenticate';
-import { EbbColorModeSwitcher, EbbSiteService } from '@ebizbase/angular-site';
+import { Authenticate, ColorModeSwitcher, EcommaSite } from '@ebizbase/angular-common';
 import { TuiDropdownMobile } from '@taiga-ui/addon-mobile';
 import { TuiActiveZone, TuiObscured } from '@taiga-ui/cdk';
 import { TuiDropdown, TuiFallbackSrcPipe, TuiIcon } from '@taiga-ui/core';
@@ -32,7 +31,7 @@ const LANGUAGES = [
     TuiObscured,
     TuiActiveZone,
     TuiFallbackSrcPipe,
-    EbbColorModeSwitcher,
+    ColorModeSwitcher,
     ReactiveFormsModule,
     TuiComboBoxModule,
     TuiDataListWrapper,
@@ -93,7 +92,7 @@ const LANGUAGES = [
           </div>
         </div>
 
-        <ebb-site-color-mode-switcher class="flex w-full h-14" />
+        <ecomma-color-mode-switcher class="flex w-full h-14" />
 
         <tui-combo-box
           class="!hidden w-full !rounded-full"
@@ -118,8 +117,8 @@ export class UserMenu {
 
   constructor(
     public layoutService: EbbAppService,
-    public siteService: EbbSiteService,
-    public authenticate: EbbAuthenticate
+    public siteService: EcommaSite,
+    public authenticate: Authenticate
   ) {}
 
   protected onClick(): void {

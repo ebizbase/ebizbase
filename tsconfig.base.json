@@ -29,12 +29,8 @@
     "baseUrl": ".",
     "paths": {
       "@ebizbase/angular-app": ["libs/angular/app/src/index.ts"],
-      "@ebizbase/angular-authenticate": ["libs/angular/authenticate/src/index.ts"],
       "@ebizbase/angular-common": ["libs/angular/common/src/index.ts"],
-      "@ebizbase/angular-cookie": ["libs/angular/cookie/src/index.ts"],
-      "@ebizbase/angular-domain": ["libs/angular/domain/src/index.ts"],
       "@ebizbase/angular-form": ["libs/angular/form/src/index.ts"],
-      "@ebizbase/angular-site": ["libs/angular/site/src/index.ts"],
       "@ebizbase/common-types": ["libs/common/common-types/src/index.ts"],
       "@ebizbase/iam-interfaces": ["libs/common/iam-interfaces/src/index.ts"],
       "@ebizbase/nestjs-mongo": ["libs/nestjs/nestjs-mongo/src/index.ts"],

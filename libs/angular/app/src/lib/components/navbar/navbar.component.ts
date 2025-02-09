@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { EbbSiteService } from '@ebizbase/angular-site';
+import { EcommaSite } from '@ebizbase/angular-common';
 import { TuiButton } from '@taiga-ui/core';
 import { EbbAppService } from '../../services';
 import { NotificationMenu } from './notification-menu/notification-menu.component';
@@ -46,6 +46,6 @@ import { UserMenu } from './user-menu/user-menu.component';
 export class Navbar {
   constructor(
     protected app: EbbAppService,
-    protected site: EbbSiteService
+    protected site: EcommaSite
   ) {}
 }

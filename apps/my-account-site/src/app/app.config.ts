@@ -1,7 +1,7 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideEbbSite } from '@ebizbase/angular-site';
+import { provideEcommaSite } from '@ebizbase/angular-common';
 import { appRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
-  providers: [...provideEbbSite(appRoutes)],
+  providers: [...provideEcommaSite(appRoutes)],
 };

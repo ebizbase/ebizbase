@@ -1,7 +1,6 @@
 import { NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { EbbSite, EbbSiteService } from '@ebizbase/angular-site';
+import { EcommaRoot, EcommaSite } from '@ebizbase/angular-common';
 import clsx from 'clsx';
 import { EbbAppService } from '../services';
 import { Navbar } from './navbar/navbar.component';
@@ -10,9 +9,9 @@ import { Sidebar } from './sidebar/sidebar.component';
 
 @Component({
   selector: 'ebb-app',
-  imports: [NgIf, NgClass, RouterOutlet, Navbar, Sidebar, PageHeading, EbbSite],
+  imports: [NgIf, NgClass, Navbar, Sidebar, PageHeading, EcommaRoot],
   template: `
-    <ebb-site>
+    <ecomma-root>
       <div class="flex flex-col h-[calc(100dvh)] overflow-hidden text-base">
         <ebb-app-navbar />
         <div class="flex flex-row-reverse bg-[var(--tui-background-base-alt)]">
@@ -49,7 +48,7 @@ import { Sidebar } from './sidebar/sidebar.component';
           <ebb-app-sidebar *ngIf="layoutService.menus.length > 0"></ebb-app-sidebar>
         </div>
       </div>
-    </ebb-site>
+    </ecomma-root>
   `,
 })
 export class EbbApp {
@@ -57,7 +56,7 @@ export class EbbApp {
     'scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thumb-[var(--tui-background-neutral-2)] scrollbar-thin scrollbar-track-transparent scrollbar-corner-rounded-full';
   constructor(
     public layoutService: EbbAppService,
-    protected siteService: EbbSiteService
+    protected siteService: EcommaSite
   ) {}
 
   getSidebarClassClsx() {

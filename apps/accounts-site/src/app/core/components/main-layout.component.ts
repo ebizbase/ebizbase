@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { EbbColorModeSwitcher } from '@ebizbase/angular-site';
+import { ColorModeSwitcher } from '@ebizbase/angular-common';
 import LanguageSelectComponent from '../../shared/language-select.component';
 
 @Component({
   standalone: true,
-  imports: [RouterOutlet, EbbColorModeSwitcher, LanguageSelectComponent],
+  imports: [RouterOutlet, ColorModeSwitcher, LanguageSelectComponent],
   selector: 'app-main-layout',
   host: {
     class: '"w-screen flex flex-col',
@@ -23,7 +23,7 @@ import LanguageSelectComponent from '../../shared/language-select.component';
         </div>
         <div class="flex justify-between py-4 px-6 sm:px-0">
           <app-language-select class="min-w-32" />
-          <ebb-site-color-mode-switcher />
+          <ecomma-color-mode-switcher />
         </div>
       </div>
     </div>

@@ -1,9 +1,8 @@
 import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DOMAIN_COMPONENTS, EbbDomain } from '@ebizbase/angular-domain';
+import { DOMAIN_NAME_COMPONENTS, DomainName, EcommaSite } from '@ebizbase/angular-common';
 import { MessageableValidators, TextfieldFormControlComponent } from '@ebizbase/angular-form';
-import { EbbSiteService } from '@ebizbase/angular-site';
 import { WA_LOCAL_STORAGE, WA_NAVIGATOR } from '@ng-web-apis/common';
 import { TuiButton, TuiDialogService, TuiLink, TuiTextfield } from '@taiga-ui/core';
 import { CURRENT_IDENTITY_STORAGE_KEY } from '../core/constant';
@@ -79,9 +78,9 @@ export class AuthenticateComponent implements OnInit, AfterViewInit {
   protected dialogService: TuiDialogService = inject(TuiDialogService);
   protected router: Router = inject(Router);
   protected authenticateService: AuthenticateService = inject(AuthenticateService);
-  protected siteService: EbbSiteService = inject(EbbSiteService);
+  protected siteService: EcommaSite = inject(EcommaSite);
   protected currentIdentity: { email?: string } = {};
-  protected domain: EbbDomain = inject(EbbDomain);
+  protected domain: DomainName = inject(DomainName);
 
   constructor() {
     this.siteService.title = 'One-Step Secure Access';
@@ -131,6 +130,6 @@ export class AuthenticateComponent implements OnInit, AfterViewInit {
   }
 
   get policiesSiteUrl() {
-    return this.domain.getUrl(DOMAIN_COMPONENTS.POLICIES_SITE);
+    return this.domain.getUrl(DOMAIN_NAME_COMPONENTS.POLICIES_SITE);
   }
 }

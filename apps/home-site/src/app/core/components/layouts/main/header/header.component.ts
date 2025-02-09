@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { DOMAIN_COMPONENTS, EbbDomain } from '@ebizbase/angular-domain';
+import { DOMAIN_NAME_COMPONENTS, DomainName } from '@ebizbase/angular-common';
 @Component({
   selector: 'app-layout-main-header',
   standalone: true,
@@ -113,9 +113,9 @@ import { DOMAIN_COMPONENTS, EbbDomain } from '@ebizbase/angular-domain';
   `,
 })
 export class LayoutMainHeaderComponent {
-  constructor(public domain: EbbDomain) {}
+  constructor(public domainName: DomainName) {}
 
   getAccountSiteUrl() {
-    return this.domain.getUrl(DOMAIN_COMPONENTS.ACCOUNTS_SITE);
+    return this.domainName.getUrl(DOMAIN_NAME_COMPONENTS.ACCOUNTS_SITE);
   }
 }

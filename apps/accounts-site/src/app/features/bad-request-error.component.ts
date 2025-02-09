@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { EbbSiteService } from '@ebizbase/angular-site';
+import { EcommaSite } from '@ebizbase/angular-common';
 
 @Component({
   selector: 'app-error-bad-request',
@@ -319,7 +319,7 @@ import { EbbSiteService } from '@ebizbase/angular-site';
   `,
 })
 export class BadRequestErrorComponent {
-  protected siteService: EbbSiteService = inject(EbbSiteService);
+  protected siteService: EcommaSite = inject(EcommaSite);
 
   constructor() {
     this.siteService.title = 'Error 400 - Bad Request';
