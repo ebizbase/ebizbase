@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { EbbCookie } from '@ebizbase/angular-cookie';
 import { DOMAIN_COMPONENTS, EbbDomain } from '@ebizbase/angular-domain';
 import { IRestfulResponse } from '@ebizbase/common-types';
 import { IMeBasicInfoResponse, IRefreshTokenResponse } from '@ebizbase/iam-interfaces';
+import { WA_LOCATION } from '@ng-web-apis/common';
 import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -16,7 +17,8 @@ export class EbbAuthenticate {
   constructor(
     protected cookie: EbbCookie,
     protected domain: EbbDomain,
-    protected http: HttpClient
+    protected http: HttpClient,
+    @Inject(WA_LOCATION) protected location: Location
   ) {
     this.isLoggedIn$ = new BehaviorSubject<boolean>(this.isLoggedIn);
   }
@@ -34,9 +36,11 @@ export class EbbAuthenticate {
   }
 
   logout(): void {
-    this.cookie.delete(this.accessTokenKey, '/');
-    this.cookie.delete(this.refreshTokenKey, '/');
+    this.cookie.delete(this.accessTokenKey, '/', `.${this.domain.RootDomain}`);
+    this.cookie.delete(this.refreshTokenKey, '/', `.${this.domain.RootDomain}`);
     this.isLoggedIn$.next(false);
+    this.location.href =
+      this.domain.getUrl(DOMAIN_COMPONENTS.ACCOUNTS_SITE) + `/?continue=${this.location.href}`;
   }
 
   get isLoggedIn(): boolean {

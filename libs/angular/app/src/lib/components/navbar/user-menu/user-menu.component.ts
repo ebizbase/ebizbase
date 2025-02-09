@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { EbbAuthenticate } from '@ebizbase/angular-authenticate';
 import { EbbColorModeSwitcher, EbbSiteService } from '@ebizbase/angular-site';
 import { TuiDropdownMobile } from '@taiga-ui/addon-mobile';
 import { TuiActiveZone, TuiObscured } from '@taiga-ui/cdk';
@@ -82,6 +83,10 @@ const LANGUAGES = [
           </div>
           <div
             class="flex flex-1 space-x-2 justify-center items-center hover:bg-[var(--tui-background-neutral-1-hover)] rounded-e-full"
+            tabindex="0"
+            (click)="onLogout()"
+            (keydown.enter)="onLogout()"
+            (keydown.space)="onLogout()"
           >
             <tui-icon icon="@tui.log-out" class="text-sm" />
             <span>Logout</span>
@@ -113,7 +118,8 @@ export class UserMenu {
 
   constructor(
     public layoutService: EbbAppService,
-    public siteService: EbbSiteService
+    public siteService: EbbSiteService,
+    public authenticate: EbbAuthenticate
   ) {}
 
   protected onClick(): void {
@@ -146,6 +152,10 @@ export class UserMenu {
       default:
         return 3;
     }
+  }
+
+  onLogout() {
+    this.authenticate.logout();
   }
 
   protected readonly control = new FormControl('en');

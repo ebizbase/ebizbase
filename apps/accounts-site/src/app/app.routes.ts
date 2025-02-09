@@ -1,9 +1,9 @@
 import { Route } from '@angular/router';
-import { AuthGuard } from './core/guard/auth.guard';
+import { UnauthenticatedGuard } from './core/guard/unauthenticated.guard';
 export const appRoutes: Route[] = [
   {
     path: '',
-    canActivate: [AuthGuard],
+    canActivate: [UnauthenticatedGuard],
     loadComponent: () =>
       import('./core/components/main-layout.component').then((c) => c.MailLayoutComponent),
     children: [

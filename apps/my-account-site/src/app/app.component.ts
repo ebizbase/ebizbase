@@ -1,36 +1,10 @@
 import { Component } from '@angular/core';
-import { EbbApp, EbbAppService, MenuItem } from '@ebizbase/angular-app';
-
-const pages: MenuItem[] = [
-  {
-    items: [
-      {
-        icon: '@tui.id-card',
-        label: 'Personal Info',
-        route: '/personal-info',
-      },
-      {
-        icon: '@tui.lock-keyhole',
-        label: 'Security',
-        route: '/security',
-      },
-      {
-        icon: '@tui.lock-keyhole',
-        label: 'Privacy',
-        route: '/privacy',
-      },
-    ],
-  },
-];
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   standalone: true,
-  imports: [EbbApp],
+  imports: [RouterOutlet],
   selector: 'app-root',
-  template: ' <ebb-app /> ',
+  template: '<router-outlet></router-outlet>',
 })
-export class AppComponent {
-  constructor(private app: EbbAppService) {
-    this.app.menus = pages;
-  }
-}
+export class AppComponent {}

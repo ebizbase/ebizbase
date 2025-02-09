@@ -37,7 +37,7 @@ import { UserMenu } from './user-menu/user-menu.component';
         </div>
       </div>
       <div class="flex flex-1 gap-3 justify-end items-center">
-        <ebb-app-notification-menu class="hidden" />
+        <ebb-app-notification-menu *ngIf="site.isPlatformBrowser" class="hidden" />
         <ebb-app-user-menu *ngIf="site.isPlatformBrowser" />
       </div>
     </div>

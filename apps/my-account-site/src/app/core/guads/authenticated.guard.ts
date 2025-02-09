@@ -1,21 +1,20 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
+import { EbbAuthenticate } from '@ebizbase/angular-authenticate';
 import { DOMAIN_COMPONENTS, EbbDomain } from '@ebizbase/angular-domain';
 import { WA_LOCATION } from '@ng-web-apis/common';
-import { AuthenticateService } from '../services/authenticate.service';
 
 @Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanActivate {
-  protected authenticateService: AuthenticateService = inject(AuthenticateService);
+export class AuthenticatedGuard implements CanActivate {
+  protected authenticateService: EbbAuthenticate = inject(EbbAuthenticate);
   protected location: Location = inject(WA_LOCATION);
   protected router: Router = inject(Router);
   protected domain: EbbDomain = inject(EbbDomain);
 
   canActivate(): boolean | UrlTree {
-    if (this.authenticateService.isLoggedIn) {
-      const urlParams = new URLSearchParams(this.location.search);
-      const continueUrl = urlParams.get('continue');
-      this.location.href = continueUrl ?? this.domain.getUrl(DOMAIN_COMPONENTS.MY_ACCOUNT_SITE);
+    if (!this.authenticateService.isLoggedIn) {
+      this.location.href =
+        this.domain.getUrl(DOMAIN_COMPONENTS.ACCOUNTS_SITE) + `/?continue=${this.location.href}`;
       return false;
     }
     return true;

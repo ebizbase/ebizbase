@@ -32,7 +32,7 @@ import { Sidebar } from './sidebar/sidebar.component';
               }"
             >
               <div class="p-4 lg:p-8 pb-20 {{ getContentSizeClsx() }}">
-                <router-outlet></router-outlet>
+                <ng-content></ng-content>
               </div>
             </div>
           </div>
