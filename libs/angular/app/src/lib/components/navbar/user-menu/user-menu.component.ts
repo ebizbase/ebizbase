@@ -1,7 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Authenticate, ColorModeSwitcher, EcommaSite } from '@ebizbase/angular-common';
+import {
+  Authenticate,
+  ColorModeSwitcher,
+  DOMAIN_NAME_COMPONENTS,
+  DomainName,
+  EcommaSite,
+} from '@ebizbase/angular-common';
 import { TuiDropdownMobile } from '@taiga-ui/addon-mobile';
 import { TuiActiveZone, TuiObscured } from '@taiga-ui/cdk';
 import { TuiDropdown, TuiFallbackSrcPipe, TuiIcon } from '@taiga-ui/core';
@@ -45,6 +51,7 @@ const LANGUAGES = [
         'https://avatars.githubusercontent.com/u/11832552' | tuiFallbackSrc: '@tui.user' | async
       "
       class="hover:!bg-[var(--tui-background-neutral-1-hover)] [&>img]:p-1.5"
+      size="m"
       (click)="onClick()"
       [tuiDropdown]="userMenu"
       [tuiDropdownManual]="open"
@@ -72,16 +79,19 @@ const LANGUAGES = [
         </div>
 
         <div
-          class="flex h-12 text-sm lg:text-base justify-between w-full border border-[var(--tui-background-neutral-1-hover)] rounded-full bg-[var(--tui-background-neutral-1)]"
+          class="flex h-10 text-sm lg:text-base justify-between w-full border border-[var(--tui-background-neutral-1-hover)] [&>*:first-child]:rounded-s-full [&>*:last-child]:rounded-e-full [&>*:not(:last-child)]:border-r [&>*:hover]:bg-[var(--tui-background-neutral-1-hover)] [&>*]:border-[var(--tui-background-neutral-1-hover)]  rounded-full bg-[var(--tui-background-neutral-1)]"
         >
-          <div
-            class="flex flex-1 space-x-2 justify-center items-center border-r border-[var(--tui-background-neutral-1-hover)] hover:bg-[var(--tui-background-neutral-1-hover)] rounded-s-full"
+          <a
+            *ngIf="!isOnMyAccountSite()"
+            [href]="myAccountUrl"
+            target="_blank"
+            class="flex flex-1 space-x-2 justify-center items-center"
           >
             <tui-icon icon="@tui.user-pen" class="text-sm" />
             <span>Profile</span>
-          </div>
+          </a>
           <div
-            class="flex flex-1 space-x-2 justify-center items-center hover:bg-[var(--tui-background-neutral-1-hover)] rounded-e-full"
+            class="flex flex-1 space-x-2 justify-center items-center"
             tabindex="0"
             (click)="onLogout()"
             (keydown.enter)="onLogout()"
@@ -92,7 +102,7 @@ const LANGUAGES = [
           </div>
         </div>
 
-        <ecomma-color-mode-switcher class="flex w-full h-14" />
+        <ecomma-color-mode-switcher class="flex w-full h-10" />
 
         <tui-combo-box
           class="!hidden w-full !rounded-full"
@@ -116,9 +126,10 @@ export class UserMenu {
   protected open = false;
 
   constructor(
-    public layoutService: EbbAppService,
-    public siteService: EcommaSite,
-    public authenticate: Authenticate
+    protected layoutService: EbbAppService,
+    protected siteService: EcommaSite,
+    protected authenticate: Authenticate,
+    protected domainName: DomainName
   ) {}
 
   protected onClick(): void {
@@ -138,6 +149,14 @@ export class UserMenu {
   protected onChangeColorMode(mode: 'dark' | 'light' | 'monochrome' | 'system') {
     this.siteService.colorMode = mode;
     this.open = false;
+  }
+
+  public isOnMyAccountSite() {
+    return this.domainName.isOnComponent(DOMAIN_NAME_COMPONENTS.MY_ACCOUNT_SITE);
+  }
+
+  public get myAccountUrl() {
+    return this.domainName.getUrl(DOMAIN_NAME_COMPONENTS.MY_ACCOUNT_SITE);
   }
 
   protected getCurrentColorModeIndex() {

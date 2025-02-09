@@ -51,4 +51,9 @@ export class DomainName {
         throw new Error(`Unknown component: ${component}`);
     }
   }
+
+  isOnComponent(component: DOMAIN_NAME_COMPONENTS) {
+    console.log(this.location.href, this.getUrl(component));
+    return this.location.protocol + '//' + this.location.host === this.getUrl(component);
+  }
 }
