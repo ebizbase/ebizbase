@@ -2,20 +2,24 @@ import { Route } from '@angular/router';
 export const appRoutes: Route[] = [
   {
     path: '',
-    pathMatch: 'full',
-    redirectTo: '/identify',
-  },
-  {
-    path: 'identify',
-    loadComponent: () => import('./pages/identify.component').then((c) => c.IdentifyPageComponent),
-  },
-  {
-    path: 'verify-hotp',
     loadComponent: () =>
-      import('./pages/verify-hotp.component').then((c) => c.VerifyHotpPageComponent),
+      import('./core/components/main-layout.component').then((c) => c.MailLayoutComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/email/email.component').then((c) => c.EmailComponent),
+      },
+      {
+        path: 'verify',
+        loadComponent: () =>
+          import('./features/verify/verify.component').then((c) => c.VerifyComponent),
+      },
+    ],
   },
   {
     path: '**',
-    redirectTo: 'google.com',
+    loadComponent: () =>
+      import('./features/error/not-found.component').then((c) => c.NotFoundComponent),
   },
 ];

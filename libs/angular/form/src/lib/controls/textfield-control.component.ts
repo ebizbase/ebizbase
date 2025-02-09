@@ -20,6 +20,7 @@ import { FormControlComponent } from '../base/form-control.component';
           [autocomplete]="autocomplete"
           [invalid]="invalid"
           [type]="type"
+          [placeholder]="placeholder ?? ''"
         />
         <ng-content> </ng-content>
       </tui-textfield>
@@ -29,6 +30,7 @@ import { FormControlComponent } from '../base/form-control.component';
 export class TextfieldFormControlComponent {
   @Input() control!: FormControl;
   @Input() label?: string;
+  @Input() placeholder?: string;
   @Input() type = 'text';
   @Input() icon?: string;
   @Input() autocomplete?: string = undefined;

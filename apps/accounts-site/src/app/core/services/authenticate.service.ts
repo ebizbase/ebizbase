@@ -11,9 +11,7 @@ import {
 } from '@ebizbase/iam-interfaces';
 import { Observable, tap } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthenticateService extends EbbAuthenticate {
   getMyInfo(): Observable<IRestfulResponse<IMeResponse>> {
     const url = `${this.domain.getUrl(DOMAIN_COMPONENTS.IAM_SERVICE)}/me`;
