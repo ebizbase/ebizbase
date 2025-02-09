@@ -11,7 +11,9 @@ import { UserMenu } from './user-menu/user-menu.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgIf, TuiButton, UserMenu, NotificationMenu],
   template: `
-    <div class="flex h-16 w-screen items-center bg-[var(--tui-background-base-alt)] px-2 lg:px-4">
+    <div
+      class="flex h-16 w-screen items-center bg-[var(--tui-background-base-alt)] px-2 lg:px-4 transition-all duration-300"
+    >
       <div class="flex items-center">
         <!-- Open sidebar (only mobile) -->
         <a

@@ -14,7 +14,9 @@ import { Sidebar } from './sidebar/sidebar.component';
     <ecomma-root>
       <div class="flex flex-col h-[calc(100dvh)] overflow-hidden text-base">
         <ebb-app-navbar />
-        <div class="flex flex-row-reverse bg-[var(--tui-background-base-alt)]">
+        <div
+          class="flex flex-row-reverse bg-[var(--tui-background-base-alt)] transition-all duration-300"
+        >
           <div
             class="flex flex-col flex-1 h-[calc(100dvh-3.5rem)] bg-[var(--tui-background-base)]"
             [ngClass]="{ 'lg:rounded-tl-3xl': layoutService.menus.length > 0 }"
