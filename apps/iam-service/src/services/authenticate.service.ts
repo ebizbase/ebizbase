@@ -157,8 +157,8 @@ export class AuthenticateService {
     const userAgent = headers['user-agent'];
     const clientIP = headers['x-forwarded-for'] || headers['cf-connecting-ip'];
     let device: string | undefined;
-    let flatform: string;
-    let flatformVersion: string;
+    let platform: string;
+    let platformVersion: string;
     let browser: string;
 
     if (!clientIP) {
@@ -172,7 +172,7 @@ export class AuthenticateService {
 
       if (!uaParserResult.os.name) {
         this.logger.warn({
-          msg: 'Request user agent can not detect flatform',
+          msg: 'Request user agent can not detect platform',
           headers,
           uaParserResult,
           ip: clientIP,
@@ -180,8 +180,8 @@ export class AuthenticateService {
         throw new ForbiddenException();
       }
 
-      flatform = uaParserResult.os.name;
-      flatformVersion = uaParserResult.os.version;
+      platform = uaParserResult.os.name;
+      platformVersion = uaParserResult.os.version;
       browser = uaParserResult.browser.name;
       if (uaParserResult.device.vendor) {
         if (uaParserResult.device.model) {
@@ -198,14 +198,14 @@ export class AuthenticateService {
 
     if (session) {
       if (
-        session.flatform !== flatform ||
-        session.flatformVersion !== flatformVersion ||
+        session.platform !== platform ||
+        session.platformVersion !== platformVersion ||
         session.browser !== browser ||
         session.device !== device
       ) {
         this.logger.warn({
           msg: `Blocked session update: User ${userId} tried to access from a different device.`,
-          detect: { flatform, flatformVersion, browser, device },
+          detect: { platform, platformVersion, browser, device },
           session,
         });
         throw new ForbiddenException();
@@ -229,8 +229,8 @@ export class AuthenticateService {
     } else {
       session = await this.sessionModel.create({
         userId,
-        flatform,
-        flatformVersion,
+        platform,
+        platformVersion,
         browser,
         device,
         ipHistory: [{ ip: clientIP, timestamp: new Date() }],

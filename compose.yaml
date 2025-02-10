@@ -17,14 +17,13 @@ x-apps-config: &apps
   env_file: .env
   restart: always
   healthcheck:
-    interval: 2s
-    start_period: 10s
-    retries: 30
+    interval: 1s
+    start_period: 8s
+    retries: 120
 
 x-services-config: &services
   <<: *apps
-  build:
-    dockerfile: Dockerfile.service
+  build: ./infras/service
   volumes:
     - .:/workspace
   healthcheck:
@@ -32,8 +31,7 @@ x-services-config: &services
 
 x-sites-config: &sites
   <<: *apps
-  build:
-    dockerfile: Dockerfile.site
+  build: ./infras/site
   volumes:
     - .:/workspace
     - ./.deployment:/workspace/.angular

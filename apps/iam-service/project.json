@@ -19,7 +19,7 @@
         "sourceMap": true,
         "extractLicenses": false,
         "outputPath": "dist/apps/iam-service",
-        "main": "apps/iam-service/src/index.ts",
+        "main": "apps/iam-service/src/main.ts",
         "tsConfig": "apps/iam-service/tsconfig.app.json",
         "webpackConfig": "apps/iam-service/webpack.config.js",
         "assets": []

@@ -7,10 +7,10 @@ export class Session {
   userId: string;
 
   @Prop()
-  flatform: string;
+  platform: string;
 
   @Prop()
-  flatformVersion: string;
+  platformVersion: string;
 
   @Prop()
   browser: string;
