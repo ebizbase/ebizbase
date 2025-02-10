@@ -58,8 +58,8 @@ import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
   `,
 })
 export class ChangeAvatarComponent {
-  imageChangedEvent: any = '';
-  croppedImage: any = '';
+  imageChangedEvent: Event | null = null;
+  croppedImage = ''; // base64
   canvasRotation = 0; // Dùng thay cho transform.rotate
   @Output() imageUploaded = new EventEmitter<string>();
 
@@ -76,7 +76,7 @@ export class ChangeAvatarComponent {
     };
   }
 
-  fileChangeEvent(event: any): void {
+  fileChangeEvent(event: Event): void {
     this.imageChangedEvent = event;
     this.canvasRotation = 0; // Reset xoay khi chọn ảnh mới
   }
