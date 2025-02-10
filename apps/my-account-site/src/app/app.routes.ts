@@ -15,41 +15,41 @@ export const appRoutes: Route[] = [
       {
         path: 'personal-info',
         loadComponent: () =>
-          import('./pages/personal-info/personal-info.component').then(
+          import('./features/personal-info/personal-info.component').then(
             (m) => m.PersonalInfoComponent
           ),
       },
       {
         path: 'personal-info/display-name',
         loadComponent: () =>
-          import('./pages/personal-info/display-name.component').then(
+          import('./features/personal-info/display-name.component').then(
             (m) => m.DisplayNameComponent
           ),
       },
       {
         path: 'personal-info/avatar',
         loadComponent: () =>
-          import('./pages/personal-info/avatar.component').then((m) => m.AvatarComponent),
+          import('./features/personal-info/avatar.component').then((m) => m.AvatarComponent),
       },
       {
         path: 'personal-info/color-mode',
         loadComponent: () =>
-          import('./pages/personal-info/color-mode.component').then((m) => m.ColorModeComponent),
+          import('./features/personal-info/color-mode.component').then((m) => m.ColorModeComponent),
       },
       {
         path: 'personal-info/language',
         loadComponent: () =>
-          import('./pages/personal-info/language.component').then((m) => m.LanguageComponent),
+          import('./features/personal-info/language.component').then((m) => m.LanguageComponent),
       },
       {
         path: 'security',
         loadComponent: () =>
-          import('./pages/security/security.component').then((m) => m.SecurityComponent),
+          import('./features/security/security.component').then((m) => m.SecurityComponent),
       },
       {
         path: 'privacy',
         loadComponent: () =>
-          import('./pages/privacy/privacy.component').then((m) => m.PrivacyComponent),
+          import('./features/privacy/privacy.component').then((m) => m.PrivacyComponent),
       },
     ],
   },

@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { EbbAppService } from '@ebizbase/angular-app';
 import { tuiDialog, TuiIcon, TuiTextfield } from '@taiga-ui/core';
 import { TuiAvatar, TuiSwitch } from '@taiga-ui/kit';
-import { FeedbackDialogComponent } from '../../components/feedback/feedback-dialog.component';
-import { PageHeadingComponent } from '../../components/page-heading/page-heading.component';
+import { FeedbackDialogComponent } from '../../shared/components/feedback/feedback-dialog.component';
+import { PageHeadingComponent } from '../../shared/components/page-heading/page-heading.component';
 
 @Component({
   selector: 'app-privacy',

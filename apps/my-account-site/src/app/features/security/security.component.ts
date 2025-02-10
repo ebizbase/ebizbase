@@ -3,8 +3,8 @@ import { EbbAppService } from '@ebizbase/angular-app';
 import { tuiDialog, TuiIcon, TuiLink, TuiTextfield } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { TuiCell } from '@taiga-ui/layout';
-import { FeedbackDialogComponent } from '../../components/feedback/feedback-dialog.component';
-import { PageHeadingComponent } from '../../components/page-heading/page-heading.component';
+import { FeedbackDialogComponent } from '../../shared/components/feedback/feedback-dialog.component';
+import { PageHeadingComponent } from '../../shared/components/page-heading/page-heading.component';
 
 @Component({
   selector: 'app-security',

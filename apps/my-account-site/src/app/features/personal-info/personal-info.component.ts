@@ -8,8 +8,8 @@ import { IMeBasicInfoResponse } from '@ebizbase/iam-interfaces';
 import { tuiDialog, TuiFallbackSrcPipe, TuiIcon, TuiTextfield } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { Subscription } from 'rxjs';
-import { FeedbackDialogComponent } from '../../components/feedback/feedback-dialog.component';
-import { PageHeadingComponent } from '../../components/page-heading/page-heading.component';
+import { FeedbackDialogComponent } from '../../shared/components/feedback/feedback-dialog.component';
+import { PageHeadingComponent } from '../../shared/components/page-heading/page-heading.component';
 
 @Component({
   selector: 'app-personal-info',
