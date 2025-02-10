@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { EbbAppService } from '@ebizbase/angular-app';
-import { CurrentUser } from '@ebizbase/angular-common';
+import { CurrentUser, EcommaSite } from '@ebizbase/angular-common';
 import { Nullable } from '@ebizbase/common-types';
 import { IMeBasicInfoResponse } from '@ebizbase/iam-interfaces';
 import { tuiDialog, TuiFallbackSrcPipe, TuiIcon, TuiTextfield } from '@taiga-ui/core';
@@ -158,16 +158,15 @@ export class PersonalInfoComponent implements OnDestroy {
   constructor(
     private app: EbbAppService,
     private currentUser: CurrentUser,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private site: EcommaSite
   ) {
-    this.app.pageInfo = {
-      title: 'eBizBase Account',
-      contentSize: 'm',
-    };
+    this.site.title = 'eBizBase Account';
+    this.app.pageInfo = { contentSize: 'm' };
     this._subscription.add(
       this.currentUser.basicInfo$.subscribe((info) => {
         this.basicInfo = info;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       })
     );
   }

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { EbbAppService } from '@ebizbase/angular-app';
+import { EcommaSite } from '@ebizbase/angular-common';
 import { tuiDialog, TuiIcon, TuiLink, TuiTextfield } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { TuiCell } from '@taiga-ui/layout';
@@ -170,9 +171,12 @@ export class SecurityComponent {
     label: 'Send feedback to eBizBase',
   });
 
-  constructor(private app: EbbAppService) {
+  constructor(
+    private app: EbbAppService,
+    private site: EcommaSite
+  ) {
+    this.site.title = 'Security';
     this.app.pageInfo = {
-      title: 'Security',
       contentSize: 'm',
     };
   }

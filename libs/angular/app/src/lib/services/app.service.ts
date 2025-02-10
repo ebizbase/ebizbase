@@ -1,5 +1,4 @@
 import { Inject, Injectable, OnDestroy, signal } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { WA_WINDOW } from '@ng-web-apis/common';
 import { filter, Subscription } from 'rxjs';
@@ -20,8 +19,7 @@ export class EbbAppService implements OnDestroy {
 
   constructor(
     @Inject(WA_WINDOW) private window: Window,
-    private router: Router,
-    private title: Title
+    private router: Router
   ) {
     this._navigrationEndSubscription.add(
       this.router.events
@@ -43,9 +41,6 @@ export class EbbAppService implements OnDestroy {
 
   set pageInfo(info: PageInfo | null) {
     this._info.set(info);
-    if (info && info.title) {
-      this.title.setTitle(info.title);
-    }
   }
 
   get pageInfo() {

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EbbAppService } from '@ebizbase/angular-app';
+import { EcommaSite } from '@ebizbase/angular-common';
 import { MessageableValidators, TextfieldFormControlComponent } from '@ebizbase/angular-form';
 import { TuiButton, TuiIcon, TuiTextfield } from '@taiga-ui/core';
 
@@ -72,9 +73,12 @@ export class DisplayNameComponent {
   });
   protected nameControl: FormControl = this.form.get('name') as FormControl;
 
-  constructor(private app: EbbAppService) {
+  constructor(
+    private app: EbbAppService,
+    private site: EcommaSite
+  ) {
+    this.site.title = 'Display name';
     this.app.pageInfo = {
-      title: 'Display name',
       contentSize: 'm',
       heading: {
         title: 'Display name',

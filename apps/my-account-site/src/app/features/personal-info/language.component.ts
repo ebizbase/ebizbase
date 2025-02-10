@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { EbbAppService } from '@ebizbase/angular-app';
+import { EcommaSite } from '@ebizbase/angular-common';
 import { TuiTextfield } from '@taiga-ui/core';
 
 @Component({
@@ -10,9 +11,12 @@ import { TuiTextfield } from '@taiga-ui/core';
   template: '',
 })
 export class LanguageComponent {
-  constructor(private app: EbbAppService) {
+  constructor(
+    private app: EbbAppService,
+    private site: EcommaSite
+  ) {
+    this.site.title = 'Language';
     this.app.pageInfo = {
-      title: 'Language',
       heading: {
         title: 'Language',
         previous: './',

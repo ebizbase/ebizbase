@@ -1,5 +1,4 @@
 export interface PageInfo {
-  title: string;
   heading?: {
     title: string;
     previous?: string;

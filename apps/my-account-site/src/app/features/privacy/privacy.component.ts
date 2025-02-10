@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { EbbAppService } from '@ebizbase/angular-app';
+import { EcommaSite } from '@ebizbase/angular-common';
 import { tuiDialog, TuiIcon, TuiTextfield } from '@taiga-ui/core';
 import { TuiAvatar, TuiSwitch } from '@taiga-ui/kit';
 import { FeedbackDialogComponent } from '../../shared/components/feedback/feedback-dialog.component';
@@ -102,9 +103,12 @@ export class PrivacyComponent {
     label: 'Send feedback to eBizBase',
   });
 
-  constructor(private app: EbbAppService) {
+  constructor(
+    private app: EbbAppService,
+    private site: EcommaSite
+  ) {
+    this.site.title = 'Privacy';
     this.app.pageInfo = {
-      title: 'Privacy',
       contentSize: 'm',
     };
   }
