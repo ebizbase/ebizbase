@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { EbbAppService } from '@ebizbase/angular-app';
 import { CurrentUser } from '@ebizbase/angular-common';
@@ -7,11 +7,13 @@ import { Nullable } from '@ebizbase/common-types';
 import { IMeBasicInfoResponse } from '@ebizbase/iam-interfaces';
 import { tuiDialog, TuiFallbackSrcPipe, TuiIcon, TuiTextfield } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
+import { Subscription } from 'rxjs';
 import { FeedbackDialogComponent } from '../../components/feedback/feedback-dialog.component';
 import { PageHeadingComponent } from '../../components/page-heading/page-heading.component';
 
 @Component({
   selector: 'app-personal-info',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
     RouterLink,
@@ -144,7 +146,8 @@ import { PageHeadingComponent } from '../../components/page-heading/page-heading
     </div>
   `,
 })
-export class PersonalInfoComponent {
+export class PersonalInfoComponent implements OnDestroy {
+  private _subscription = new Subscription();
   protected basicInfo: Nullable<IMeBasicInfoResponse> = null;
 
   protected readonly feedbackDialog = tuiDialog(FeedbackDialogComponent, {
@@ -154,14 +157,22 @@ export class PersonalInfoComponent {
 
   constructor(
     private app: EbbAppService,
-    private currentUser: CurrentUser
+    private currentUser: CurrentUser,
+    private cdr: ChangeDetectorRef
   ) {
     this.app.pageInfo = {
       title: 'eBizBase Account',
       contentSize: 'm',
     };
-    this.currentUser.basicInfo$.subscribe((info) => {
-      this.basicInfo = info;
-    });
+    this._subscription.add(
+      this.currentUser.basicInfo$.subscribe((info) => {
+        this.basicInfo = info;
+        this.cdr.detectChanges();
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe();
   }
 }

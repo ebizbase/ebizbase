@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 import { clsx } from 'clsx';
 import { EbbAppService } from '../../services';
 import { SidebarMenu } from './sidebar-menu/sidebar-menu.component';
 
 @Component({
   selector: 'ebb-app-sidebar',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, SidebarMenu],
   template: `
     <div class="flex lg:hidden items-center space-x-1 h-14 pl-2">

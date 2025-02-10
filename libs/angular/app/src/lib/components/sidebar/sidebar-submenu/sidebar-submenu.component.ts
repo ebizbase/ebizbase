@@ -1,5 +1,5 @@
 import { NgClass, NgFor, NgTemplateOutlet } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TuiIcon } from '@taiga-ui/core';
 import { SubMenuItem } from '../../../models/menu.model';
@@ -7,6 +7,7 @@ import { EbbAppService } from '../../../services';
 
 @Component({
   selector: 'ebb-app-sidebar-submenu',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgFor, NgClass, NgTemplateOutlet, RouterLinkActive, RouterLink, TuiIcon],
   template: `<div
     class="max-h-0 overflow-hidden pt-1 pl-4 transition-all duration-500"
