@@ -7,7 +7,7 @@ import { SidebarSubmenu } from '../sidebar-submenu/sidebar-submenu.component';
 
 @Component({
   selector: 'ebb-app-sidebar-menu',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [NgFor, NgClass, NgTemplateOutlet, NgIf, TuiIcon, RouterLink, SidebarSubmenu],
   template: `<div class="pt-4" *ngFor="let menu of layoutService.menus">
     <div *ngIf="menu.group" class="mx-1 mb-2 flex items-center justify-between">

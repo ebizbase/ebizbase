@@ -7,7 +7,7 @@ import { EbbAppService } from '../../../services';
 
 @Component({
   selector: 'ebb-app-sidebar-submenu',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [NgFor, NgClass, NgTemplateOutlet, RouterLinkActive, RouterLink, TuiIcon],
   template: `<div
     class="max-h-0 overflow-hidden pt-1 pl-4 transition-all duration-500"
