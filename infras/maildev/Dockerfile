@@ -1,1 +1,1 @@
-FROM maildev/maildev
+FROM maildev/maildev@sha256:180ef51f65eefebb0e7122d8308813c1fd7bff164bc440ce5a3c2feee167a810
