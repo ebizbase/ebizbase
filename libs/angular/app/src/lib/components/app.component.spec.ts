@@ -1,5 +1,7 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CurrentUser } from '@ebizbase/angular-common';
 import { EbbApp } from './app.component';
 
 describe('EbbApp', () => {
@@ -8,7 +10,8 @@ describe('EbbApp', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EbbApp, NoopAnimationsModule],
+      imports: [EbbApp, HttpClientTestingModule, NoopAnimationsModule],
+      providers: [CurrentUser],
     }).compileComponents();
   });
 

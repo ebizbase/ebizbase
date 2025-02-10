@@ -4,6 +4,6 @@ export * from './lib/color-mode-swticher.component';
 export * from './lib/cookies';
 export * from './lib/curent-user';
 export * from './lib/domain-name';
+export * from './lib/ecomma-root';
 export * from './lib/ecomma-site';
 export * from './lib/provide-ecomma-site';
-export * from './lib/site-root';

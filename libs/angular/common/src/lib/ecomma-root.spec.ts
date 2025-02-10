@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { EcommaRoot } from './ebb-site-root';
+import { EcommaRoot } from './ecomma-root';
 
 describe('EcommaRoot', () => {
   let component: EcommaRoot;
