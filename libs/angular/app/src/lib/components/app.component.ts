@@ -26,7 +26,7 @@ import { Sidebar } from './sidebar/sidebar.component';
             </div>
             <div
               id="main-content"
-              class="flex-1 w-full {{ scrollbarClsx }}"
+              class="flex-1 w-full overflow-y-auto {{ scrollbarClsx }}"
               [ngClass]="{
                 'h-[calc(100dvh-8rem)]': layoutService.pageInfo?.heading,
                 'h-[calc(100dvh-4rem)]': !layoutService.pageInfo?.heading,
