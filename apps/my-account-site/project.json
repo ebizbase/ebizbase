@@ -11,11 +11,11 @@
   },
   "targets": {
     "compile": {
-      "executor": "@angular-devkit/build-angular:application",
+      "executor": "@angular-devkit/build-angular:browser",
       "options": {
         "outputPath": "dist/apps/my-account-site",
         "index": "apps/my-account-site/src/index.html",
-        "browser": "apps/my-account-site/src/main.ts",
+        "main": "apps/my-account-site/src/main.ts",
         "tsConfig": "apps/my-account-site/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "polyfills": ["zone.js"],
@@ -49,7 +49,28 @@
       },
       "configurations": {
         "production": {
-          "outputHashing": "all"
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "900kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all",
+          "optimization": {
+            "scripts": true,
+            "styles": {
+              "minify": true,
+              "inlineCritical": false
+            },
+            "fonts": false
+          },
+          "extractLicenses": true
         },
         "development": {
           "optimization": false,
@@ -95,6 +116,16 @@
           "push": true,
           "tags": ["{major}.{minor}.{patch}"]
         }
+      }
+    },
+    "analyze": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "npx nx compile my-account-site --stats-json",
+          "npx webpack-bundle-analyzer ./dist/apps/my-account-site/stats.json"
+        ],
+        "parallel": false
       }
     }
   }
