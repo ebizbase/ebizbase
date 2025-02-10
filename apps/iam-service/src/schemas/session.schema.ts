@@ -10,12 +10,15 @@ export class Session {
   flatform: string;
 
   @Prop()
+  flatformVersion: string;
+
+  @Prop()
   browser: string;
 
   @Prop()
   device?: string;
 
-  @Prop({ required: true, type: [{ ip: String, timestamp: { type: Date, default: Date.now } }] })
+  @Prop({ required: true, _id: false, type: [{ ip: String, timestamp: Date }] })
   ipHistory: Array<{ ip: string; timestamp: Date }>;
 
   @Prop({ required: true, default: () => Date.now() })

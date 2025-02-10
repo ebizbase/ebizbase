@@ -1,7 +1,10 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { EbbAppService } from '@ebizbase/angular-app';
+import { CurrentUser } from '@ebizbase/angular-common';
+import { Nullable } from '@ebizbase/common-types';
+import { IMeBasicInfoResponse } from '@ebizbase/iam-interfaces';
 import { tuiDialog, TuiFallbackSrcPipe, TuiIcon, TuiTextfield } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { FeedbackDialogComponent } from '../../components/feedback/feedback-dialog.component';
@@ -18,7 +21,6 @@ import { PageHeadingComponent } from '../../components/page-heading/page-heading
     TuiFallbackSrcPipe,
     PageHeadingComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-page-heading
       title="Personal info"
@@ -51,11 +53,8 @@ import { PageHeadingComponent } from '../../components/page-heading/page-heading
           </div>
           <div class="relative rounded-full">
             <tui-avatar
-              [src]="
-                'https://avatars.githubusercontent.com/u/11832552'
-                  | tuiFallbackSrc: '@tui.user'
-                  | async
-              "
+              appearance="accent"
+              [src]="basicInfo?.avatar ?? '' | tuiFallbackSrc: '@tui.user' | async"
               size="xl"
             />
             <div
@@ -74,7 +73,7 @@ import { PageHeadingComponent } from '../../components/page-heading/page-heading
             <div class="font-medium lg:flex-1 text-[var(--tui-text-secondary)] max-w-60">
               Display Name
             </div>
-            <div class="text-base flex lg:flex-1 space-x-1 items-center">John Martin</div>
+            <div class="text-base flex lg:flex-1 space-x-1 items-center">{{ basicInfo?.name }}</div>
           </div>
           <div class="w-24 text-right"><tui-icon icon="@tui.chevron-right" /></div>
         </a>
@@ -146,15 +145,23 @@ import { PageHeadingComponent } from '../../components/page-heading/page-heading
   `,
 })
 export class PersonalInfoComponent {
+  protected basicInfo: Nullable<IMeBasicInfoResponse> = null;
+
   protected readonly feedbackDialog = tuiDialog(FeedbackDialogComponent, {
     dismissible: true,
     label: 'Send feedback to eBizBase',
   });
 
-  constructor(private app: EbbAppService) {
-    this.app.info = {
+  constructor(
+    private app: EbbAppService,
+    private currentUser: CurrentUser
+  ) {
+    this.app.pageInfo = {
       title: 'eBizBase Account',
       contentSize: 'm',
     };
+    this.currentUser.basicInfo$.subscribe((info) => {
+      this.basicInfo = info;
+    });
   }
 }

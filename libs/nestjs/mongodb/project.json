@@ -1,0 +1,9 @@
+{
+  "name": "nestjs-mongodb",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nestjs/mongodb/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project nestjs-mongodb --web",
+  "targets": {}
+}

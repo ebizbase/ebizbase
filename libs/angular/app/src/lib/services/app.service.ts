@@ -41,14 +41,14 @@ export class EbbAppService implements OnDestroy {
     this._menus.set(menus);
   }
 
-  set info(info: PageInfo | null) {
+  set pageInfo(info: PageInfo | null) {
     this._info.set(info);
     if (info && info.title) {
       this.title.setTitle(info.title);
     }
   }
 
-  get info() {
+  get pageInfo() {
     return this._info();
   }
 

@@ -171,7 +171,7 @@ export class SecurityComponent {
   });
 
   constructor(private app: EbbAppService) {
-    this.app.info = {
+    this.app.pageInfo = {
       title: 'Security',
       contentSize: 'm',
     };

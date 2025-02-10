@@ -1,4 +1,5 @@
 import { IRestfulResponse } from '@ebizbase/common-types';
+import { SerializeInterceptor } from '@ebizbase/nestjs-serial';
 import {
   Controller,
   Get,
@@ -8,9 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { SerializeInterceptor } from '../common/serialize.interceptor';
 import { MeBasicInfoOutputDto } from '../dtos/me/me-basic-info-output.dtos';
-import { OutPutDto } from '../dtos/output.dto';
 import { AccessTokenGuard } from '../guards/access-token.guard';
 import { MeService } from '../services/me.service';
 
@@ -23,7 +22,7 @@ export class MeController {
 
   @Get('')
   @HttpCode(200)
-  @UseInterceptors(new SerializeInterceptor(OutPutDto))
+  @UseInterceptors(new SerializeInterceptor(MeBasicInfoOutputDto))
   async getOtp(
     @Request() { userId }: { userId: string }
   ): Promise<IRestfulResponse<MeBasicInfoOutputDto>> {

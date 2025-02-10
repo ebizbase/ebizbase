@@ -5,11 +5,12 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { ActivatedRoute, Router } from '@angular/router';
 import { DOMAIN_NAME_COMPONENTS, DomainName, EcommaSite } from '@ebizbase/angular-common';
 import { MessageableValidators, TextfieldFormControlComponent } from '@ebizbase/angular-form';
+import { ColorMode, Language } from '@ebizbase/common-types';
 import { WA_LOCAL_STORAGE, WA_LOCATION, WA_NAVIGATOR } from '@ng-web-apis/common';
 import { TuiButton, TuiDialogService, TuiTextfield } from '@taiga-ui/core';
 import { TuiButtonLoading, TuiFade } from '@taiga-ui/kit';
 import { CURRENT_IDENTITY_STORAGE_KEY } from '../core/constant';
-import { AuthenticateService } from '../core/services/authenticate.service';
+import { APIService } from '../core/services/authenticate.service';
 
 @Component({
   selector: 'app-verify',
@@ -77,11 +78,12 @@ export class VerifyComponent implements OnInit, AfterViewInit {
   });
   protected otpControl: FormControl = this.form.get('otp') as FormControl;
   protected otpResendCountdown = 0;
-  protected ngLocation: NgLocation = inject(NgLocation);
+
+  private ngLocation: NgLocation = inject(NgLocation);
   protected router: Router = inject(Router);
   protected route: ActivatedRoute = inject(ActivatedRoute);
   protected domain: DomainName = inject(DomainName);
-  protected authenticateService: AuthenticateService = inject(AuthenticateService);
+  protected apiService: APIService = inject(APIService);
   protected dialogService: TuiDialogService = inject(TuiDialogService);
   protected siteService: EcommaSite = inject(EcommaSite);
   protected cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
@@ -136,7 +138,9 @@ export class VerifyComponent implements OnInit, AfterViewInit {
   }
 
   protected async onRequestOtp() {
-    this.authenticateService.getOtp({ email: this.currentEmail }).subscribe({
+    const language = this.siteService.language() as keyof Language;
+    const colorMode = this.siteService.colorMode as keyof ColorMode;
+    this.apiService.getOtp({ email: this.currentEmail, language, colorMode }).subscribe({
       next: (response) => {
         this.dialogService.open(response.message).subscribe();
         this.storage.setItem(
@@ -164,7 +168,7 @@ export class VerifyComponent implements OnInit, AfterViewInit {
       return;
     }
     this.loading = true;
-    this.authenticateService
+    this.apiService
       .verify({ otp: this.form.get('otp').value, email: this.currentEmail })
       .subscribe({
         next: () => {

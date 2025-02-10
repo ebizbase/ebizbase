@@ -1,0 +1,9 @@
+{
+  "name": "nestjs-node-mailer",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nestjs/node-mailer/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project nestjs-node-mailer --web",
+  "targets": {}
+}

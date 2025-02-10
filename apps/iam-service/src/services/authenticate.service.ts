@@ -11,11 +11,14 @@ import { JwtService } from '@nestjs/jwt';
 import ms from 'ms';
 import speakeasy from 'speakeasy';
 import { UAParser } from 'ua-parser-js';
+import { IRefreshTokenPayload } from '../common/refresh-token-payload.interface';
 import { GetOtpInputDTO } from '../dtos/authenticate/get-otp-input.dto';
+import { RefreshTokenInputDto } from '../dtos/authenticate/refresh-token-input.dto';
+import { RefreshTokenOutputDto } from '../dtos/authenticate/refresh-token-output.dto';
 import { VerifyInputDTO } from '../dtos/authenticate/verify-input.dto';
 import { VerifyHotpOutputDTO } from '../dtos/authenticate/verify-output.dto';
 import { OutPutDto } from '../dtos/output.dto';
-import { InjectSessionModel, SessionModel } from '../schemas/session.schema';
+import { InjectSessionModel, SessionDocument, SessionModel } from '../schemas/session.schema';
 import { InjectUserModel, UserDocument, UserModel } from '../schemas/user.schema';
 import { MailerService } from './mailer.service';
 
@@ -25,6 +28,7 @@ export class AuthenticateService {
   private readonly ACCESS_TOKEN_EXPIRES_IN = process.env['ACCESS_TOKEN_EXPIRES_IN'] || '15m';
   private readonly REFRESH_TOKEN_EXPIRES_IN = process.env['REFRESH_TOKEN_EXPIRES_IN'] || '28d';
   private readonly OTP_EXPIRES_IN = parseInt(process.env['OTP_EXPIRES_IN']) || 10 * 60 * 1000;
+  private readonly MAX_IP_HISTORY = parseInt(process.env['MAX_IP_HISTORY']) || 96;
 
   constructor(
     private readonly jwtService: JwtService,
@@ -33,11 +37,11 @@ export class AuthenticateService {
     @InjectUserModel() private userModel: UserModel
   ) {}
 
-  async getOTP({ email }: GetOtpInputDTO): Promise<OutPutDto> {
+  async getOTP({ email, colorMode, language }: GetOtpInputDTO): Promise<OutPutDto> {
     let user = await this.userModel.findOne({ email });
     if (!user) {
       this.logger.debug('User email is not exist on system');
-      user = await this.userModel.create({ email });
+      user = await this.userModel.create({ email, colorMode, language });
       const otp = speakeasy.hotp({ secret: user.otpSecret, counter: user.otpCounter });
       await this.mailerService.sendOTPEmail(user.email, otp);
       return { message: 'OTP email sent successfully' };
@@ -119,11 +123,42 @@ export class AuthenticateService {
     return true;
   }
 
-  private async issueNewToken(userId: string, headers: Dict<string>) {
+  async refreshToken(
+    { refreshToken }: RefreshTokenInputDto,
+    headers: Dict<string>
+  ): Promise<RefreshTokenOutputDto> {
+    let payload: IRefreshTokenPayload;
+    try {
+      payload = await this.jwtService.verify(refreshToken);
+    } catch {
+      throw new ForbiddenException({ message: 'Invalid refreshToken' });
+    }
+
+    if (!payload.sessionId) {
+      throw new ForbiddenException('Invalid refreshToken payload');
+    }
+
+    const session = await this.sessionModel.findById(payload.sessionId);
+
+    if (!session) {
+      throw new ForbiddenException('Session is unavaiable');
+    } else if (session.expiredAt.getTime() <= Date.now()) {
+      throw new ForbiddenException('Session is expired');
+    } else if (session.revokedAt !== undefined && session.revokedAt !== null) {
+      throw new ForbiddenException('Session is revoked');
+    }
+
+    return {
+      data: await this.issueNewToken(session.userId, headers, session),
+    };
+  }
+
+  private async issueNewToken(userId: string, headers: Dict<string>, session?: SessionDocument) {
     const userAgent = headers['user-agent'];
     const clientIP = headers['x-forwarded-for'] || headers['cf-connecting-ip'];
     let device: string | undefined;
     let flatform: string;
+    let flatformVersion: string;
     let browser: string;
 
     if (!clientIP) {
@@ -146,6 +181,7 @@ export class AuthenticateService {
       }
 
       flatform = uaParserResult.os.name;
+      flatformVersion = uaParserResult.os.version;
       browser = uaParserResult.browser.name;
       if (uaParserResult.device.vendor) {
         if (uaParserResult.device.model) {
@@ -160,17 +196,50 @@ export class AuthenticateService {
     const accessTokenExpiresAt = new Date(now + ms(this.ACCESS_TOKEN_EXPIRES_IN));
     const refreshTokenExpiresAt = new Date(now + ms(this.REFRESH_TOKEN_EXPIRES_IN));
 
-    const session = await this.sessionModel.create({
-      userId,
-      flatform,
-      browser,
-      device,
-      ipHistory: [{ ip: clientIP }],
-      expiredAt: refreshTokenExpiresAt,
-    });
+    if (session) {
+      if (
+        session.flatform !== flatform ||
+        session.flatformVersion !== flatformVersion ||
+        session.browser !== browser ||
+        session.device !== device
+      ) {
+        this.logger.warn({
+          msg: `Blocked session update: User ${userId} tried to access from a different device.`,
+          detect: { flatform, flatformVersion, browser, device },
+          session,
+        });
+        throw new ForbiddenException();
+      } else {
+        const updateResult = await this.sessionModel.updateOne(
+          { _id: session._id },
+          {
+            $push: {
+              ipHistory: {
+                $each: [{ ip: clientIP, timestamp: new Date() }],
+                $slice: -this.MAX_IP_HISTORY,
+              },
+            },
+            $set: { expiredAt: refreshTokenExpiresAt },
+          }
+        );
+        if (updateResult.modifiedCount === 0) {
+          this.logger.warn(`Failed to update session for user ${userId}`);
+        }
+      }
+    } else {
+      session = await this.sessionModel.create({
+        userId,
+        flatform,
+        flatformVersion,
+        browser,
+        device,
+        ipHistory: [{ ip: clientIP, timestamp: new Date() }],
+        expiredAt: refreshTokenExpiresAt,
+      });
+    }
 
     const accessToken = await this.jwtService.signAsync(
-      { userId, sessionId: session.id },
+      { userId },
       { expiresIn: this.ACCESS_TOKEN_EXPIRES_IN }
     );
     const refreshToken = await this.jwtService.signAsync(

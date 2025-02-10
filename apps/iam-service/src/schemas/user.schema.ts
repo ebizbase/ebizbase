@@ -1,3 +1,4 @@
+import { ColorMode, Language } from '@ebizbase/common-types';
 import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
 import { HydratedDocument, Model } from 'mongoose';
@@ -25,8 +26,14 @@ export class User {
   @Prop()
   avatar?: string;
 
-  @Prop({ default: generateRandomUserName })
+  @Prop({ required: true, default: generateRandomUserName })
   name: string;
+
+  @Prop({ required: true, type: String, enum: Object.keys(Language) })
+  language: Language;
+
+  @Prop({ required: true, type: String, enum: Object.keys(ColorMode) })
+  colorMode: ColorMode;
 
   @Exclude()
   @Prop({ default: () => speakeasy.generateSecret().base32 })

@@ -1,17 +1,16 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate, UrlTree } from '@angular/router';
-import { DOMAIN_NAME_COMPONENTS, DomainName } from '@ebizbase/angular-common';
+import { Authenticate, DOMAIN_NAME_COMPONENTS, DomainName } from '@ebizbase/angular-common';
 import { WA_LOCATION } from '@ng-web-apis/common';
-import { AuthenticateService } from '../services/authenticate.service';
 
 @Injectable({ providedIn: 'root' })
 export class UnauthenticatedGuard implements CanActivate {
-  private authenticateService: AuthenticateService = inject(AuthenticateService);
+  private authenticate: Authenticate = inject(Authenticate);
   private location: Location = inject(WA_LOCATION);
   private domain: DomainName = inject(DomainName);
 
   canActivate(): boolean | UrlTree {
-    if (this.authenticateService.isLoggedIn) {
+    if (this.authenticate.isLoggedIn) {
       const urlParams = new URLSearchParams(this.location.search);
       const continueUrl = urlParams.get('continue');
       this.location.href =

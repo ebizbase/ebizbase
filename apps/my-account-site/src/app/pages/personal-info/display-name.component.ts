@@ -11,7 +11,7 @@ import { TuiTextfield } from '@taiga-ui/core';
 })
 export class DisplayNameComponent {
   constructor(private app: EbbAppService) {
-    this.app.info = {
+    this.app.pageInfo = {
       title: 'Display name',
       heading: {
         title: 'Display name',

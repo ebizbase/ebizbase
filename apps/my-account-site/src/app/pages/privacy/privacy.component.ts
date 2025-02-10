@@ -103,7 +103,7 @@ export class PrivacyComponent {
   });
 
   constructor(private app: EbbAppService) {
-    this.app.info = {
+    this.app.pageInfo = {
       title: 'Privacy',
       contentSize: 'm',
     };

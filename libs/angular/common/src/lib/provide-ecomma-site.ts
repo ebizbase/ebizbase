@@ -1,5 +1,10 @@
 import { isPlatformBrowser } from '@angular/common';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withFetch,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import {
   EnvironmentProviders,
   inject,
@@ -18,6 +23,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, Route } from '@angular/router';
 import { TUI_ICON_RESOLVER } from '@taiga-ui/core';
 import { NG_EVENT_PLUGINS } from '@taiga-ui/event-plugins';
+import { AuthenticateInterceptor } from './authenticate.interceptor';
 
 export const provideEcommaSite = (
   appRoutes: Route[],
@@ -25,7 +31,8 @@ export const provideEcommaSite = (
 ): Array<Provider | EnvironmentProviders> => [
   ...(ssr ? [provideClientHydration(withEventReplay(), withIncrementalHydration())] : []),
   provideAnimations(),
-  provideHttpClient(withFetch()),
+  { provide: HTTP_INTERCEPTORS, useClass: AuthenticateInterceptor, multi: true },
+  provideHttpClient(withFetch(), withInterceptorsFromDi()),
   provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(appRoutes),
   NG_EVENT_PLUGINS,

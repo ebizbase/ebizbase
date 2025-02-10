@@ -1,8 +1,0 @@
-{
-  "name": "nestjs-pino-logger",
-  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/nestjs/nestjs-pino-logger/src",
-  "projectType": "library",
-  "tags": [],
-  "targets": {}
-}

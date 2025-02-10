@@ -1,4 +1,4 @@
-import { MongoModule } from '@ebizbase/nestjs-mongo';
+import { MongoModule } from '@ebizbase/nestjs-mongodb';
 import { NodeMailerModule } from '@ebizbase/nestjs-node-mailer';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';

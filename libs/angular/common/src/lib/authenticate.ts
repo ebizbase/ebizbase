@@ -1,9 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { IRestfulResponse } from '@ebizbase/common-types';
-import { IMeBasicInfoResponse, IRefreshTokenResponse } from '@ebizbase/iam-interfaces';
 import { WA_LOCATION } from '@ng-web-apis/common';
-import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Cookies } from './cookies';
 import { DOMAIN_NAME_COMPONENTS, DomainName } from './domain-name';
 
@@ -17,10 +14,10 @@ export class Authenticate {
   constructor(
     protected cookie: Cookies,
     protected domainName: DomainName,
-    protected http: HttpClient,
     @Inject(WA_LOCATION) protected location: Location
   ) {
     this.isLoggedIn$ = new BehaviorSubject<boolean>(this.isLoggedIn);
+    // this.fetchUserBasicInfo();
   }
 
   get isLoggedInObservable(): Observable<boolean> {
@@ -31,7 +28,7 @@ export class Authenticate {
     return this.cookie.get(this.accessTokenKey);
   }
 
-  private get refreshToken(): string | null {
+  get refreshToken(): string | null {
     return this.cookie.get(this.refreshTokenKey);
   }
 
@@ -59,36 +56,5 @@ export class Authenticate {
     this.cookie.set(this.accessTokenKey, accessToken, options);
     this.cookie.set(this.refreshTokenKey, refreshToken, options);
     this.isLoggedIn$.next(true);
-  }
-
-  getMyInfo(): Observable<IRestfulResponse<IMeBasicInfoResponse>> {
-    const url = `${this.domainName.getUrl(DOMAIN_NAME_COMPONENTS.IAM_SERVICE)}/me`;
-    return this.http.get(url).pipe();
-  }
-
-  refreshAccessToken(): Observable<boolean> {
-    if (!this.refreshToken) {
-      this.logout();
-      return of(false);
-    }
-    const url = `${this.domainName.getUrl(DOMAIN_NAME_COMPONENTS.IAM_SERVICE)}/authenticate/refresh-token`;
-    return this.http
-      .post<IRestfulResponse<IRefreshTokenResponse>>(url, { refresToken: this.refreshToken })
-      .pipe(
-        map(({ data }) => {
-          if (!data) {
-            return false;
-          } else {
-            const { accessToken, refreshToken } = data;
-            this.setTokens(accessToken, refreshToken);
-            return true;
-          }
-        }),
-        catchError((error) => {
-          console.error('Failed to refresh access token', error);
-          this.logout();
-          return of(false);
-        })
-      );
   }
 }

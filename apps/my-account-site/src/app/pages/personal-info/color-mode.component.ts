@@ -11,7 +11,7 @@ import { TuiTextfield } from '@taiga-ui/core';
 })
 export class ColorModeComponent {
   constructor(private app: EbbAppService) {
-    this.app.info = {
+    this.app.pageInfo = {
       title: 'Color Mode',
       heading: {
         title: 'Color Mode',

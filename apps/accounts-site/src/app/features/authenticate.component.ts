@@ -6,7 +6,7 @@ import { MessageableValidators, TextfieldFormControlComponent } from '@ebizbase/
 import { WA_LOCAL_STORAGE, WA_NAVIGATOR } from '@ng-web-apis/common';
 import { TuiButton, TuiDialogService, TuiLink, TuiTextfield } from '@taiga-ui/core';
 import { CURRENT_IDENTITY_STORAGE_KEY } from '../core/constant';
-import { AuthenticateService } from '../core/services/authenticate.service';
+import { APIService } from '../core/services/authenticate.service';
 
 @Component({
   selector: 'app-email',
@@ -77,7 +77,7 @@ export class AuthenticateComponent implements OnInit, AfterViewInit {
   protected storage: Storage = inject(WA_LOCAL_STORAGE);
   protected dialogService: TuiDialogService = inject(TuiDialogService);
   protected router: Router = inject(Router);
-  protected authenticateService: AuthenticateService = inject(AuthenticateService);
+  protected APIService: APIService = inject(APIService);
   protected siteService: EcommaSite = inject(EcommaSite);
   protected currentIdentity: { email?: string } = {};
   protected domain: DomainName = inject(DomainName);

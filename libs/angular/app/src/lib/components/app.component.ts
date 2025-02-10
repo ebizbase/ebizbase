@@ -21,15 +21,15 @@ import { Sidebar } from './sidebar/sidebar.component';
             class="flex flex-col flex-1 h-[calc(100dvh-3.5rem)] bg-[var(--tui-background-base)]"
             [ngClass]="{ 'lg:rounded-tl-3xl': layoutService.menus.length > 0 }"
           >
-            <div class="flex w-full h-16 items-center" *ngIf="layoutService.info?.heading">
+            <div class="flex w-full h-16 items-center" *ngIf="layoutService.pageInfo?.heading">
               <ebb-app-page-heading class="px-2 lg:px-4 {{ getContentSizeClsx() }}" />
             </div>
             <div
               id="main-content"
               class="flex-1 w-full {{ scrollbarClsx }}"
               [ngClass]="{
-                'h-[calc(100dvh-8rem)]': layoutService.info?.heading,
-                'h-[calc(100dvh-4rem)]': !layoutService.info?.heading,
+                'h-[calc(100dvh-8rem)]': layoutService.pageInfo?.heading,
+                'h-[calc(100dvh-4rem)]': !layoutService.pageInfo?.heading,
               }"
             >
               <div class="p-4 lg:p-8 pb-20 {{ getContentSizeClsx() }}">
@@ -67,12 +67,12 @@ export class EbbApp {
 
   getContentSizeClsx() {
     return clsx('w-full', 'mx-auto', {
-      'max-w-2xl': this.layoutService.info?.contentSize === 'xs',
-      'max-w-3xl': this.layoutService.info?.contentSize === 's',
-      'max-w-4xl': this.layoutService.info?.contentSize === 'm',
-      'max-w-5xl': this.layoutService.info?.contentSize === 'l',
-      'max-w-6xl': this.layoutService.info?.contentSize === 'xl',
-      'max-w-7xl': this.layoutService.info?.contentSize === 'xxl',
+      'max-w-2xl': this.layoutService.pageInfo?.contentSize === 'xs',
+      'max-w-3xl': this.layoutService.pageInfo?.contentSize === 's',
+      'max-w-4xl': this.layoutService.pageInfo?.contentSize === 'm',
+      'max-w-5xl': this.layoutService.pageInfo?.contentSize === 'l',
+      'max-w-6xl': this.layoutService.pageInfo?.contentSize === 'xl',
+      'max-w-7xl': this.layoutService.pageInfo?.contentSize === 'xxl',
     });
   }
 }

@@ -1,10 +1,23 @@
-import { IRefreshTokenResponse } from '@ebizbase/iam-interfaces';
-import { IsString } from 'class-validator';
+import { Dict, IRestfulResponse } from '@ebizbase/common-types';
+import { IVerifyResponse } from '@ebizbase/iam-interfaces';
+import { Expose, Type } from 'class-transformer';
 
-export class RefreshTokenOutputDto implements IRefreshTokenResponse {
-  @IsString()
+export class RefreshTokenOuputData implements IVerifyResponse {
+  @Expose()
   accessToken: string;
 
-  @IsString()
+  @Expose()
   refreshToken: string;
+}
+
+export class RefreshTokenOutputDto implements IRestfulResponse<RefreshTokenOuputData> {
+  @Expose()
+  message?: string;
+
+  @Expose()
+  errors?: Dict<string>;
+
+  @Expose()
+  @Type(() => RefreshTokenOuputData)
+  data: RefreshTokenOuputData;
 }

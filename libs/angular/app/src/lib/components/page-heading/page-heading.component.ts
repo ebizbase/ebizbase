@@ -12,21 +12,21 @@ import { EbbAppService } from '../../services';
     class: 'flex justify-between h-14 items-center mt-2',
   },
   template: `
-    <ng-container *ngIf="layoutService.info?.heading?.previous">
+    <ng-container *ngIf="layoutService.pageInfo?.heading?.previous">
       <a
         tuiButton
         class="!rounded-full"
         appearance="flat"
         size="s"
         iconStart="@tui.chevron-left"
-        routerLink="{{ layoutService.info?.heading?.previous }}"
+        routerLink="{{ layoutService.pageInfo?.heading?.previous }}"
       >
       </a>
     </ng-container>
-    <h3 class="text-lg font-semibold flex-1">{{ layoutService.info?.heading?.title }}</h3>
-    <div class="inline-flex gap-3" *ngIf="layoutService.info?.heading?.actions">
+    <h3 class="text-lg font-semibold flex-1">{{ layoutService.pageInfo?.heading?.title }}</h3>
+    <div class="inline-flex gap-3" *ngIf="layoutService.pageInfo?.heading?.actions">
       <button
-        *ngFor="let action of layoutService.info?.heading?.actions"
+        *ngFor="let action of layoutService.pageInfo?.heading?.actions"
         class="!rounded-full lg:!rounded-md"
         appearance="flat"
         tuiButton

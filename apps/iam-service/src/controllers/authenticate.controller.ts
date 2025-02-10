@@ -1,7 +1,9 @@
 import { Dict } from '@ebizbase/common-types';
+import { SerializeInterceptor } from '@ebizbase/nestjs-serial';
 import { Body, Controller, Headers, HttpCode, Logger, Post, UseInterceptors } from '@nestjs/common';
-import { SerializeInterceptor } from '../common/serialize.interceptor';
 import { GetOtpInputDTO } from '../dtos/authenticate/get-otp-input.dto';
+import { RefreshTokenInputDto } from '../dtos/authenticate/refresh-token-input.dto';
+import { RefreshTokenOutputDto } from '../dtos/authenticate/refresh-token-output.dto';
 import { VerifyInputDTO } from '../dtos/authenticate/verify-input.dto';
 import { VerifyHotpOutputDTO } from '../dtos/authenticate/verify-output.dto';
 import { OutPutDto } from '../dtos/output.dto';
@@ -32,13 +34,14 @@ export class AuthenticateController {
     return this.authenticateService.verify(body, headers);
   }
 
-  // @Post('/refresh-token')
-  // @HttpCode(200)
-  // async refresh(
-  //   @Body() body: VerifyInputDTO,
-  //   @Headers() headers: Dict<string>
-  // ): Promise<OutPutDto<VerifyHotpOutputDTO>> {
-  //   this.logger.debug({ msg: 'RefreshToken', body });
-  //   return this.authenticateService.verify(body, headers);
-  // }
+  @Post('/refresh-token')
+  @HttpCode(200)
+  @UseInterceptors(new SerializeInterceptor(RefreshTokenOutputDto))
+  async refresh(
+    @Body() body: RefreshTokenInputDto,
+    @Headers() headers: Dict<string>
+  ): Promise<RefreshTokenOutputDto> {
+    this.logger.debug({ msg: 'RefreshToken', body });
+    return this.authenticateService.refreshToken(body, headers);
+  }
 }

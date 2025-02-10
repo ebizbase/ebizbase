@@ -11,7 +11,7 @@ import { TuiTextfield } from '@taiga-ui/core';
 })
 export class LanguageComponent {
   constructor(private app: EbbAppService) {
-    this.app.info = {
+    this.app.pageInfo = {
       title: 'Language',
       heading: {
         title: 'Language',

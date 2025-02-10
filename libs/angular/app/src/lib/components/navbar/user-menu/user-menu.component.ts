@@ -4,16 +4,20 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   Authenticate,
   ColorModeSwitcher,
+  CurrentUser,
   DOMAIN_NAME_COMPONENTS,
   DomainName,
   EcommaSite,
 } from '@ebizbase/angular-common';
+import { Nullable } from '@ebizbase/common-types';
+import { IMeBasicInfoResponse } from '@ebizbase/iam-interfaces';
 import { TuiDropdownMobile } from '@taiga-ui/addon-mobile';
 import { TuiActiveZone, TuiObscured } from '@taiga-ui/cdk';
 import { TuiDropdown, TuiFallbackSrcPipe, TuiIcon } from '@taiga-ui/core';
 import {
   TuiAvatar,
   TuiDataListWrapper,
+  TuiFade,
   TuiFilterByInputPipe,
   TuiStringifyContentPipe,
 } from '@taiga-ui/kit';
@@ -44,13 +48,12 @@ const LANGUAGES = [
     TuiFilterByInputPipe,
     TuiStringifyContentPipe,
     TuiTextfieldControllerModule,
+    TuiFade,
   ],
   template: `
     <tui-avatar
-      [src]="
-        'https://avatars.githubusercontent.com/u/11832552' | tuiFallbackSrc: '@tui.user' | async
-      "
-      class="hover:!bg-[var(--tui-background-neutral-1-hover)] [&>img]:p-1.5"
+      appearance="accent"
+      [src]="basicInfo?.avatar ?? '' | tuiFallbackSrc: '@tui.user' | async"
       size="m"
       (click)="onClick()"
       [tuiDropdown]="userMenu"
@@ -65,16 +68,13 @@ const LANGUAGES = [
       <div class="w-full bg-[var(--tui-background-neutral-1)] p-8 space-y-6">
         <div class="flex items-center space-x-4">
           <tui-avatar
-            [src]="
-              'https://avatars.githubusercontent.com/u/11832552'
-                | tuiFallbackSrc: '@tui.user'
-                | async
-            "
-            size="xl"
+            appearance="accent"
+            [src]="basicInfo?.avatar ?? '' | tuiFallbackSrc: '@tui.user' | async"
+            size="m"
           />
-          <div>
-            <div class="text-3xl">Hi John Doe!</div>
-            <div class="pointer-events-none">john.itvn&#64;gmail.com</div>
+          <div class="w-screen max-w-52">
+            <div tuiFade class="text-xl font-medium">{{ basicInfo?.name }}</div>
+            <div tuiFade class="text-sm w-full">{{ basicInfo?.email }}</div>
           </div>
         </div>
 
@@ -82,7 +82,7 @@ const LANGUAGES = [
           class="flex h-10 text-sm lg:text-base justify-between w-full border border-[var(--tui-background-neutral-1-hover)] [&>*:first-child]:rounded-s-full [&>*:last-child]:rounded-e-full [&>*:not(:last-child)]:border-r [&>*:hover]:bg-[var(--tui-background-neutral-1-hover)] [&>*]:border-[var(--tui-background-neutral-1-hover)]  rounded-full bg-[var(--tui-background-neutral-1)]"
         >
           <a
-            *ngIf="!isOnMyAccountSite()"
+            *ngIf="!isOnPersonalInfoPage()"
             [href]="myAccountUrl"
             target="_blank"
             class="flex flex-1 space-x-2 justify-center items-center"
@@ -124,13 +124,19 @@ const LANGUAGES = [
 })
 export class UserMenu {
   protected open = false;
+  protected basicInfo: Nullable<IMeBasicInfoResponse> = null;
 
   constructor(
     protected layoutService: EbbAppService,
     protected siteService: EcommaSite,
     protected authenticate: Authenticate,
-    protected domainName: DomainName
-  ) {}
+    protected domainName: DomainName,
+    protected currentUser: CurrentUser
+  ) {
+    this.currentUser.basicInfo$.subscribe((info) => {
+      this.basicInfo = info;
+    });
+  }
 
   protected onClick(): void {
     this.open = !this.open;
@@ -151,7 +157,7 @@ export class UserMenu {
     this.open = false;
   }
 
-  public isOnMyAccountSite() {
+  public isOnPersonalInfoPage() {
     return this.domainName.isOnComponent(DOMAIN_NAME_COMPONENTS.MY_ACCOUNT_SITE);
   }
 
