@@ -1,44 +1,14 @@
-import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, TemplateRef } from '@angular/core';
 import { NgxPicaModule, NgxPicaService } from '@digitalascetic/ngx-pica';
-import { EbbAppService } from '@ebizbase/angular-app';
-import { EcommaSite } from '@ebizbase/angular-common';
+import { TuiDialogContext, TuiDialogService } from '@taiga-ui/core';
 import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
 
 @Component({
-  selector: 'app-change-avatar',
-  standalone: true,
-  imports: [CommonModule, NgxPicaModule, ImageCropperComponent],
+  selector: 'app-avatar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [
-    `
-      :host ::ng-deep .cropper-container {
-        position: relative;
-        width: 100%;
-        max-width: 300px;
-        margin: auto;
-      }
-
-      :host ::ng-deep .cropper-mask {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100%;
-        height: 100%;
-        max-width: 256px;
-        max-height: 256px;
-        transform: translate(-50%, -50%);
-        border-radius: 50%;
-        border: 2px solid rgba(255, 255, 255, 0.7);
-        box-shadow: 0 0 0 10000px rgba(0, 0, 0, 0.5);
-        pointer-events: none;
-      }
-    `,
-  ],
-  host: {
-    class: 'flex flex-col items-center',
-  },
+  imports: [NgxPicaModule, ImageCropperComponent],
+  host: { class: 'flex flex-col items-center' },
   template: `
     <input type="file" (change)="fileChangeEvent($event)" accept="image/*" />
     <div class="w-64">
@@ -57,23 +27,18 @@ import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
     <button (click)="uploadImage()">Upload</button>
   `,
 })
-export class ChangeAvatarComponent {
+export class ChangeAvatarDialogComponent {
+  private readonly dialogs = inject(TuiDialogService);
+
   imageChangedEvent: Event | null = null;
   croppedImage = ''; // base64
   canvasRotation = 0; // Dùng thay cho transform.rotate
-  @Output() imageUploaded = new EventEmitter<string>();
 
-  constructor(
-    private site: EcommaSite,
-    private app: EbbAppService,
-    private ngxPicaService: NgxPicaService,
-    private http: HttpClient
-  ) {
-    this.site.title = 'Change Avatar';
-    this.app.pageInfo = {
-      contentSize: 'xs',
-      heading: { title: 'Change Avatar', previous: '/personal-info/avatar' },
-    };
+  private ngxPicaService: NgxPicaService = inject(NgxPicaService);
+  private http: HttpClient = inject(HttpClient);
+
+  protected showDialog(content: TemplateRef<TuiDialogContext>): void {
+    this.dialogs.open(content, { dismissible: true }).subscribe();
   }
 
   fileChangeEvent(event: Event): void {
@@ -105,7 +70,7 @@ export class ChangeAvatarComponent {
     formData.append('file', compressedFile);
 
     this.http.post<{ url: string }>('/api/upload-avatar', formData).subscribe((response) => {
-      this.imageUploaded.emit(response.url);
+      console.log(response);
     });
   }
 

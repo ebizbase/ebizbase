@@ -27,18 +27,6 @@ export const appRoutes: Route[] = [
           ),
       },
       {
-        path: 'personal-info/avatar',
-        loadComponent: () =>
-          import('./features/personal-info/avatar.component').then((m) => m.AvatarComponent),
-      },
-      {
-        path: 'personal-info/avatar/change',
-        loadComponent: () =>
-          import('./features/personal-info/change-avatar.component').then(
-            (m) => m.ChangeAvatarComponent
-          ),
-      },
-      {
         path: 'personal-info/color-mode',
         loadComponent: () =>
           import('./features/personal-info/color-mode.component').then((m) => m.ColorModeComponent),

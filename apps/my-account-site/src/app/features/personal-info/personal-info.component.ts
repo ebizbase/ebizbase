@@ -10,6 +10,7 @@ import { TuiAvatar } from '@taiga-ui/kit';
 import { Subscription } from 'rxjs';
 import { FeedbackDialogComponent } from '../../shared/components/feedback/feedback-dialog.component';
 import { PageHeadingComponent } from '../../shared/components/page-heading/page-heading.component';
+import { AvatarDialogComponent } from './avatar-dialog.component';
 
 @Component({
   selector: 'app-personal-info',
@@ -41,9 +42,14 @@ import { PageHeadingComponent } from '../../shared/components/page-heading/page-
           </h3>
         </div>
         <!-- Profile Image -->
-        <a
-          routerLink="avatar"
+        <div
+          role="button"
+          title="Profile picture"
+          tabindex="0"
           class="flex p-4 space-x-2 items-center hover:bg-[var(--tui-background-neutral-1-hover)]"
+          (click)="avatarDialog().subscribe()"
+          (keydown.enter)="avatarDialog().subscribe()"
+          (keydown.space)="avatarDialog().subscribe()"
         >
           <div class="flex flex-col flex-1 lg:flex-row w-full lg:items-center">
             <div class="font-medium lg:flex-1 text-[var(--tui-text-secondary)] max-w-60">
@@ -65,7 +71,7 @@ import { PageHeadingComponent } from '../../shared/components/page-heading/page-
               <tui-icon icon="@tui.pencil" size="m" />
             </div>
           </div>
-        </a>
+        </div>
         <!-- Display name -->
         <a
           routerLink="display-name"
@@ -153,6 +159,11 @@ export class PersonalInfoComponent implements OnDestroy {
   protected readonly feedbackDialog = tuiDialog(FeedbackDialogComponent, {
     dismissible: true,
     label: 'Send feedback to eBizBase',
+  });
+
+  protected readonly avatarDialog = tuiDialog(AvatarDialogComponent, {
+    dismissible: true,
+    label: 'Profile picture',
   });
 
   constructor(
