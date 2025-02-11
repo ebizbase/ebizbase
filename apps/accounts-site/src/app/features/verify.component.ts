@@ -7,7 +7,7 @@ import { DOMAIN_NAME_COMPONENTS, DomainName, EcommaSite } from '@ebizbase/angula
 import { MessageableValidators, TextfieldFormControlComponent } from '@ebizbase/angular-form';
 import { ColorMode, Language } from '@ebizbase/common-types';
 import { WA_LOCAL_STORAGE, WA_LOCATION, WA_NAVIGATOR } from '@ng-web-apis/common';
-import { TuiButton, TuiDialogService, TuiTextfield } from '@taiga-ui/core';
+import { TuiAlertService, TuiButton, TuiDialogService, TuiTextfield } from '@taiga-ui/core';
 import { TuiButtonLoading, TuiFade } from '@taiga-ui/kit';
 import { CURRENT_IDENTITY_STORAGE_KEY } from '../core/constant';
 import { APIService } from '../core/services/authenticate.service';
@@ -79,12 +79,14 @@ export class VerifyComponent implements OnInit, AfterViewInit {
   protected otpControl: FormControl = this.form.get('otp') as FormControl;
   protected otpResendCountdown = 0;
 
-  private ngLocation: NgLocation = inject(NgLocation);
-  protected router: Router = inject(Router);
-  protected route: ActivatedRoute = inject(ActivatedRoute);
+  private readonly ngLocation: NgLocation = inject(NgLocation);
+  protected readonly router: Router = inject(Router);
+  private readonly alerts = inject(TuiAlertService);
+  private readonly dialog: TuiDialogService = inject(TuiDialogService);
+  private route: ActivatedRoute = inject(ActivatedRoute);
+
   protected domain: DomainName = inject(DomainName);
   protected apiService: APIService = inject(APIService);
-  protected dialogService: TuiDialogService = inject(TuiDialogService);
   protected siteService: EcommaSite = inject(EcommaSite);
   protected cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected storage: Storage = inject(WA_LOCAL_STORAGE);
@@ -142,7 +144,7 @@ export class VerifyComponent implements OnInit, AfterViewInit {
     const colorMode = this.siteService.colorMode as keyof ColorMode;
     this.apiService.getOtp({ email: this.currentEmail, language, colorMode }).subscribe({
       next: (response) => {
-        this.dialogService.open(response.message).subscribe();
+        this.alerts.open(response.message, { icon: '@tui.circle-check' }).subscribe();
         this.storage.setItem(
           CURRENT_IDENTITY_STORAGE_KEY,
           JSON.stringify({ email: this.currentEmail, lastGetOtpAt: Date.now() + '' })
@@ -154,9 +156,9 @@ export class VerifyComponent implements OnInit, AfterViewInit {
         if (error.status === 0) {
           this.onNetworkError();
         } else if (error.error && error.error.message) {
-          this.dialogService.open(error.error.message).subscribe();
+          this.dialog.open(error.error.message).subscribe();
         } else {
-          this.dialogService.open(error.message).subscribe();
+          this.dialog.open(error.message).subscribe();
         }
       },
     });
@@ -183,9 +185,9 @@ export class VerifyComponent implements OnInit, AfterViewInit {
           if (error.status === 0) {
             this.onNetworkError();
           } else if (error.error && error.error.message) {
-            this.dialogService.open(error.error.message).subscribe();
+            this.dialog.open(error.error.message).subscribe();
           } else {
-            this.dialogService.open(error.message).subscribe();
+            this.dialog.open(error.message).subscribe();
           }
         },
       });
@@ -197,9 +199,9 @@ export class VerifyComponent implements OnInit, AfterViewInit {
 
   protected onNetworkError() {
     if (!this.navigator.onLine) {
-      this.dialogService.open('Unable to connect to server. Please try again later!').subscribe();
+      this.dialog.open('Unable to connect to server. Please try again later!').subscribe();
     } else {
-      this.dialogService.open('Unable to connect to server. Please try again later!').subscribe();
+      this.dialog.open('Unable to connect to server. Please try again later!').subscribe();
     }
   }
 }
