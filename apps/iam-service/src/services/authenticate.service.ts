@@ -37,13 +37,13 @@ export class AuthenticateService {
     @InjectUserModel() private userModel: UserModel
   ) {}
 
-  async getOTP({ email, colorMode, language }: GetOtpInputDTO): Promise<OutPutDto> {
+  async getOTP({ email }: GetOtpInputDTO): Promise<OutPutDto> {
     const now = Date.now();
     let user = await this.userModel.findOne({ email });
 
     if (!user) {
       this.logger.debug('User email does not exist. Creating new user.');
-      user = await this.userModel.create({ email, colorMode, language });
+      user = await this.userModel.create({ email });
     } else if (!user.otpUsed && now - user.otpIssuedAt.getTime() < 60 * 1_000) {
       this.logger.warn('OTP request too frequent.');
       throw new HttpException({ message: 'You requested OTP too fast. Please wait.' }, 429);

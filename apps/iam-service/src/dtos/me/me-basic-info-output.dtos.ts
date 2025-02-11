@@ -1,4 +1,4 @@
-import { ColorMode, Dict, IRestfulResponse, Language } from '@ebizbase/common-types';
+import { Dict, IRestfulResponse } from '@ebizbase/common-types';
 import { IMeBasicInfoResponse } from '@ebizbase/iam-interfaces';
 import { Expose, Type } from 'class-transformer';
 
@@ -11,12 +11,6 @@ export class MeBasicInfoOutputData implements IMeBasicInfoResponse {
 
   @Expose()
   avatar?: string;
-
-  @Expose()
-  colorMode: ColorMode;
-
-  @Expose()
-  language: Language;
 }
 
 export class MeBasicInfoOutputDto implements IRestfulResponse<MeBasicInfoOutputData> {

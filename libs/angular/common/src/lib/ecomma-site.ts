@@ -1,14 +1,26 @@
 import { isPlatformBrowser } from '@angular/common';
-import { effect, Inject, Injectable, OnDestroy, PLATFORM_ID, signal } from '@angular/core';
+import {
+  effect,
+  Inject,
+  Injectable,
+  OnDestroy,
+  PLATFORM_ID,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { WA_WINDOW } from '@ng-web-apis/common';
 import { Observable, Subscription } from 'rxjs';
+import { Cookies } from './cookies';
+import { DomainName } from './domain-name';
 
 @Injectable({ providedIn: 'root' })
 export class EcommaSite implements OnDestroy {
+  private readonly colorModeKey = 'colorMode';
+
   // color mode
   private _systemColorSchemeSubscription = new Subscription();
-  private _colorMode = signal<'dark' | 'light' | 'monochrome' | 'system'>('light');
+  private _colorMode: WritableSignal<'dark' | 'light' | 'monochrome' | 'system'>;
   private _isDarkMode = signal<boolean>(false);
   private _isMonochromeMode = signal<boolean>(false);
 
@@ -19,8 +31,22 @@ export class EcommaSite implements OnDestroy {
   constructor(
     @Inject(PLATFORM_ID) protected platformId: object,
     @Inject(WA_WINDOW) private window: Window,
+    private cookies: Cookies,
+    private domainName: DomainName,
     private titleService: Title
   ) {
+    const colorMode = this.cookies.get(this.colorModeKey);
+    if (
+      colorMode !== 'dark' &&
+      colorMode !== 'light' &&
+      colorMode !== 'monochrome' &&
+      colorMode !== 'system'
+    ) {
+      this._colorMode = signal('system');
+    } else {
+      this._colorMode = signal(colorMode);
+    }
+
     effect(() => {
       this.window.document.documentElement.lang = this.language();
     });
@@ -64,10 +90,9 @@ export class EcommaSite implements OnDestroy {
         this._systemColorSchemeSubscription.unsubscribe();
       }
       this._isMonochromeMode.set(this._colorMode() === 'monochrome');
-      console.log('Site service color mode', {
-        mode: this._colorMode(),
-        darkMode: this._isDarkMode(),
-        monochrome: this._isMonochromeMode(),
+      this.cookies.set(this.colorModeKey, this._colorMode(), {
+        path: '/',
+        domain: `.${this.domainName.RootDomain}`,
       });
     });
   }

@@ -5,7 +5,6 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { ActivatedRoute, Router } from '@angular/router';
 import { DOMAIN_NAME_COMPONENTS, DomainName, EcommaSite } from '@ebizbase/angular-common';
 import { MessageableValidators, TextfieldFormControlComponent } from '@ebizbase/angular-form';
-import { ColorMode, Language } from '@ebizbase/common-types';
 import { WA_LOCAL_STORAGE, WA_LOCATION, WA_NAVIGATOR } from '@ng-web-apis/common';
 import { TuiAlertService, TuiButton, TuiDialogService, TuiTextfield } from '@taiga-ui/core';
 import { TuiButtonLoading, TuiFade } from '@taiga-ui/kit';
@@ -140,9 +139,7 @@ export class VerifyComponent implements OnInit, AfterViewInit {
   }
 
   protected async onRequestOtp() {
-    const language = this.siteService.language() as keyof Language;
-    const colorMode = this.siteService.colorMode as keyof ColorMode;
-    this.apiService.getOtp({ email: this.currentEmail, language, colorMode }).subscribe({
+    this.apiService.getOtp({ email: this.currentEmail }).subscribe({
       next: (response) => {
         this.alerts.open(response.message, { icon: '@tui.circle-check' }).subscribe();
         this.storage.setItem(
