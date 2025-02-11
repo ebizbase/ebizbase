@@ -35,7 +35,7 @@ x-sites-config: &sites
   volumes:
     - .:/workspace
     - ./.deployment:/workspace/.angular
-    - ./deployment:/workspace/dist
+    - ./.deployment:/workspace/dist
   healthcheck:
     test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1']
 
