@@ -101,36 +101,20 @@
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
+        "buildTarget": "home-site:browser:development",
         "disableHostCheck": true,
         "host": "0.0.0.0",
-        "port": 4200
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "home-site:browser:development"
-        },
-        "production": {
-          "buildTarget": "home-site:browser:production"
-        }
-      },
-      "defaultConfiguration": "development"
+        "port": 4200,
+        "hmr": true
+      }
     },
     "serve-ssr": {
       "executor": "@angular-devkit/build-angular:ssr-dev-server",
       "options": {
+        "browserTarget": "home-site:browser:development",
+        "serverTarget": "home-site:compile:development",
         "port": 4200
-      },
-      "configurations": {
-        "development": {
-          "browserTarget": "home-site:browser:development",
-          "serverTarget": "home-site:compile:development"
-        },
-        "production": {
-          "browserTarget": "home-site:browser:production",
-          "serverTarget": "home-site:compile:production"
-        }
-      },
-      "defaultConfiguration": "development"
+      }
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
