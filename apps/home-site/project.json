@@ -73,7 +73,7 @@
           "namedChunks": true
         }
       },
-      "defaultConfiguration": "production"
+      "defaultConfiguration": "development"
     },
     "compile": {
       "dependsOn": ["browser"],
@@ -152,6 +152,16 @@
           "push": true,
           "tags": ["{major}.{minor}.{patch}"]
         }
+      }
+    },
+    "analyze": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "npx nx browser home-site --stats-json",
+          "npx webpack-bundle-analyzer ./dist/apps/home-site/browser/stats.json"
+        ],
+        "parallel": false
       }
     }
   }

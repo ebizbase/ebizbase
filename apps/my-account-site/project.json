@@ -84,20 +84,12 @@
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
+        "buildTarget": "my-account-site:compile:development",
         "disableHostCheck": true,
         "host": "0.0.0.0",
         "port": 4202,
         "hmr": true
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "my-account-site:compile:development"
-        },
-        "production": {
-          "buildTarget": "my-account-site:compile:production"
-        }
-      },
-      "defaultConfiguration": "development"
+      }
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",

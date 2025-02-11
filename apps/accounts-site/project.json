@@ -84,20 +84,12 @@
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
+        "buildTarget": "accounts-site:compile:development",
         "disableHostCheck": true,
         "host": "0.0.0.0",
         "port": 4201,
         "hmr": true
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "accounts-site:compile:development"
-        },
-        "production": {
-          "buildTarget": "accounts-site:compile:production"
-        }
-      },
-      "defaultConfiguration": "development"
+      }
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -124,7 +116,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "npx nx build accounts-site --stats-json",
+          "npx nx compile accounts-site --stats-json",
           "npx webpack-bundle-analyzer ./dist/apps/accounts-site/stats.json"
         ],
         "parallel": false
