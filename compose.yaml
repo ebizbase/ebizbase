@@ -1,12 +1,20 @@
-name: ebizbase
+name: ecomma
+
+networks:
+  ecomma:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.10.0/24
+          gateway: 10.10.10.1
 
 x-common-config: &common
+  restart: always
   healthcheck:
     timeout: 5s
 
 x-infras-config: &infras
   <<: *common
-  restart: always
   healthcheck:
     interval: 6s
     start_period: 10s
@@ -14,8 +22,7 @@ x-infras-config: &infras
 
 x-apps-config: &apps
   <<: *common
-  env_file: .env
-  restart: always
+  env_file: ./infras/.env
   healthcheck:
     interval: 1s
     start_period: 8s
@@ -23,44 +30,33 @@ x-apps-config: &apps
 
 x-services-config: &services
   <<: *apps
-  build: ./infras/service
-  volumes:
-    - .:/workspace
   healthcheck:
     test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1:3000/healthy/readiness']
 
-x-sites-config: &sites
+x-csr-site-config: &csr-sites
   <<: *apps
-  build: ./infras/site
-  volumes:
-    - .:/workspace
-    - ./.deployment:/workspace/.angular
-    - ./.deployment:/workspace/dist
   healthcheck:
     test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1']
 
+x-ssr-site-config: &ssr-sites
+  <<: *apps
+  healthcheck:
+    test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1:3000']
+
 services:
-  traefik:
+  nginx:
     <<: *infras
-    image: 'traefik:v3.2@sha256:efb87236c8c92599bcd3a67a7a8a55e0f255665f4719722bf398935aa9b92270'
-    container_name: traefik
-    command:
-      - --log.level=DEBUG
-      - --api.insecure=true
-      - --providers.docker=true
-      - --providers.docker.exposedbydefault=true
-      - --entryPoints.http.address=:80
+    image: nginx:alpine
+    container_name: nginx
     ports:
       - 80:80
     volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock:ro'
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.traefik.rule=Host(`traefik.fbi.com`)
-      - traefik.http.routers.traefik.service=traefik@docker
-      - traefik.http.services.traefik.loadbalancer.server.port=8080
+      - ./infras/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.10
     healthcheck:
-      test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1:8080']
+      test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://fbi.com']
 
   mongodb:
     <<: *infras
@@ -68,10 +64,9 @@ services:
     container_name: mongodb
     ports:
       - 27017:27017
-    labels:
-      - traefik.http.routers.mongodb-admin.rule=Host(`mongodb.fbi.com`)
-      - traefik.http.routers.mongodb-admin.entrypoints=http
-      - traefik.http.services.mongodb-admin.loadbalancer.server.port=8081
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.20
     healthcheck:
       test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1:8081']
 
@@ -81,10 +76,9 @@ services:
     container_name: redis
     ports:
       - 6379:6379
-    labels:
-      - traefik.http.routers.redis-admin.rule=Host(`redis.fbi.com`)
-      - traefik.http.routers.redis-admin.entrypoints=http
-      - traefik.http.services.redis-admin.loadbalancer.server.port=8081
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.30
     healthcheck:
       test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
 
@@ -94,78 +88,64 @@ services:
     container_name: rabbitmq
     ports:
       - 5672:5672
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.rabbitmq-admin.rule=Host(`rabbitmq.fbi.com`)
-      - traefik.http.routers.rabbitmq-admin.entrypoints=http
-      - traefik.http.services.rabbitmq-admin.loadbalancer.server.port=15672
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.40
     healthcheck:
       test: ['CMD', 'rabbitmq-diagnostics', '-q', 'ping']
 
   maildev:
     <<: *infras
-    build: infras/maildev
+    build: ./infras/maildev
     container_name: maildev
-    labels:
-      - traefik.http.routers.maildev-admin.rule=Host(`mail.fbi.com`)
-      - traefik.http.routers.maildev-admin.entrypoints=http
-      - traefik.http.services.maildev-admin.loadbalancer.server.port=1080
+    ports:
+      - 1025:1025
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.50
     healthcheck:
       test: wget --spider -q http://localhost:1080/healthz
 
   minio:
     <<: *infras
-    build: infras/minio
+    build: ./infras/minio
     container_name: minio
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.minio-admin.rule=Host(`minio.fbi.com`)
-      - traefik.http.routers.minio-admin.entrypoints=http
-      - traefik.http.services.minio-admin.loadbalancer.server.port=9001
-      - traefik.http.routers.minio.rule=Host(`files.fbi.com`)
-      - traefik.http.routers.minio.entrypoints=http
-      - traefik.http.services.minio.loadbalancer.server.port=9000
+    ports:
+      - 9000:9000
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.60
     healthcheck:
       test: ['CMD', 'mc', 'ready', 'local']
 
   iam-service:
     <<: *services
+    image: ebizbase/iam-service:edge
     container_name: iam-service
-    working_dir: /workspace/apps/iam-service
-    labels:
-      - traefik.http.routers.iam-service.rule=Host(`iam-service.fbi.com`)
-      - traefik.http.routers.iam-service.entrypoints=http
-      - traefik.http.services.iam-service.loadbalancer.server.port=3000
-    depends_on:
-      mongodb:
-        condition: service_healthy
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.70
 
   home-site:
-    <<: *sites
+    <<: *ssr-sites
+    image: ebizbase/home-site:edge
     container_name: home-site
-    environment:
-      - PROJECT=home-site
-    labels:
-      - traefik.http.routers.home-site.rule=Host(`fbi.com`)
-      - traefik.http.routers.home-site.entrypoints=http
-      - traefik.http.services.home-site.loadbalancer.server.port=80
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.80
 
   accounts-site:
-    <<: *sites
+    <<: *csr-sites
+    image: ebizbase/accounts-site:edge
     container_name: accounts-site
-    environment:
-      - PROJECT=accounts-site
-    labels:
-      - traefik.http.routers.accounts-site.rule=Host(`accounts.fbi.com`)
-      - traefik.http.routers.accounts-site.entrypoints=http
-      - traefik.http.services.accounts-site.loadbalancer.server.port=80
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.90
 
   my-account-site:
-    <<: *sites
+    <<: *csr-sites
+    image: ebizbase/my-account-site:edge
     container_name: my-account-site
-    environment:
-      - PROJECT=my-account-site
-    labels:
-      - traefik.http.routers.my-account-site.rule=Host(`my-account.fbi.com`)
-      - traefik.http.routers.my-account-site.entrypoints=http
-      - traefik.http.services.my-account-site.loadbalancer.server.port=80
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.100

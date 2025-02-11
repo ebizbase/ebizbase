@@ -12,7 +12,7 @@ async function bootstrap() {
   if (!domain) {
     throw new Error('Missing DOMAIN enviroment!');
   }
-  const port = process.env['PORT'] || 3005;
+  const port = process.env['PORT'] || 3000;
   const app = await NestFactory.create<NestFastifyApplication>(MainModule, new FastifyAdapter(), {
     logger,
     cors: {
