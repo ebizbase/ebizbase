@@ -52,6 +52,8 @@ services:
       - 80:80
     volumes:
       - ./infras/nginx.conf:/etc/nginx/nginx.conf:ro
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     networks:
       ecomma:
         ipv4_address: 10.10.10.10
