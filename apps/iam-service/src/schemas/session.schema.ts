@@ -24,7 +24,7 @@ export class Session {
   @Prop({ required: true, default: () => Date.now() })
   createdAt: Date;
 
-  @Prop({ required: true, index: { expireAfterSeconds: 0 } })
+  @Prop({ required: true })
   expiredAt: Date;
 
   @Prop()

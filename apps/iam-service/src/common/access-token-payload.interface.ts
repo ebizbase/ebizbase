@@ -1,3 +1,4 @@
 export interface IAccessTokenPayload {
-  userId: string;
+  sid: string;
+  uid: string;
 }

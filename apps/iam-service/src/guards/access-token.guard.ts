@@ -25,10 +25,16 @@ export class AccessTokenGuard implements CanActivate {
       });
     }
 
-    if (!payload.userId) {
+    if (!payload.uid) {
       throw new UnauthorizedException('Invalid token payload');
     } else {
-      request['userId'] = payload.userId;
+      request['userId'] = payload.uid;
+    }
+
+    if (!payload.sid) {
+      throw new UnauthorizedException('Invalid token payload');
+    } else {
+      request['sessionId'] = payload.sid;
     }
 
     return true;
