@@ -101,20 +101,29 @@ export class AuthenticateService {
       throw new ForbiddenException('Invalid refresh token');
     }
 
+    if (!payload.sid) {
+      throw new ForbiddenException('Token payload invalid');
+    }
+
     const session = await this.sessionModel.findById(payload.sid);
+
+    if (!session) {
+      this.logger.warn({ msg: 'Session not found for refresh token', sessionId: payload.sid });
+      throw new ForbiddenException('Session unavailable');
+    }
+
     this.validateSession(session);
 
     return { data: await this.issueNewToken(session.userId, headers, session) };
   }
 
   private validateSession(session: SessionDocument) {
-    if (!session) {
-      throw new ForbiddenException('Session unavailable');
-    }
     if (session.expiredAt.getTime() <= Date.now()) {
+      this.logger.warn('Session expired for refresh token');
       throw new ForbiddenException('Session expired');
     }
     if (session.revokedAt) {
+      this.logger.warn('Session revoked for refresh token');
       throw new ForbiddenException('Session revoked');
     }
   }
@@ -169,7 +178,7 @@ export class AuthenticateService {
   private parseClientIp(headers: Dict<string>) {
     const ip = headers['x-forwarded-for'] || headers['cf-connecting-ip'];
     if (!ip) {
-      this.logger.error({ msg: 'Can not extract user remote ip from headers', headers });
+      this.logger.fatal({ msg: 'Can not extract user remote ip from headers', headers });
       throw new InternalServerErrorException('Can not get user remote ip');
     }
     return ip;
@@ -178,11 +187,13 @@ export class AuthenticateService {
   private parseUserAgent(headers: Dict<string>) {
     const userAgent = headers['user-agent'];
     if (!userAgent) {
+      this.logger.warn('Missing User-Agent header');
       throw new ForbiddenException();
     }
 
     const { os, browser, device } = UAParser(userAgent);
     if (!os.name) {
+      this.logger.warn({ msg: 'Can not get platform from user agent', userAgent });
       throw new ForbiddenException();
     }
 
