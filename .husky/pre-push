@@ -3,7 +3,7 @@ echo "Running pre-push hook..."
 
 npx nx affected --base=origin/main -t test
 nx run-many -t build
-docker compose up -d --wait
+docker compose up --force-recreate -d --wait
 npx nx affected --base=origin/main -t automate
 
 end_time=$(date +%s)
