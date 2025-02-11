@@ -9,7 +9,7 @@
   "containerUser": "vscode",
   "remoteUser": "vscode",
   "postCreateCommand": "npm install -g nx",
-  "postStartCommand": "yarn install",
+  "postStartCommand": "yarn install && docker compose up -d --wait",
   "appPort": 80,
   "customizations": {
     "vscode": {

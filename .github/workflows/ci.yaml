@@ -38,7 +38,6 @@ jobs:
         uses: devcontainers/ci@a56d055efecd725e8cfe370543b6071b79989cc8 # v0.3
         with:
           runCmd: |
-            docker compose up -d --wait
             ls -al
             ls -al ./dist
             CI=true npx nx run-many -t automate --parallel=false
