@@ -31,17 +31,17 @@ x-apps-config: &apps
 x-services-config: &services
   <<: *apps
   healthcheck:
-    test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1:3000/healthy/readiness']
+    test: wget --spider -q http://127.0.0.1:3000/healthy/readiness
 
 x-csr-site-config: &csr-sites
   <<: *apps
   healthcheck:
-    test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1']
+    test: wget --spider -q http://127.0.0.1
 
 x-ssr-site-config: &ssr-sites
   <<: *apps
   healthcheck:
-    test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1:3000']
+    test: wget --spider -q http://127.0.0.1:3000
 
 services:
   nginx:
@@ -58,7 +58,7 @@ services:
       ecomma:
         ipv4_address: 10.10.10.10
     healthcheck:
-      test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://fbi.com']
+      test: wget --spider -q http://127.0.0.1
 
   mongodb:
     <<: *infras
@@ -70,7 +70,7 @@ services:
       ecomma:
         ipv4_address: 10.10.10.20
     healthcheck:
-      test: ['CMD', '/usr/bin/wget', '--spider', '-q', 'http://127.0.0.1:8081']
+      test: wget --spider -q http://127.0.0.1:8081
 
   redis:
     <<: *infras
@@ -108,17 +108,79 @@ services:
     healthcheck:
       test: wget --spider -q http://localhost:1080/healthz
 
-  minio:
-    <<: *infras
-    build: ./infras/minio
-    container_name: minio
+  seaweedfs-master:
+    image: chrislusf/seaweedfs:latest
+    container_name: seaweedfs-master
+    command: ['master', '-ip=seaweedfs-master', '-port=9333']
     ports:
-      - 9000:9000
+      - 9333:9333
+      - 19333:19333
+      - 9324:9324
     networks:
       ecomma:
         ipv4_address: 10.10.10.60
     healthcheck:
-      test: ['CMD', 'mc', 'ready', 'local']
+      test: wget --spider -q http://seaweedfs-master:9333/cluster/status
+
+  seaweedfs-volume:
+    image: chrislusf/seaweedfs:latest
+    container_name: seaweedfs-volume
+    command:
+      [
+        'volume',
+        '-ip=seaweedfs-volume',
+        '-port=8080',
+        '-dir=/data',
+        '-mserver=seaweedfs-master:9333',
+      ]
+    ports:
+      - '8080:8080'
+    depends_on:
+      - seaweedfs-master
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.61
+    healthcheck:
+      test: wget --spider -q http://seaweedfs-volume:8080/status
+
+  seaweedfs-filer:
+    image: chrislusf/seaweedfs:latest
+    container_name: seaweedfs-filer
+    command: ['filer', '-ip=seaweedfs-filer', '-port=8888', '-master=seaweedfs-master:9333']
+    tty: true
+    stdin_open: true
+    ports:
+      - 8888:8888
+      - 18888:18888
+      - 9326:9326
+    depends_on:
+      - seaweedfs-master
+      - seaweedfs-volume
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.62
+    healthcheck:
+      test: wget --spider -q http://seaweedfs-filer:8888
+
+  seaweedfs-s3:
+    image: chrislusf/seaweedfs:latest
+    container_name: seaweedfs-s3
+    command:
+      ['s3', '-filer=seaweedfs-filer:8888', '-config=/config/config.json', '-ip.bind=0.0.0.0']
+    volumes:
+      - ./infras/seaweedfs/s3:/config:ro
+    ports:
+      - 8333:8333
+      - 9327:9327
+    depends_on:
+      - seaweedfs-master
+      - seaweedfs-volume
+      - seaweedfs-filer
+    networks:
+      ecomma:
+        ipv4_address: 10.10.10.63
+    healthcheck:
+      test: wget --spider -q http://seaweedfs-s3:8333
 
   iam-service:
     <<: *services
