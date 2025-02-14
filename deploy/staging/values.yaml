@@ -7,7 +7,7 @@ mongodb:
   fullnameOverride: mongodb
 
 prepare:
-  src: mongodb.ecoma-prod.svc.cluster.local
+  src: mongodb-0.ecoma-prod.svc.cluster.local
 
 redis:
   architecture: standalone
