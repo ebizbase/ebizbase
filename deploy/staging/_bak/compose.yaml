@@ -1,0 +1,111 @@
+name: ecomma-staging
+
+networks:
+  default:
+    name: ecomma-staging
+    driver: bridge
+
+x-common-config: &common
+  restart: always
+  healthcheck:
+    interval: 10s
+    timeout: 5s
+    retries: 10
+    start_period: 10s
+
+services:
+  traefik:
+    <<: *common
+    image: 'traefik:v3.2@sha256:efb87236c8c92599bcd3a67a7a8a55e0f255665f4719722bf398935aa9b92270'
+    command:
+      - --log.level=DEBUG
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entryPoints.http.address=:80
+      - --ping=true
+    ports:
+      - 80:80
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    healthcheck:
+      test: traefik healthcheck --ping
+
+  mongodb:
+    <<: *common
+    image: mongo@sha256:4f93a84f7d4d8b1b6cb7e0c172d8a44b0bed9b399f207165ea19473bdb5a36b0
+    volumes:
+      - ./data/mongodb:/data/db
+    entrypoint: >
+      /bin/bash -c '
+          echo "rs.initiate()" > /docker-entrypoint-initdb.d/1-init-replicaset.js &&
+         /usr/local/bin/docker-entrypoint.sh mongod --replSet rs0 --bind_ip_all --noauth
+      '
+    healthcheck:
+      test: mongosh --quiet --eval 'db.runCommand("ping").ok'
+
+  seaweedfs-master:
+    <<: *common
+    image: chrislusf/seaweedfs:latest
+    command: ['master', '-ip=seaweedfs-master', '-port=9333']
+    healthcheck:
+      test: wget --spider -q http://seaweedfs-master:9333/cluster/status
+
+  seaweedfs-volume:
+    <<: *common
+    image: chrislusf/seaweedfs:latest
+    command:
+      [
+        'volume',
+        '-ip=seaweedfs-volume',
+        '-port=8080',
+        '-dir=/data',
+        '-mserver=seaweedfs-master:9333',
+      ]
+    depends_on:
+      - seaweedfs-master
+    healthcheck:
+      test: wget --spider -q http://seaweedfs-volume:8080/status
+
+  seaweedfs-filer:
+    <<: *common
+    image: chrislusf/seaweedfs:latest
+    command: ['filer', '-ip=seaweedfs-filer', '-port=8888', '-master=seaweedfs-master:9333']
+    tty: true
+    stdin_open: true
+    depends_on:
+      - seaweedfs-master
+      - seaweedfs-volume
+    healthcheck:
+      test: wget --spider -q http://seaweedfs-filer:8888
+
+  seaweedfs-s3:
+    <<: *common
+    image: chrislusf/seaweedfs:latest
+    command: ['s3', '-filer=seaweedfs-filer:8888', '-config=/config.json', '-ip.bind=0.0.0.0']
+    volumes:
+      - ./s3config.json:/config.json:ro
+    depends_on:
+      - seaweedfs-master
+      - seaweedfs-volume
+      - seaweedfs-filer
+    healthcheck:
+      test: wget --spider -q http://seaweedfs-s3:8333
+
+  maildev:
+    <<: *common
+    image: maildev/maildev@sha256:180ef51f65eefebb0e7122d8308813c1fd7bff164bc440ce5a3c2feee167a810
+    ports:
+      - 1025:1025
+    labels:
+      - traefik.http.routers.redis-admin.rule=Host(`redis.fbi.com`)
+      - traefik.http.routers.redis-admin.entrypoints=http
+      - traefik.http.services.redis-admin.loadbalancer.server.port=8081
+    healthcheck:
+      test: wget --spider -q http://localhost:1080/healthz
+
+  redis:
+    image: redis:latest
+    command: ['redis-server', '--maxmemory', '512mb', '--maxmemory-policy', 'allkeys-lru']
+    healthcheck:
+      test: redis-cli --raw incr ping

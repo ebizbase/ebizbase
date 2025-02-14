@@ -1,0 +1,16 @@
+namespace: ecoma-staging
+
+mongodb:
+  architecture: standalone
+  auth:
+    enabled: false # Không bật xác thực cho MongoDB
+  fullnameOverride: mongodb
+
+prepare:
+  src: mongodb.ecoma-prod.svc.cluster.local
+
+redis:
+  architecture: standalone
+  auth:
+    enabled: false # Không bật xác thực cho Redis
+  fullnameOverride: redis

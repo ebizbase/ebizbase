@@ -1,7 +1,8 @@
-name: ecomma
+name: ecomma-dev
 
 networks:
   ecomma:
+    name: ecomma-dev
     driver: bridge
     ipam:
       config:
@@ -22,7 +23,7 @@ x-infras-config: &infras
 
 x-apps-config: &apps
   <<: *common
-  env_file: ./infras/.env
+  env_file: .env
   healthcheck:
     interval: 1s
     start_period: 8s
@@ -51,7 +52,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./infras/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     networks:
@@ -62,7 +63,7 @@ services:
 
   mongodb:
     <<: *infras
-    build: ./infras/mongodb
+    build: ./mongodb
     container_name: mongodb
     ports:
       - 27017:27017
@@ -74,7 +75,7 @@ services:
 
   redis:
     <<: *infras
-    build: ./infras/redis
+    build: ./redis
     container_name: redis
     ports:
       - 6379:6379
@@ -86,7 +87,7 @@ services:
 
   rabbitmq:
     <<: *infras
-    build: ./infras/rabbitmq
+    build: ./rabbitmq
     container_name: rabbitmq
     ports:
       - 5672:5672
@@ -98,7 +99,7 @@ services:
 
   maildev:
     <<: *infras
-    build: ./infras/maildev
+    build: ./maildev
     container_name: maildev
     ports:
       - 1025:1025
@@ -168,7 +169,7 @@ services:
     command:
       ['s3', '-filer=seaweedfs-filer:8888', '-config=/config/config.json', '-ip.bind=0.0.0.0']
     volumes:
-      - ./infras/seaweedfs/s3:/config:ro
+      - ./seaweedfs/s3:/config:ro
     ports:
       - 8333:8333
       - 9327:9327
