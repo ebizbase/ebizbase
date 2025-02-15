@@ -58,7 +58,7 @@ helm:
 
             echo "Finishing job..."
 
-            sleep forever
+            sleep infinity
 
 
 
