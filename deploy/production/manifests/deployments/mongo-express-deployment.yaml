@@ -4,10 +4,10 @@ metadata:
   name: mongo-express-env
 data:
   ME_CONFIG_MONGODB_URL: "mongodb://mongodb.ecoma-prod.svc.cluster.local:27017"
-  ME_CONFIG_MONGODB_ENABLE_ADMIN: true
-  ME_CONFIG_BASICAUTH: false
-  ME_CONFIG_BASICAUTH_ENABLED: false
-  VCAP_APP_HOST: 0.0.0.0
+  ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+  ME_CONFIG_BASICAUTH: "false"
+  ME_CONFIG_BASICAUTH_ENABLED: "false"
+  VCAP_APP_HOST: "0.0.0.0"
   ME_CONFIG_SITE_SESSIONSECRET: 'secret'
 
 ---
