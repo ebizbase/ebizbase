@@ -14,8 +14,8 @@ helm:
       enabled: true
     resources:
       requests:
-        memory: 100Mi
+        memory: 512Mi
         cpu: 200m
       limits:
-        memory: 128Mi
+        memory: 1Gi
         cpu: 500m
