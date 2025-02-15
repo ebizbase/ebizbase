@@ -10,8 +10,8 @@ helm:
       enabled: false
     auth:
       enabled: false
-    persistence:
-      enabled: false
+    # persistence:
+    #   enabled: false
     resources:
       requests:
         memory: 100Mi
