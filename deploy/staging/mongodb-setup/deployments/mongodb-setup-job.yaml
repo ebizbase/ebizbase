@@ -40,6 +40,13 @@ spec:
                 exit 1
               fi
 
+              echo "Deleting all old data..."
+              mongosh "$DEST" --eval "db.getMongo().getDBNames().forEach(function(dbName) {
+                if (!['admin', 'config', 'local'].includes(dbName)) {
+                  db.getSiblingDB(dbName).dropDatabase();
+                }
+              })"
+
               echo "Importing data..."
               mongorestore --uri="$DEST" /tmp/backup
 
