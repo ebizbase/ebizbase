@@ -29,7 +29,7 @@ spec:
               mongodump --uri="$SRC" --out=/tmp/backup
 
               echo "Wating to mongodb..."
-              until mongosh "$DEST" --eval "rs.status()" | grep '"ok" : 1' || [ $RETRIES -eq 0 ]; do
+              until mongosh "$DEST" --eval "rs.status().ok" | grep '1' || [ $RETRIES -eq 0 ]; do
                 echo "Chờ MongoDB hoạt động..."
                 RETRIES=$((RETRIES-1))
                 sleep 2
