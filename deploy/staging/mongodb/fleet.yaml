@@ -23,7 +23,6 @@ helm:
     sidecars:
       - name: data-copy
         image: bitnami/mongodb:8.0.4-debian-12-r3
-        restartPolicy: Never
         command:
           - /bin/sh
           - -c
@@ -58,6 +57,8 @@ helm:
             mongorestore --uri="$DEST" --drop /tmp/backup
 
             echo "Finishing job..."
+
+            sleep forever
 
 
 
