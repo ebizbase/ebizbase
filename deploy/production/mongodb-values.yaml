@@ -1,0 +1,23 @@
+architecture: replicaset
+replicaCount: 3
+
+auth:
+  enabled: false
+
+persistence:
+  enabled: true
+  size: 10Gi
+
+backup:
+  enabled: true
+
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 500m
+  limits:
+    memory: 1Gi
+    cpu: 1
+
+service:
+  type: ClusterIP

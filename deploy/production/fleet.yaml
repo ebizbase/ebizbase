@@ -1,0 +1,6 @@
+namespace: ecoma-prod
+helm:
+  releaseName: mongodb
+  chart: https://charts.bitnami.com/bitnami/mongodb-13.9.4.tgz
+  valuesFiles:
+    - mongodb-values.yaml
