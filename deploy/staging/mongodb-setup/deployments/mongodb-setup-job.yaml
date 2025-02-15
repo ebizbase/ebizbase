@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongodb-setup
+  labels:
+    app: mongodb
+spec:
+  selector:
+    matchLabels:
+      enviroment: staging
+      job: mongodb-setup
+  template:
+    metadata:
+      name: mongodb-setup
+      labels:
+        enviroment: staging
+        job: mongodb-setup
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: data-copy
+          image: bitnami/mongodb:8.0.4-debian-12-r3
+          command:
+            - /bin/sh
+            - -c
+            - |
+              SRC=mongodb://mongodb-headless.ecoma-prod.svc.cluster.local
+              DEST=mongodb://mongodb-headless.ecoma-staging.svc.cluster.local
+              RETRIES=30
+
+              echo "Exporting data..."
+              mongodump --uri="$SRC" --out=/tmp/backup
+
+              echo "Wating to mongodb..."
+              until mongosh "$DEST" --eval "db.adminCommand('ping')" || [ $RETRIES -eq 0 ]; do
+                echo "Chờ MongoDB hoạt động..."
+                RETRIES=$((RETRIES-1))
+                sleep 2
+              done
+
+              if [ $RETRIES -eq 0 ]; then
+                echo "Staging mongodb is unavaiable. Quit Job"
+                exit 1
+              fi
+
+              echo "Importing data..."
+              mongorestore --uri="$DEST" /tmp/backup
+
+              echo "Finishing job..."
+              touch /tmp/copy_complete
+          volumeMounts:
+            - name: copy-marker
+              mountPath: /tmp
+      volumes:
+        - name: copy-marker
+          emptyDir: {}
