@@ -12,6 +12,7 @@ helm:
       enabled: false
     persistence:
       enabled: true
+      size: 10Gi
     resources:
       requests:
         memory: 512Mi
