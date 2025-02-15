@@ -13,6 +13,7 @@ spec:
         job: mongodb-setup
     spec:
       restartPolicy: OnFailure
+      backoffLimits: 4
       containers:
         - name: data-copy
           image: bitnami/mongodb:8.0.4-debian-12-r3
