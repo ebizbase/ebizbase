@@ -50,10 +50,4 @@ spec:
               mongorestore --uri="$DEST" --drop /tmp/backup
 
               echo "Finishing job..."
-              touch /tmp/copy_complete
-          volumeMounts:
-            - name: copy-marker
-              mountPath: /tmp
-      volumes:
-        - name: copy-marker
-          emptyDir: {}
+
