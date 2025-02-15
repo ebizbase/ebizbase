@@ -4,8 +4,18 @@ helm:
   releaseName: mongodb
   chart: https://charts.bitnami.com/bitnami/mongodb-16.4.3.tgz
   values:
-    architecture: standalone
+    architecture: replicaset
+    replicaCount: 1
+    arbiter:
+      enabled: false
     auth:
       enabled: false
     persistence:
       enabled: false
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 200m
+      limits:
+        memory: 128Mi
+        cpu: 500m
