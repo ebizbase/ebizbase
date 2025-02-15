@@ -8,9 +8,6 @@ persistence:
   enabled: true
   size: 10Gi
 
-backup:
-  enabled: true
-
 resources:
   requests:
     memory: 512Mi
