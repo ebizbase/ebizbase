@@ -1,0 +1,81 @@
+namespace: ecoma-staging
+
+helm:
+  releaseName: mongodb
+  chart: https://charts.bitnami.com/bitnami/mongodb-16.4.3.tgz
+  values:
+    architecture: standalone
+    auth:
+      enabled: false
+    persistence:
+      enabled: false
+    extraDeploy:
+      - apiVersion: batch/v1
+        kind: Job
+        metadata:
+          name: clone-production-data
+          labels:
+            app: mongodb
+        spec:
+          template:
+            metadata:
+              name: clone-production-data
+            spec:
+              containers:
+                - name: data-copy
+                  image: bitnami/mongodb:8
+                  command:
+                    - /bin/sh
+                    - -c
+                    - |
+                      SRC=mongodb://mongodb-headless.ecoma-prod.svc.cluster.local
+                      DEST=mongodb://mongodb-headless.ecoma-staging.svc.cluster.local
+                      RETRIES=30
+
+                      echo "Exporting data..."
+                      mongodump --uri="$SRC" --out=/tmp/backup
+
+                      echo "Wating to mongodb..."
+                      until mongosh "$DEST" --eval "db.adminCommand('ping')" || [ $RETRIES -eq 0 ]; do
+                        echo "Chờ MongoDB hoạt động..."
+                        RETRIES=$((RETRIES-1))
+                        sleep 2
+                      done
+
+                      if [ $RETRIES -eq 0 ]; then
+                        echo "Staging mongodb is unavaiable. Quit Job"
+                        exit 1
+                      fi
+
+                      echo "Importing data..."
+                      mongorestore --uri="$DEST" /tmp/backup
+
+                      echo "Finishing job..."
+                      touch /tmp/copy_complete
+                  volumeMounts:
+                    - name: copy-marker
+                      mountPath: /tmp
+              volumes:
+                - name: copy-marker
+                  emptyDir: {}
+    customStartupProbe:
+      enabled: true
+      probe:
+        exec:
+          command:
+            - /bin/sh
+            - -c
+            - |
+              if [ -f /tmp/copy_complete ]; then
+                exit 0
+              else
+                exit 1
+              fi
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        timeoutSeconds: 5
+        successThreshold: 1
+        failureThreshold: 3
+      volumeMounts:
+        - name: copy-marker
+          mountPath: /tmp
