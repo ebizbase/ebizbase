@@ -58,23 +58,23 @@ helm:
               volumes:
                 - name: copy-marker
                   emptyDir: {}
-    customStartupProbe:
-      enabled: true
-      initialDelaySeconds: 60
-      periodSeconds: 10
-      timeoutSeconds: 5
-      successThreshold: 1
-      failureThreshold: 3
-      exec:
-        command:
-          - /bin/sh
-          - -c
-          - |
-            if [ -f /tmp/copy_complete ]; then
-              exit 0
-            else
-              exit 1
-            fi
-      volumeMounts:
-        - name: copy-marker
-          mountPath: /tmp
+    # customStartupProbe:
+    #   enabled: true
+    #   initialDelaySeconds: 60
+    #   periodSeconds: 10
+    #   timeoutSeconds: 5
+    #   successThreshold: 1
+    #   failureThreshold: 3
+    #   exec:
+    #     command:
+    #       - /bin/sh
+    #       - -c
+    #       - |
+    #         if [ -f /tmp/copy_complete ]; then
+    #           exit 0
+    #         else
+    #           exit 1
+    #         fi
+    #   volumeMounts:
+    #     - name: copy-marker
+    #       mountPath: /tmp
