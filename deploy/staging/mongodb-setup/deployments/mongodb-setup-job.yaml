@@ -12,8 +12,7 @@ spec:
         enviroment: staging
         job: mongodb-setup
     spec:
-      restartPolicy: OnFailure
-      backoffLimit: 3
+      restartPolicy: Never
       containers:
         - name: data-copy
           image: bitnami/mongodb:8.0.4-debian-12-r3
@@ -23,7 +22,7 @@ spec:
             - |
               SRC=mongodb://mongodb-headless.ecoma-prod.svc.cluster.local
               DEST=mongodb://mongodb-headless.ecoma-staging.svc.cluster.local
-              RETRIES=30
+              RETRIES=300
 
               echo "Exporting data..."
               mongodump --uri="$SRC" --out=/tmp/backup
@@ -31,7 +30,7 @@ spec:
               echo "Wating to mongodb..."
               until mongosh "$DEST" --quiet --eval "const status = rs.status(); if (status.ok === 1) { quit(0) } else { print(JSON.stringify(status)); quit(1) }"; do
                 RETRIES=$((RETRIES-1))
-                sleep 2
+                sleep 1
                 echo "Wating to mongodb..."
               done
 
