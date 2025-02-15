@@ -1,0 +1,10 @@
+kind: Service
+metadata:
+  name: redis-service
+spec:
+  selector:
+    enviroment: staging
+    app: redis
+  ports:
+  - port: 6379
+    targetPort: 6379
