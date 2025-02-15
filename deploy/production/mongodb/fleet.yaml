@@ -5,7 +5,7 @@ helm:
   chart: https://charts.bitnami.com/bitnami/mongodb-16.4.3.tgz
   values:
     architecture: replicaset
-    replicaCount: 1
+    replicaCount: 2
     auth:
       enabled: false
     persistence:
