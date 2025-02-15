@@ -21,6 +21,7 @@ helm:
             metadata:
               name: clone-production-data
             spec:
+              restartPolicy: OnFailure
               containers:
                 - name: data-copy
                   image: bitnami/mongodb:8
