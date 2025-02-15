@@ -18,4 +18,3 @@ helm:
       limits:
         memory: 1Gi
         cpu: 1
-
