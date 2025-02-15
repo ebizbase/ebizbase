@@ -47,7 +47,7 @@ x-ssr-site-config: &ssr-sites
 services:
   nginx:
     <<: *infras
-    image: nginx:alpine
+    image: nginx:alpine@sha256:27f54b7f9c984f5fa1993a0634de61bccf797feeca646abd4c3b901809a16a42
     container_name: nginx
     ports:
       - 80:80
