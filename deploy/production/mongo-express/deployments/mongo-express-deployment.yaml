@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-express-env
+data:
+  ME_CONFIG_MONGODB_URL: "mongodb://mongodb-headless.ecoma-prod.svc.cluster.local:27017"
+  ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+  ME_CONFIG_BASICAUTH: "false"
+  ME_CONFIG_BASICAUTH_ENABLED: "false"
+  VCAP_APP_HOST: "0.0.0.0"
+  ME_CONFIG_SITE_SESSIONSECRET: 'secret'
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-express
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      enviroment: prod
+      app: mongo-express
+  template:
+    metadata:
+      labels:
+        enviroment: prod
+        app: mongo-express
+    spec:
+      containers:
+        - name: mongo-express
+          image: mongo-express:latest
+          envFrom:
+            - configMapRef:
+                name: mongo-express-env
+          ports:
+            - containerPort: 8081
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8081
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8081
+            initialDelaySeconds: 30
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8081
+  selector:
+    app: mongo-express
