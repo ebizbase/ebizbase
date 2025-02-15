@@ -53,7 +53,7 @@ kind: Service
 metadata:
   name: mongo-express
 spec:
-  type: ClusterIp
+  type: ClusterIP
   ports:
     - port: 80
       targetPort: 8081
