@@ -13,7 +13,7 @@ spec:
         job: mongodb-setup
     spec:
       restartPolicy: OnFailure
-      backoffLimits: 4
+      backoffLimit: 3
       containers:
         - name: data-copy
           image: bitnami/mongodb:8.0.4-debian-12-r3
@@ -48,7 +48,7 @@ spec:
               })"
 
               echo "Importing data..."
-              mongorestore --uri="$DEST" /tmp/backup
+              mongorestore --uri="$DEST" --drop /tmp/backup
 
               echo "Finishing job..."
               touch /tmp/copy_complete
