@@ -5,10 +5,6 @@ metadata:
   labels:
     app: mongodb
 spec:
-  selector:
-    matchLabels:
-      enviroment: staging
-      job: mongodb-setup
   template:
     metadata:
       name: mongodb-setup
