@@ -1,3 +1,7 @@
 apiVersion: v2
 name: ecoma
 version: 0.0.1
+dependencies:
+  - name: mongodb
+    version: 16.4.3
+    repository: https://charts.bitnami.com/bitnami
