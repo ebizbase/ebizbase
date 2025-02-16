@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-express-config
+data:
+  ME_CONFIG_MONGODB_URL: "mongodb://{{ .Release.Name }}-mongodb-headless"
+  ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+  ME_CONFIG_BASICAUTH: "false"
+  ME_CONFIG_BASICAUTH_ENABLED: "false"
+  VCAP_APP_HOST: "0.0.0.0"
+  ME_CONFIG_SITE_SESSIONSECRET: 'secret'
