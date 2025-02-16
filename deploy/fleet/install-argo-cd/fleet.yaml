@@ -1,5 +1,4 @@
 namespace: argocd
-
 helm:
   releaseName: argocd
   chart: https://charts.bitnami.com/bitnami/argo-cd-7.1.10.tgz
