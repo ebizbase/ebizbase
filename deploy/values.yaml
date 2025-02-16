@@ -1,0 +1,9 @@
+architecture: replicaset
+replicaCount: 1
+auth:
+  enabled: false
+persistence:
+  enabled: true
+  size: 10Gi
+
+
