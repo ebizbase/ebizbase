@@ -1,16 +1,38 @@
-architecture: replicaset
-replicaCount: 2
-auth:
-  enabled: false
-persistence:
-  enabled: true
-  size: 10Gi
-resources:
-  requests:
-    memory: 512Mi
-    cpu: 300m
-  limits:
-    memory: 768Mi
-    cpu: 450m
+mongodb:
+  architecture: replicaset
+  replicaCount: 2
+  auth:
+    enabled: false
+  persistence:
+    enabled: true
+    size: 10Gi
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 300m
+    limits:
+      memory: 768Mi
+      cpu: 450m
 
 
+redis:
+  architecture: replication
+  auth:
+    enabled: false
+  master:
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 100m
+      limits:
+        memory: 384Mi
+        cpu: 150m
+  replica:
+    replicaCount: 2
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 100m
+      limits:
+        memory: 384Mi
+        cpu: 150m
