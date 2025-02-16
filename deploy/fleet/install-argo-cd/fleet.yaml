@@ -1,0 +1,33 @@
+namespace: argocd
+
+helm:
+  releaseName: argocd
+  chart: https://charts.bitnami.com/bitnami/argo-cd-7.1.10.tgz
+  values:
+    server:
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: 150m
+          memory: 192Mi
+    controller:
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: 250m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+          memory: 384Mi
+    repoServer:
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: 150m
+          memory: 192Mi

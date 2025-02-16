@@ -1,0 +1,13 @@
+replicaCount: 1
+arbiter:
+  enabled: false
+persistence:
+  enabled: false
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 500m
+  limits:
+    memory: 1Gi
+    cpu: 1000m
+
