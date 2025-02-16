@@ -1,0 +1,16 @@
+architecture: replicaset
+replicaCount: 2
+auth:
+  enabled: false
+persistence:
+  enabled: true
+  size: 10Gi
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 500m
+  limits:
+    memory: 768Mi
+    cpu: 750m
+
+
