@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "prepare": "husky",
+    "prepare": "is-ci | husky",
     "deploy": "docker compose up -d --wait"
   },
   "lint-staged": {
@@ -78,6 +78,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.7",
     "eventsource": "^2.0.2",
     "express": "~4.21.0",
     "handlebars": "^4.7.8",
@@ -159,6 +160,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-playwright": "^2.0.0",
     "husky": "^9.1.7",
+    "is-ci": "^4.1.0",
     "jest": "^29.7.0",
     "jest-dev-server": "^11.0.0",
     "jest-environment-jsdom": "^29.7.0",
