@@ -1,0 +1,106 @@
+name: CI/CD
+
+on:
+  pull_request_target:
+    branches:
+      - main
+      - dev
+  push:
+    branches:
+      - main
+      - dev
+  merge_group:
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+  pull-requests: write
+
+jobs:
+
+  intergration:
+    name: Intergration
+    runs-on: ubuntu-latest
+    outputs:
+      released: ${{ steps.release.outputs.releases_created }}
+      projects: ${{ steps.packages.outputs.projects }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Setup project
+        uses: ./.github/actions/setup
+        with:
+          dependencies: true
+      - name: Lint
+        run: CI=true npx nx run-many -t lint
+      - name: Unit Test
+        run: CI=true npx nx run-many -t test
+      # - name: E2E Testing
+      #   uses: devcontainers/ci@a56d055efecd725e8cfe370543b6071b79989cc8 # v0.3
+      #   with:
+      #     runCmd: |
+      #       ls -al
+      #       ls -al ./dist
+      #       CI=true npx nx run-many -t automate --parallel=false
+      - name: Release Please
+        if: github.event_name == 'push'
+        id: release
+        uses: googleapis/release-please-action@7987652d64b4581673a76e33ad5e98e3dd56832f # v4
+        with:
+          token: ${{ secrets.GH_BOT_TOKEN }}
+          config-file: release-config.json
+          manifest-file: release-manifest.json
+      - name: Prepare list released packages
+        id: packages
+        if:  github.event_name  == 'push' &&  steps.release.outputs.releases_created == 'true'
+        run: |
+          paths_released=$(echo '${{ steps.release.outputs.paths_released }}' | jq -r '. | .[]')
+          echo "Release paths: ${paths_released[@]}"
+
+          projects=()
+          for projectPath in $paths_released; do
+              if [[ "$projectPath" != "." ]]; then
+                projectFile="$projectPath/project.json"
+                projectName=$(jq -r '.name' "$projectFile")
+                projects+=("$projectName")
+            fi
+          done
+          echo "Projects: ${applications[@]}"
+          echo "projects=$(printf '%s\n' "${projects[@]}" | jq -R . | jq -s . | jq -c .)" >> $GITHUB_OUTPUT
+
+
+  # delivery:
+  #   name: Publish
+  #   runs-on: ubuntu-latest
+  #   needs: intergration
+  #   if: github.event_name  == 'push' && needs.intergration.outputs.released == 'true' && needs.intergration.outputs.projects != '[""]'
+  #   strategy:
+  #     matrix:
+  #       project: ${{fromJson(needs.intergration.outputs.projects)}}
+  #   steps:
+  #     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+  #     - uses: ./.github/actions/setup
+  #       with:
+  #         dependencies: true
+  #         buildx: true
+
+  #     - name: Login to Docker Hub container registry
+  #       uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
+  #       with:
+  #         registry: docker.io
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  #     - name: Login to GitHub container registry
+  #       uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ github.repository_owner }}
+  #         password: ${{ secrets.GH_BOT_TOKEN }}
+
+  #     - run: npx nx publish ${{ matrix.project }}
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}
+
+
