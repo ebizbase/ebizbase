@@ -8,15 +8,13 @@ on:
 
 jobs:
 
-  lint:
+  intergration:
     name: Linting
-    uses: ./.github/workflows/lint.yaml
-
-  test:
-    name: Testing
-    uses: ./.github/workflows/test.yaml
-
-  build:
-    name: Building
-    uses: ./.github/workflows/build.yaml
-
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Setup project
+        uses: ./.github/actions/setup
+      - name: Lint
+        run: npx nx run-many -t lint test build
