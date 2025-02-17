@@ -9,7 +9,7 @@ on:
 jobs:
 
   intergration:
-    name: Linting
+    name: Intergration checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,4 +17,4 @@ jobs:
       - name: Setup project
         uses: ./.github/actions/setup
       - name: Lint
-        run: npx nx run-many -t lint test build
+        run: INPUT_GITHUB_TOKEN=${{ secrets.GH_BOT_TOKEN }} npx nx run-many -t lint test build
