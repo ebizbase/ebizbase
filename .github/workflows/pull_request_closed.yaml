@@ -67,7 +67,7 @@ jobs:
 
 
   prerelease:
-    name: Create Prerelease PR
+    name: Create Prerelease tag & GH release
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true && github.head_ref == 'prerelease' && github.base_ref == 'dev'
     steps:
@@ -75,6 +75,11 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Setup project
         uses: ./.github/actions/setup
+      - name: Setup release-it
+        run: |
+          npm i -g release-it
+          git config --global user.email "bot@github.com"
+          git config --global user.name "Github Action"
       - name: Create Prerelease PR
         env:
           GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
@@ -131,4 +136,21 @@ jobs:
           title: "chore: release ${{ steps.release-data.outputs.version }}"
           body: ${{ steps.release-data.outputs.changelog }}
 
-
+  release:
+    name: Create release tag & GH release
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && github.head_ref == 'prerelease' && github.base_ref == 'dev'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Setup project
+        uses: ./.github/actions/setup
+      - name: Setup release-it
+        run: |
+          npm i -g release-it
+          git config --global user.email "bot@github.com"
+          git config --global user.name "Github Action"
+      - name: Create Prerelease PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+        run: npx release-it -c .github/release/merged.json --no-bump --ci
