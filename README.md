@@ -1,6 +1,7 @@
-<img src="docs/assets/logo.png" alt="Ebizbase dev-infras logo" title="Ebizbase dev-infras logo" align="right" width="56" height="56">
+<img src="docs/assets/logo.png" alt="Ecoma Logo"
+title="Ecoma Logo" align="right" width="56" height="56">
 
-# [Ebizbase Office](https://github.com/ebizbase/ebizbase)
+# [Ecoma.io](https://github.com/ebizbase/ebizbase)
 
 <a id="readme-top"></a>
 
