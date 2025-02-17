@@ -10,12 +10,16 @@ on:
 
 jobs:
 
-  # build:
-  #   name: Building
-  #   uses: ./.github/workflows/build.yaml
-  #   with:
-  #     publish: false
-  #     token: ${{ secrets.GH_BOT_TOKEN }}
+  publish:
+    name: Publish Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Setup project
+        uses: ./.github/actions/setup
+      - name: Build & Push docker image
+        run: INPUT_GITHUB_TOKEN=${{ secrets.GH_BOT_TOKEN }} npx nx run-many -t build --push
 
   prerelease-pr:
     name: Create Prerelease PR
