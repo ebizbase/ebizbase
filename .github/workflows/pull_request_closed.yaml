@@ -45,6 +45,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
         run: npx release-it -c .github/release/pr.json --ci --preRelease=rc
 
+
+      - name: Delete prerelease branch remotely
+        run: |
+          git push origin --delete prerelease
+
+      - name: Close all PRs from prerelease
+        run: |
+          gh pr list --head prerelease --state open --json number -q '.[].number' | while read pr_number; do
+            gh pr close $pr_number --delete-branch
+          done
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
@@ -54,5 +65,70 @@ jobs:
           title: "chore: release ${{ steps.release-data.outputs.version }}"
           body: ${{ steps.release-data.outputs.changelog }}
 
+
+  prerelease:
+    name: Create Prerelease PR
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && github.head_ref != 'prerelease' && github.base_ref == 'dev'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Setup project
+        uses: ./.github/actions/setup
+      - name: Create Prerelease PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+        run: npx release-it -c .github/release/merged.json --no-bump --ci --preRelease=rc
+
+
+  release-pr:
+    name: Create Release PR
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && github.head_ref != 'release' && github.base_ref == 'main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup project
+        uses: ./.github/actions/setup
+
+      - name: Setup release-it
+        run: |
+          npm i -g release-it
+          git config --global user.email "bot@github.com"
+          git config --global user.name "Github Action"
+
+      - name: Run release-it to generate changelog
+        id: release-data
+        run: |
+          changelog=$(npx release-it --changelog)
+          echo "::set-output name=changelog::$changelog"
+          version=$(npx release-it --release-version)
+          echo "::set-output name=version::$version"
+
+      - name: Create Prerelease PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+        run: npx release-it -c .github/release/pr.json --ci
+
+
+      - name: Delete release branch remotely
+        run: |
+          git push origin --delete release
+
+      - name: Close all PRs from release
+        run: |
+          gh pr list --head release --state open --json number -q '.[].number' | while read pr_number; do
+            gh pr close $pr_number --delete-branch
+          done
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GH_BOT_TOKEN }}
+          branch: erelease
+          base: main
+          title: "chore: release ${{ steps.release-data.outputs.version }}"
+          body: ${{ steps.release-data.outputs.changelog }}
 
 
