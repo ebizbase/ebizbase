@@ -9,10 +9,10 @@ mongodb:
   resources:
     requests:
       memory: 512Mi
-      cpu: 300m
+      cpu: 200m
     limits:
       memory: 768Mi
-      cpu: 450m
+      cpu: 400m
 
 
 redis:
@@ -23,7 +23,7 @@ redis:
     resources:
       requests:
         memory: 256Mi
-        cpu: 100m
+        cpu: 75m
       limits:
         memory: 384Mi
         cpu: 150m
@@ -32,7 +32,7 @@ redis:
     resources:
       requests:
         memory: 256Mi
-        cpu: 100m
+        cpu: 75m
       limits:
         memory: 384Mi
         cpu: 150m
