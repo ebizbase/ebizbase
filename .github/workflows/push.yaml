@@ -13,9 +13,10 @@ jobs:
   #   with:
   #     publish: true
 
-  release:
-    name: Release
+  prerelease-pr:
+    name: Create Prerelease PR
     runs-on: ubuntu-latest
+    if: github.head_ref != 'prerelease' && github.base_ref == 'dev'
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -29,14 +30,19 @@ jobs:
           git config --global user.email "bot@github.com"
           git config --global user.name "Github Action"
 
-      - name: Prerelease
-        if: github.ref == 'refs/heads/dev'
+      - name: Create Prerelease PR
         env:
           GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
-        run: npx release-it --ci --preRelease=rc
+        run: npx release-it -c .github/release/pr.json --ci --preRelease=rc
 
-      - name: Release
-        if: github.ref == 'refs/heads/main'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
-        run: npx release-it --ci
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GH_BOT_TOKEN }}
+          branch: release
+          base: dev
+          title: "Version bump and changelog"
+          body: "Automated PR to update version and changelog"
+
+
+
