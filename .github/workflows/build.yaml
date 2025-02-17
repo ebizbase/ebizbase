@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      publish:
+        description: "Should publish after building"
+        type: boolean
+        required: false
+        default: false
+
+jobs:
+
+  build:
+    name: Building
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Setup project
+        uses: ./.github/actions/setup
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          driver-opts: |
+            image=moby/buildkit:master
+      - name: Login to GitHub container registry
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GH_BOT_TOKEN }}
+      - name: Build
+        run: |
+          if [ "${{ inputs.publish }}" == "true" ]; then
+            npx nx run-many -t build --push
+          else
+            npx nx run-many -t build
+          fi
