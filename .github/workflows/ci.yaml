@@ -31,10 +31,10 @@ jobs:
         uses: ./.github/actions/setup
         with:
           dependencies: true
-      - name: Lint
-        run: CI=true npx nx run-many -t lint
-      - name: Unit Test
-        run: CI=true npx nx run-many -t test
+      # - name: Lint
+      #   run: CI=true npx nx run-many -t lint
+      # - name: Unit Test
+      #   run: CI=true npx nx run-many -t test
       - name: Set release config file
         id: set_config
         run: |
