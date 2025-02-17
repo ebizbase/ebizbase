@@ -19,17 +19,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-        with:
-          token:  ${{ secrets.GH_BOT_TOKEN }}
-
-      - name: Prepare repository
-        run: git fetch --unshallow --tags
 
       - name: Setup project
         uses: ./.github/actions/setup
 
-      - name: Create Release
+      - name: Setup release-it
+        run: |
+          npm i -g release-it
+          git config --global user.email "bot@github.com"
+          git config --global user.name "Github Action"
+
+      - name: Prerelease
+        if: github.ref == 'refs/heads/dev'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
-        run: |
-          npx auto shipit
+        run: npx release-it --ci --preRelease=rc
+
+      - name: Release
+        if: github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+        run: npx release-it --ci
