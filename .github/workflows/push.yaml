@@ -31,10 +31,12 @@ jobs:
           git config --global user.name "Github Action"
 
       - name: Run release-it to generate changelog
-        id: changelog
+        id: release-data
         run: |
           changelog=$(npx release-it --changelog)
           echo "::set-output name=changelog::$changelog"
+          version=$(npx release-it --release-version --preRelease=rc)
+          echo "::set-output name=version::$version"
 
       - name: Create Prerelease PR
         env:
@@ -45,10 +47,10 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GH_BOT_TOKEN }}
-          branch: release
+          branch: prerelease
           base: dev
-          title: "Version bump and changelog"
-          body: ${{ steps.changelog.outputs.changelog }}
+          title: "chore: release ${{ steps.release-data.outputs.version }}"
+          body: ${{ steps.release-data.outputs.changelog }}
 
 
 
