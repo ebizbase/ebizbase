@@ -6,9 +6,7 @@
   "packages": {
     ".": {
       "release-type": "node",
-      "bump-minor-pre-major": false,
-      "bump-patch-for-minor-pre-major": false,
-      "prerelease-type": "rc",
+      "prerelease-type": "next",
       "prerelease": true
     }
   }
