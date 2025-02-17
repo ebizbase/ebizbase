@@ -19,3 +19,4 @@ jobs:
   build:
     name: Building
     uses: ./.github/workflows/build.yaml
+

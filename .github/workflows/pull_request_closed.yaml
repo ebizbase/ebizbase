@@ -9,11 +9,13 @@ on:
 
 
 jobs:
+
   # build:
   #   name: Building
   #   uses: ./.github/workflows/build.yaml
   #   with:
-  #     publish: true
+  #     publish: false
+  #     token: ${{ secrets.GH_BOT_TOKEN }}
 
   prerelease-pr:
     name: Create Prerelease PR
