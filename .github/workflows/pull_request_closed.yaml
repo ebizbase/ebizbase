@@ -1,7 +1,7 @@
 name: PR Closed
 
 on:
-  pull_request:
+  pull_request_target:
     types: [closed]
     branches:
       - main
@@ -18,7 +18,7 @@ jobs:
   prerelease-pr:
     name: Create Prerelease PR
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged  == 'true' && github.head_ref != 'prerelease' && github.base_ref == 'dev'
+    if: github.event.pull_request.merged  == true && github.base_ref == 'dev' && github.head_ref != 'prerelease'
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
