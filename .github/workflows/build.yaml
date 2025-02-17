@@ -8,7 +8,11 @@ on:
         type: boolean
         required: false
         default: false
-
+      token:
+        description: "The github token for login to registry"
+        type: string
+        required: false
+        default: ""
 jobs:
 
   build:
@@ -25,11 +29,12 @@ jobs:
           driver-opts: |
             image=moby/buildkit:master
       - name: Login to GitHub container registry
+        if: inputs.publish
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GH_BOT_TOKEN }}
+          password: ${{ inputs.token }}
       - name: Build
         run: |
           if [ "${{ inputs.publish }}" == "true" ]; then
