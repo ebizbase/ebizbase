@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/ebizbase/ebizbase/compare/ebizbase-v1.0.0...ebizbase-v1.0.1) (2025-02-17)
+
+
+### Bug Fixes
+
+* update release dev config 2 ([aeb4130](https://github.com/ebizbase/ebizbase/commit/aeb4130e0efd1eb3faa4724b991a71f636f8cfd4))
+
 ## 1.0.0 (2025-02-17)
 
 
