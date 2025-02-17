@@ -4,11 +4,9 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/accounts-site/src",
-  "tags": ["sites"],
-  "metadata": {
-    "version": "0.0.0",
-    "namespace": "ebizbase/accounts-site"
-  },
+  "tags": [
+    "sites"
+  ],
   "targets": {
     "compile": {
       "executor": "@angular-devkit/build-angular:browser",
@@ -18,7 +16,9 @@
         "main": "apps/accounts-site/src/main.ts",
         "tsConfig": "apps/accounts-site/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "assets": [
           {
             "glob": "**/*",
@@ -81,6 +81,16 @@
       },
       "defaultConfiguration": "production"
     },
+    "compile:analyze": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "npx nx compile accounts-site --stats-json",
+          "npx webpack-bundle-analyzer ./dist/apps/accounts-site/stats.json"
+        ],
+        "parallel": false
+      }
+    },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
@@ -98,28 +108,21 @@
       }
     },
     "build": {
-      "dependsOn": ["compile"],
-      "executor": "@ebizbase/nx-docker:build",
-      "defaultConfiguration": "development",
-      "configurations": {
-        "development": {
-          "load": true,
-          "tags": ["edge"]
-        },
-        "production": {
-          "push": true,
-          "tags": ["{major}.{minor}.{patch}"]
-        }
-      }
-    },
-    "analyze": {
-      "executor": "nx:run-commands",
+      "dependsOn": [
+        "compile"
+      ],
+      "executor": "@nx-tools/nx-container:build",
       "options": {
-        "commands": [
-          "npx nx compile accounts-site --stats-json",
-          "npx webpack-bundle-analyzer ./dist/apps/accounts-site/stats.json"
-        ],
-        "parallel": false
+        "quiet": true,
+        "load": true,
+        "metadata": {
+          "images": [
+            "ghcr.io/ebizbase/accounts-site"
+          ],
+          "tags": [
+            "type=sha"
+          ]
+        }
       }
     }
   }

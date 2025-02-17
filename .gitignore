@@ -50,3 +50,5 @@ Thumbs.db
 .angular
 .playwright
 .features-gen
+
+.env
