@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "prepare": "is-ci | husky",
+    "prepare": "is-ci || husky",
     "deploy": "docker compose up -d --wait"
   },
   "lint-staged": {
