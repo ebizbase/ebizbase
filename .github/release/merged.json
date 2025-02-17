@@ -1,0 +1,9 @@
+{
+  "git": {
+    "requireCleanWorkingDir": false,
+    "commit": true,
+    "commitMessage": "chore: release v${version}",
+    "tag": false,
+    "push": false
+  }
+}
