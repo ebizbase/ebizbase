@@ -46,12 +46,9 @@ jobs:
         run: npx release-it -c .github/release/pr.json --ci --preRelease=rc
 
 
-      - name: Delete prerelease branch remotely
+      - name:  Delete prerelease branch remotely & close all PRs from prerelease
         run: |
-          git push origin --delete prerelease
-
-      - name: Close all PRs from prerelease
-        run: |
+          git push origin --delete prerelease || echo "Branch is not exists to delete"
           gh pr list --head prerelease --state open --json number -q '.[].number' | while read pr_number; do
             gh pr close $pr_number --delete-branch
           done
@@ -121,8 +118,9 @@ jobs:
         run: |
           git push origin --delete release
 
-      - name: Close all PRs from release
+      - name:  Delete release branch remotely & close all PRs from release
         run: |
+          git push origin --delete release || echo "Branch is not exists to delete"
           gh pr list --head release --state open --json number -q '.[].number' | while read pr_number; do
             gh pr close $pr_number --delete-branch
           done
