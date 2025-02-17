@@ -1,4 +1,4 @@
-name: Pull Request
+name: Push
 
 on:
   push:
@@ -7,14 +7,14 @@ on:
       - dev
 
 jobs:
-  build:
-    name: Building
-    uses: ./.github/workflows/build.yaml
-    with:
-      publish: true
+  # build:
+  #   name: Building
+  #   uses: ./.github/workflows/build.yaml
+  #   with:
+  #     publish: true
 
-  lint:
-    name: Linting
+  release:
+    name: Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
