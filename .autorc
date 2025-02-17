@@ -4,8 +4,6 @@
     "conventional-commits",
     "released"
   ],
-  "owner": "ebizbase",
-  "repo": "ebizbase",
   "baseBranch": "main",
   "versionBranches": true,
   "prereleaseBranches": ["staing"]
