@@ -4,8 +4,7 @@
   "pull-request-footer": "This pull request was created by the release bot. Merge this request will trigger CD process.",
   "separate-pull-requests": true,
   "packages": {
-    "ecoma": {
-      "path": ".",
+    ".": {
       "release-type": "node",
       "bump-minor-pre-major": false,
       "bump-patch-for-minor-pre-major": false,
