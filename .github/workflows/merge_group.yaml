@@ -1,0 +1,24 @@
+name: Merge Group
+
+on:
+  merge_group:
+    branches:
+      - main
+      - dev
+
+jobs:
+
+  lint:
+    name: Linting
+    uses: ./.github/workflows/lint.yaml
+
+  test:
+    name: Testing
+    uses: ./.github/workflows/test.yaml
+
+  build:
+    name: Building
+    uses: ./.github/workflows/build.yaml
+
+  # TODO add automation testing on dev enviroment before merge group
+
