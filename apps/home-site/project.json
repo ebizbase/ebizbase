@@ -4,20 +4,26 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/home-site/src",
-  "tags": ["sites"],
+  "tags": [
+    "sites"
+  ],
   "metadata": {
     "version": "0.0.0",
     "namespace": "ebizbase/home-site"
   },
   "targets": {
-    "browser": {
+    "compile:browser": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/home-site/browser",
         "index": "apps/home-site/src/index.html",
         "main": "apps/home-site/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/home-site/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -75,8 +81,20 @@
       },
       "defaultConfiguration": "development"
     },
+    "compile:analyze": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "npx nx browser home-site --stats-json",
+          "npx webpack-bundle-analyzer ./dist/apps/home-site/browser/stats.json"
+        ],
+        "parallel": false
+      }
+    },
     "compile": {
-      "dependsOn": ["browser"],
+      "dependsOn": [
+        "browser"
+      ],
       "executor": "@angular-devkit/build-angular:server",
       "options": {
         "outputPath": "dist/apps/home-site/server",
@@ -125,7 +143,9 @@
     "prerender": {
       "executor": "@angular-devkit/build-angular:prerender",
       "options": {
-        "routes": ["/"]
+        "routes": [
+          "/"
+        ]
       },
       "configurations": {
         "development": {
@@ -140,28 +160,21 @@
       "defaultConfiguration": "production"
     },
     "build": {
-      "dependsOn": ["compile"],
-      "executor": "@ebizbase/nx-docker:build",
-      "defaultConfiguration": "development",
-      "configurations": {
-        "development": {
-          "load": true,
-          "tags": ["edge"]
-        },
-        "production": {
-          "push": true,
-          "tags": ["{major}.{minor}.{patch}"]
-        }
-      }
-    },
-    "analyze": {
-      "executor": "nx:run-commands",
+      "dependsOn": [
+        "compile"
+      ],
+      "executor": "@nx-tools/nx-container:build",
       "options": {
-        "commands": [
-          "npx nx browser home-site --stats-json",
-          "npx webpack-bundle-analyzer ./dist/apps/home-site/browser/stats.json"
-        ],
-        "parallel": false
+        "quiet": true,
+        "load": true,
+        "metadata": {
+          "images": [
+            "ghcr.io/ebizbase/home-site"
+          ],
+          "tags": [
+            "type=sha"
+          ]
+        }
       }
     }
   }
