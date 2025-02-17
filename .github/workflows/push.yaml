@@ -30,6 +30,12 @@ jobs:
           git config --global user.email "bot@github.com"
           git config --global user.name "Github Action"
 
+      - name: Run release-it to generate changelog
+        id: changelog
+        run: |
+          changelog=$(npx release-it --changelog)
+          echo "::set-output name=changelog::$changelog"
+
       - name: Create Prerelease PR
         env:
           GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
@@ -42,7 +48,7 @@ jobs:
           branch: release
           base: dev
           title: "Version bump and changelog"
-          body: "Automated PR to update version and changelog"
+          body: ${{ steps.changelog.outputs.changelog }}
 
 
 
