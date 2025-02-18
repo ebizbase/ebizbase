@@ -36,7 +36,7 @@ jobs:
             echo "::endgroup::"
 
             echo "::group::Generating next version and changelog"
-            version=$(npx release-it -c release.json--release-version)
+            version=$(npx release-it --release-version --preRelease=rc)
             echo "Generated version: $version"
             export VERSION=$version
             echo "::endgroup::"
