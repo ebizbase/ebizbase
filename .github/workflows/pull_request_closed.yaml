@@ -7,26 +7,10 @@ on:
       - main
       - dev
 
-
 jobs:
 
-  publish:
-    name: Publish Docker Image
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - name: Setup project
-        uses: ./.github/actions/setup
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GH_BOT_TOKEN }}
-      - name: Build & Push docker image
-        run: INPUT_GITHUB_TOKEN=${{ secrets.GH_BOT_TOKEN }} npx nx run-many -t build --push
-
+  # When PR of dev is merged to dev branch
+  # Create release and build
   prerelease-pr:
     name: Create Prerelease PR
     runs-on: ubuntu-latest

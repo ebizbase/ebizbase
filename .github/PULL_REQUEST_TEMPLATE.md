@@ -1,19 +1,8 @@
 <!-- trunk-ignore-all(markdownlint/MD041) -->
 ## Feature PR Checklist
 Please check if your PR fulfills the following requirements:
-
-- [] The commit message follows our guidelines: <https://github.com/ebizbase/ebizbase/blob/main/CONTRIBUTING.md#commit-message-guidelines>
 - [] Tests for the changes have been added
 - [] Docs have been added / updated
-
-## PR Type
-- [] Feature
-- [] BugFix
-- [] Other
-
-## Does this PR introduce a breaking change?
-- [ ] Yes
-- [ ] No
 
 ## What is the current behavior?
 <!-- Please describe the current behavior that you are modifying, or link to a relevant issue. -->
