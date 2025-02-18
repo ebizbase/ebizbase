@@ -1,4 +1,4 @@
-name: Pull Request
+name: Intergration
 
 on:
   pull_request_target:
