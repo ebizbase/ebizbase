@@ -35,6 +35,12 @@ jobs:
             git config --global user.name "Github Action"
             echo "::endgroup::"
 
+            echo "::group::Generating next version and changelog"
+            version=$(npx release-it -c release.json--release-version)
+            echo "Generated version: $version"
+            export VERSION=$version
+            echo "::endgroup::"
+
             echo "::group:: commit and push change"
             npx release-it -c release.ts --preRelease=rc
             echo "::endgroup::"

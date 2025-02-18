@@ -15,9 +15,9 @@ export default {
   },
   hooks: {
     'after:bump': [
-      // eslint-disable-next-line no-useless-escape
-      'VERSION=$(jq -r \'.version\' package.json) && yq e ".version = \"$VERSION\"" -i deploy/staging/values.yaml && yq e ".version = \"$VERSION\"" -i deploy/staging/Chart.yaml',
-      'VERSION=$(jq -r \'.version\' package.json) && npx nx run-many -t publish'
+      'yq e ".version = "$VERSION"" -i deploy/staging/values.yaml',
+      'yq e ".version = "$VERSION"" -i deploy/staging/Chart.yaml',
+      'npx nx run-many -t publish'
     ]
   }
 } satisfies Config;
