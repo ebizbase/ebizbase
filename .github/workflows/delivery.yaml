@@ -42,8 +42,8 @@ jobs:
             echo "::endgroup::"
 
             echo "::group:: commit and push change"
-            yq e ".version = "$VERSION"" -i deploy/staging/values.yaml
-            yq e ".version = "$VERSION"" -i deploy/staging/Chart.yaml
+            yq e ".version = \"$VERSION\"" -i deploy/staging/values.yaml
+            yq e ".version = \"$VERSION\"" -i deploy/staging/Chart.yaml
             npx nx run-many -t publish
             npx release-it -c release.ts --preRelease=rc
             echo "::endgroup::"
