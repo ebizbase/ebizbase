@@ -8,7 +8,7 @@ on:
 jobs:
 
   delivery:
-    name: Build and update staging chart sha
+    name: Prerelease & deploy staging
     runs-on: ubuntu-latest
     steps:
 

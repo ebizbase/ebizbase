@@ -12,6 +12,13 @@ export default {
   },
   github: {
     'release': true,
-    'releaseNotes': 'npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/main/templates/changelog-compact.hbs'
+    'releaseName': 'v${version}',
+    'autoGenerate': true
+  },
+  'plugins': {
+    '@release-it/conventional-changelog': {
+      'preset': 'angular',
+      'infile': 'CHANGELOG.md'
+    }
   }
 } satisfies Config;
