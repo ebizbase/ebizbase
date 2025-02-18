@@ -1,4 +1,13 @@
-### Changelog
+# Changelog
+
+## 0.0.1-rc.0 (2025-02-18)
+
+
+### Bug Fixes
+
+* use release-it 168 ([a006b5d](https://github.com/ebizbase/ebizbase/commit/a006b5daa043e0f0bc4833e7b2d2716e1a9878fa))
+
+##
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
