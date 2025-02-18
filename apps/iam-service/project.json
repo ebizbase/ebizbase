@@ -49,20 +49,22 @@
       }
     },
     "build": {
-      "dependsOn": ["compile"],
+      "dependsOn": [
+        "compile"
+      ],
       "executor": "@nx-tools/nx-container:build",
-      "defaultConfiguration": "local",
-      "configurations": {
-        "local": {
-          "load": true,
-          "quiet": true,
-          "tags": ["iam-service:latest"]
-        },
-        "publish": {
-          "push": true,
-          "images": ["ghcr.io/ebizbase/iam-service"],
-          "tags": ["type=sha"]
-        }
+      "options": {
+        "load": true,
+        "quiet": true,
+        "tags": [
+          "iam-service:latest"
+        ]
+      }
+    },
+    "public": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "INPUT_TAGS=ghcr.io/ebizbase/iam-service:$VERSION npx nx build --push"
       }
     }
   }

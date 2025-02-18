@@ -4,7 +4,9 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/accounts-site/src",
-  "tags": ["sites"],
+  "tags": [
+    "sites"
+  ],
   "targets": {
     "compile": {
       "executor": "@angular-devkit/build-angular:browser",
@@ -14,7 +16,9 @@
         "main": "apps/accounts-site/src/main.ts",
         "tsConfig": "apps/accounts-site/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "assets": [
           {
             "glob": "**/*",
@@ -104,20 +108,22 @@
       }
     },
     "build": {
-      "dependsOn": ["compile"],
+      "dependsOn": [
+        "compile"
+      ],
       "executor": "@nx-tools/nx-container:build",
-      "defaultConfiguration": "local",
-      "configurations": {
-        "local": {
-          "load": true,
-          "quiet": true,
-          "tags": ["accounts-site:latest"]
-        },
-        "publish": {
-          "push": true,
-          "images": ["ghcr.io/ebizbase/accounts-site"],
-          "tags": ["type=sha"]
-        }
+      "options": {
+        "load": true,
+        "quiet": true,
+        "tags": [
+          "accounts-site:latest"
+        ]
+      }
+    },
+    "public": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "INPUT_TAGS=ghcr.io/ebizbase/accounts-site:$VERSION npx nx build --push"
       }
     }
   }

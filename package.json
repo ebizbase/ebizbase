@@ -1,7 +1,7 @@
 {
   "name": "@ebizbase/ebizbase",
   "private": true,
-  "version": "0.0.1-rc.1",
+  "version": "0.0.0",
   "description": "ERP platform drives businesses towards online operations",
   "bugs": "https://github.com/ebizbase/ebizbase/issues",
   "repository": {
@@ -153,6 +153,7 @@
     "@typescript-eslint/types": "^8.16.0",
     "@typescript-eslint/utils": "^8.13.0",
     "angular-eslint": "^19.0.2",
+    "auto-changelog": "^2.5.0",
     "autoprefixer": "^10.4.0",
     "browser-sync": "^3.0.3",
     "cucumber-html-reporter": "7.1.1",

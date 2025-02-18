@@ -25,12 +25,10 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_BOT_TOKEN }}
 
-      - name: Publish Image
-        run: INPUT_GITHUB_TOKEN=${{ secrets.GH_BOT_TOKEN }} npx nx run-many -t build -c publish --parallel=4
-
-      - name: Update staging chart to current git SHA
+      - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+          INPUT_GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
         run: |
             echo "::group::Configuring Git user"
             git config --global user.email "bot@github.com"

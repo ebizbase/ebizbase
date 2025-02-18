@@ -15,7 +15,10 @@ export default {
   },
   hooks: {
     'after:bump': [
-      'SHORT_SHA=$(git rev-parse --short HEAD) && yq e ".git-sha = "${SHORT_SHA}"" -i deploy/staging/values.yaml'
+      'export VERSION=$(jq -r \'.version\' package.json)',
+      'yq e ".version = "${VERSION}"" -i deploy/staging/values.yaml',
+      'yq e ".version = "${VERSION}"" -i deploy/staging/Chart.yaml',
+      'npx nx run-many -t pulish'
     ]
   }
 } satisfies Config;

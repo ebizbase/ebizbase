@@ -1,4 +1,4 @@
-git-sha: 6e22c77
+version: 0.0.0
 mongodb:
   architecture: replicaset
   replicaCount: 1

@@ -150,20 +150,22 @@
       "defaultConfiguration": "production"
     },
     "build": {
-      "dependsOn": ["compile"],
+      "dependsOn": [
+        "compile"
+      ],
       "executor": "@nx-tools/nx-container:build",
-      "defaultConfiguration": "local",
-      "configurations": {
-        "local": {
-          "load": true,
-          "quiet": true,
-          "tags": ["home-site:latest"]
-        },
-        "publish": {
-          "push": true,
-          "images": ["ghcr.io/ebizbase/home-site"],
-          "tags": ["type=sha"]
-        }
+      "options": {
+        "load": true,
+        "quiet": true,
+        "tags": [
+          "home-site:latest"
+        ]
+      }
+    },
+    "public": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "INPUT_TAGS=ghcr.io/ebizbase/home-site:$VERSION npx nx build --push"
       }
     }
   }
