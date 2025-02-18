@@ -3,15 +3,11 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/iam-service/src",
   "projectType": "application",
-  "tags": [
-    "services"
-  ],
+  "tags": ["services"],
   "targets": {
     "compile": {
       "executor": "@nx/webpack:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
@@ -38,9 +34,7 @@
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
-      "dependsOn": [
-        "compile"
-      ],
+      "dependsOn": ["compile"],
       "options": {
         "buildTarget": "iam-service:compile",
         "runBuildTargetDependencies": false
@@ -55,20 +49,19 @@
       }
     },
     "build": {
-      "dependsOn": [
-        "compile"
-      ],
+      "dependsOn": ["compile"],
       "executor": "@nx-tools/nx-container:build",
-      "options": {
-        "quiet": true,
-        "load": true,
-        "metadata": {
-          "images": [
-            "ghcr.io/ebizbase/iam-service"
-          ],
-          "tags": [
-            "type=sha"
-          ]
+      "defaultConfiguration": "local",
+      "configurations": {
+        "local": {
+          "load": true,
+          "quiet": true,
+          "tags": ["iam-service:latest"]
+        },
+        "publish": {
+          "push": true,
+          "images": ["ghcr.io/ebizbase/iam-service"],
+          "tags": ["type=sha"]
         }
       }
     }

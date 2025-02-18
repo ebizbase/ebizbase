@@ -185,7 +185,7 @@ services:
 
   iam-service:
     <<: *services
-    image: ebizbase/iam-service:edge
+    image: iam-service
     container_name: iam-service
     networks:
       ecomma:
@@ -193,7 +193,7 @@ services:
 
   home-site:
     <<: *ssr-sites
-    image: ebizbase/home-site:edge
+    image: home-site
     container_name: home-site
     networks:
       ecomma:
@@ -201,7 +201,7 @@ services:
 
   accounts-site:
     <<: *csr-sites
-    image: ebizbase/accounts-site:edge
+    image: accounts-site
     container_name: accounts-site
     networks:
       ecomma:
@@ -209,7 +209,7 @@ services:
 
   my-account-site:
     <<: *csr-sites
-    image: ebizbase/my-account-site:edge
+    image: my-account-site
     container_name: my-account-site
     networks:
       ecomma:

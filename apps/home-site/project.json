@@ -4,9 +4,7 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/home-site/src",
-  "tags": [
-    "sites"
-  ],
+  "tags": ["sites"],
   "metadata": {
     "version": "0.0.0",
     "namespace": "ebizbase/home-site"
@@ -14,16 +12,12 @@
   "targets": {
     "compile:browser": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/home-site/browser",
         "index": "apps/home-site/src/index.html",
         "main": "apps/home-site/src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
+        "polyfills": ["zone.js"],
         "tsConfig": "apps/home-site/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -92,9 +86,7 @@
       }
     },
     "compile": {
-      "dependsOn": [
-        "browser"
-      ],
+      "dependsOn": ["browser"],
       "executor": "@angular-devkit/build-angular:server",
       "options": {
         "outputPath": "dist/apps/home-site/server",
@@ -143,9 +135,7 @@
     "prerender": {
       "executor": "@angular-devkit/build-angular:prerender",
       "options": {
-        "routes": [
-          "/"
-        ]
+        "routes": ["/"]
       },
       "configurations": {
         "development": {
@@ -160,20 +150,19 @@
       "defaultConfiguration": "production"
     },
     "build": {
-      "dependsOn": [
-        "compile"
-      ],
+      "dependsOn": ["compile"],
       "executor": "@nx-tools/nx-container:build",
-      "options": {
-        "quiet": true,
-        "load": true,
-        "metadata": {
-          "images": [
-            "ghcr.io/ebizbase/home-site"
-          ],
-          "tags": [
-            "type=sha"
-          ]
+      "defaultConfiguration": "local",
+      "configurations": {
+        "local": {
+          "load": true,
+          "quiet": true,
+          "tags": ["home-site:latest"]
+        },
+        "publish": {
+          "push": true,
+          "images": ["ghcr.io/ebizbase/home-site"],
+          "tags": ["type=sha"]
         }
       }
     }

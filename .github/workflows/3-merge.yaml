@@ -8,7 +8,7 @@ on:
 jobs:
 
   staging:
-    name: Create Prerelease tag & GH release
+    name: Deploy staging
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

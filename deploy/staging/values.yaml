@@ -1,5 +1,4 @@
-git-sha: xxxxxx
-
+git-sha: 6e22c77
 mongodb:
   architecture: replicaset
   replicaCount: 1
@@ -16,7 +15,6 @@ mongodb:
     limits:
       memory: 768Mi
       cpu: 400m
-
 redis:
   architecture: replication
   auth:
@@ -38,4 +36,3 @@ redis:
       limits:
         memory: 192Mi
         cpu: 150m
-

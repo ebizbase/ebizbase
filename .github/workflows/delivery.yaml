@@ -1,0 +1,49 @@
+name: Pull Request
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * *
+
+jobs:
+
+  delivery:
+    name: Build and update staging chart sha
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update staging chart to current git SHA
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+        run: |
+            # echo "::group::Installing release-it"
+            # npm i -g release-it
+            # echo "::endgroup::"
+
+            echo "::group::Configuring Git user"
+            git config --global user.email "bot@github.com"
+            git config --global user.name "Github Action"
+            echo "::endgroup::"
+
+            # echo "::group::Generating next version and changelog"
+            # version=$(npx release-it --release-version)
+            # echo "Generated version: $version"
+            # changelog=$(npx release-it --changelog)
+            # echo "Generated changelog: $changelog"
+            # echo "::endgroup::"
+
+            echo "::group::Update staging helm chart to current SHA"
+            SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7)
+            yq eval ".git-sha = \"$SHORT_SHA\"" -i charts/staging/values.yaml
+            echo "# Changes will be applied to the next version ($version)" > charts/staging/NOTES.md
+            echo "" >> charts/staging/NOTES.md
+            echo $changelog >> charts/staging/NOTES.md
+            echo "::endgroup::"
+
+            echo "::group:: commit and push change"
+            git add charts/staging/values.yaml
+            git add charts/staging/NOTES.md
+            git commit -m "chore: update git-sha for staging chart to $SHORT_SHA" --no-verify
+            git push origin HEAD --no-verify
+            echo "::endgroup::"
+
+
