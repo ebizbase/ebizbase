@@ -1,8 +1,7 @@
 name: PR closed
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches:
       - dev
 
@@ -11,7 +10,6 @@ jobs:
   staging:
     name: Create Prerelease tag & GH release
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && github.head_ref == 'prerelease' && github.base_ref == 'dev'
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
