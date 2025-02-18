@@ -15,10 +15,8 @@ export default {
   },
   hooks: {
     'after:bump': [
-      'export VERSION=$(jq -r \'.version\' package.json)',
-      'yq e ".version = "${VERSION}"" -i deploy/staging/values.yaml',
-      'yq e ".version = "${VERSION}"" -i deploy/staging/Chart.yaml',
-      'npx nx run-many -t pulish'
+      'VERSION=$(jq -r \'.version\' package.json) && yq e ".version = "${VERSION}"" -i deploy/staging/values.yaml && yq e ".version = "${VERSION}"" -i deploy/staging/Chart.yaml',
+      'VERSION=$(jq -r \'.version\' package.json) && npx nx run-many -t pulish'
     ]
   }
 } satisfies Config;
