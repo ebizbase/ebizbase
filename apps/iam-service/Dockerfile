@@ -3,7 +3,7 @@ ARG BUSYBOX_VERSION=1.31.0-i686-uclibc
 ADD https://busybox.net/downloads/binaries/$BUSYBOX_VERSION/busybox_WGET /wget
 RUN chmod a+x /wget
 
-FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf9a7b30fdf97 AS build
+FROM node:22-alpine@sha256:9bef0ef1e268f60627da9ba7d7605e8831d5b56ad07487d24d1aa386336d1944 AS build
 WORKDIR /app
 COPY dist/apps/iam-service/package.json .
 COPY dist/apps/iam-service/yarn.lock .
