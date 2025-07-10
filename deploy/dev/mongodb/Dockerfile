@@ -1,6 +1,6 @@
 FROM mongo-express AS mongo-express
 
-FROM mongo@sha256:4f93a84f7d4d8b1b6cb7e0c172d8a44b0bed9b399f207165ea19473bdb5a36b0
+FROM mongo@sha256:f331890607b5cdce091da9823f91ab1e4c54d31fd572282037880b2eaafff454
 
 # Install dependencies
 RUN apt-get update && apt-get install -y curl wget unzip \
