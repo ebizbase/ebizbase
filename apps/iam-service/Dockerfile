@@ -1,4 +1,4 @@
-FROM busybox@sha256:a5d0ce49aa801d475da48f8cb163c354ab95cab073cd3c138bd458fc8257fbf1 AS tools
+FROM busybox@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74 AS tools
 ARG BUSYBOX_VERSION=1.31.0-i686-uclibc
 ADD https://busybox.net/downloads/binaries/$BUSYBOX_VERSION/busybox_WGET /wget
 RUN chmod a+x /wget
