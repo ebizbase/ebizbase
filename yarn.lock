@@ -426,9 +426,9 @@
     tslib "^2.3.0"
 
 "@angular/ssr@^19.0.7":
-  version "19.0.7"
-  resolved "https://registry.yarnpkg.com/@angular/ssr/-/ssr-19.0.7.tgz#75df3fa20ce51f105e9fcf5a12b686d7951d49e7"
-  integrity sha512-KwXlUWoONvwdRHsHp+AMBaBptpCdNSxYbqaweF9aZ1jSIPzWwI8bHcL3yzVLLzjUOTACjfRP3yHCWFqjZbNBhA==
+  version "19.2.17"
+  resolved "https://registry.yarnpkg.com/@angular/ssr/-/ssr-19.2.17.tgz#ae57798e89116442e213c27841134cb0bfad0d27"
+  integrity sha512-9ABOYrHrCYnOiihkeHvN+QIaIN+1Js4QfT4cXAtZs/f+yFaURGre7yvyK1KncMBKwxXzjcqvu1QquFMU/m/JLw==
   dependencies:
     tslib "^2.3.0"
 
