@@ -1,5 +1,7 @@
 # Changelog
 
+## [0.0.1-rc.234](https://github.com/ebizbase/ebizbase/compare/0.0.1-rc.233...0.0.1-rc.234) (2025-10-08)
+
 ## [0.0.1-rc.233](https://github.com/ebizbase/ebizbase/compare/0.0.1-rc.232...0.0.1-rc.233) (2025-10-07)
 
 ## [0.0.1-rc.232](https://github.com/ebizbase/ebizbase/compare/0.0.1-rc.231...0.0.1-rc.232) (2025-10-06)
