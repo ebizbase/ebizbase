@@ -8,7 +8,7 @@ runs:
       run: export CI=true
 
     - name: Setup Node
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
       with:
         node-version: lts/*
         # cache: yarn
@@ -19,7 +19,7 @@ runs:
       run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
     - name: Get yarn cache
-      uses: actions/cache@v4
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
       id: yarn-cache
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
