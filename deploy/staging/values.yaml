@@ -1,4 +1,4 @@
-version: 0.0.1-rc.268
+version: 0.0.1-rc.269
 mongodb:
   architecture: replicaset
   replicaCount: 1
