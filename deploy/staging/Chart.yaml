@@ -1,6 +1,6 @@
 apiVersion: v2
 name: ecoma
-version: 0.0.1-rc.269
+version: 0.0.1-rc.270
 dependencies:
   - name: mongodb
     version: 16.4.3
