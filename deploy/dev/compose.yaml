@@ -110,7 +110,7 @@ services:
       test: wget --spider -q http://localhost:1080/healthz
 
   seaweedfs-master:
-    image: chrislusf/seaweedfs:latest
+    image: chrislusf/seaweedfs:latest@sha256:25e786c94ab0663985751151dd28706f897dc4ef7db1575a63db8dbe91fb760f
     container_name: seaweedfs-master
     command: ['master', '-ip=seaweedfs-master', '-port=9333']
     ports:
@@ -124,7 +124,7 @@ services:
       test: wget --spider -q http://seaweedfs-master:9333/cluster/status
 
   seaweedfs-volume:
-    image: chrislusf/seaweedfs:latest
+    image: chrislusf/seaweedfs:latest@sha256:25e786c94ab0663985751151dd28706f897dc4ef7db1575a63db8dbe91fb760f
     container_name: seaweedfs-volume
     command:
       [
@@ -145,7 +145,7 @@ services:
       test: wget --spider -q http://seaweedfs-volume:8080/status
 
   seaweedfs-filer:
-    image: chrislusf/seaweedfs:latest
+    image: chrislusf/seaweedfs:latest@sha256:25e786c94ab0663985751151dd28706f897dc4ef7db1575a63db8dbe91fb760f
     container_name: seaweedfs-filer
     command: ['filer', '-ip=seaweedfs-filer', '-port=8888', '-master=seaweedfs-master:9333']
     tty: true
@@ -164,7 +164,7 @@ services:
       test: wget --spider -q http://seaweedfs-filer:8888
 
   seaweedfs-s3:
-    image: chrislusf/seaweedfs:latest
+    image: chrislusf/seaweedfs:latest@sha256:25e786c94ab0663985751151dd28706f897dc4ef7db1575a63db8dbe91fb760f
     container_name: seaweedfs-s3
     command:
       ['s3', '-filer=seaweedfs-filer:8888', '-config=/config/config.json', '-ip.bind=0.0.0.0']
