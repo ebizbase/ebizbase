@@ -7,7 +7,7 @@
   "typings": "./src/index.d.ts",
   "dependencies": {
     "@swc/helpers": "~0.5.11",
-    "@nx/devkit": "20.2.2"
+    "@nx/devkit": "20.8.3"
   },
   "devDependencies": {},
   "executors": "./executors.json",
