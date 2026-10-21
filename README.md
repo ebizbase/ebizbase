@@ -1,16 +1,14 @@
-## Hi there 👋
+```
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
 
-<!--
-**ebizbase/ebizbase** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+the answer to the universe is 42
+-----BEGIN PGP SIGNATURE-----
 
-Here are some ideas to get you started:
-
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+iK8EARYKAFcWIQRw0Y+QekLuiCNdZRJIJQYPEgi11gUCatkopRsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwwLDMdHGNvY2hhdmkuem9oYXJAcHJvdG9ubWFpbC5jb20A
+CgkQSCUGDxIItdbUzQD+OZrGF4hdDBFVeJPbu5fFWU3zZRgmqk8TklU0p1IAw5oB
+AIKdTsMRkJGjRE/+J1kuTy25jaUHdbzzFykX7zuDydcM
+=Uap7
+-----END PGP SIGNATURE-----
+```
